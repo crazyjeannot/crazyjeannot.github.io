@@ -1,0 +1,186 @@
+---
+title: \bfseries\textcolor{blue}{Jean Barré}
+subtitle: ""
+colorlinks: true
+urlcolor: DarkBlue
+output:
+  pdf_document:
+    toc: no
+    includes:
+      in_header: preamble.tex
+geometry: left = 1.4cm, right = 1.4cm, top = 1.9cm, bottom = 1.1cm
+classoption: a4paper, 10pt
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+cites<-scholar::get_publications("towpTGYAAAAJ&hl")[c("cites","pubid", "title")]
+```
+
+||| <!-- headerless table for address-->
+|:--|--:|
+|Department of Literature and Language | [jean.barre@ens.psl.eu](mailto:jean.barre@ens.psl.eu)|
+|Ecole Normale Supérieure - PSL University | [crazyjeannot.github.io](https://crazyjeannot.github.io/)|
+|45 rue d’Ulm, 75005 Paris||
+
+
+  
+  
+  
+**Born:** 11.12.1999
+  
+**Language spoken:** French (native), English (fluent), German (intermediate), Spanish (intermediate)  
+  
+**Research interest:** computational literary studies, literary history, literary theory, stylometry, cultural evolution  
+  
+**Skills:** text mining, data engineering, machine learning, LMs and LLMs finetuning  
+  
+**Programming:** Python, R,  bash  
+
+#  Professional and educational history
+||| <!-- headerless table; the number of "-" in the next line specifies how wide the first and second column are-->
+|-|---------|
+| from oct 2025   | **Research Software Engineer** fixed-term, CNRS – LATTICE UMR 8094, Paris|
+| from oct 2022   | **PhD candidate** in Computational Literary Studies, CNRS – LATTICE UMR 8094, ENS-PSL, Paris|
+| 2021-2022       | **Student research assistant** to T. Poibeau, Lattice, CNRS-ENS-PSL, Paris|
+| 2020-2022       | **MSc in Digital Humanities**, École nationale des Chartes, PSL University|
+| 2017-2020       | **BA in French Literature**, Sorbonne University|
+| 2017-2020       | **BSc in Computer Science**, Sorbonne University|
+
+<!--# Degrees
+||| headerless table; the number of "-" in the next line specifies how wide the first and second column are
+|-|---------|-->
+
+
+# Publications
+
+## Journal articles
+
+*Barré et al. “Operationalizing Canonicity: A Quantitative Study of French 19th and 20th Century Literature.”*
+  Journal of Cultural Analytics, vol. 8, no. 1, Oct. 2023,
+  [10.22148/001c.88113](https://doi.org/10.22148/001c.88113)
+
+*Mélanie-Becquet et al. “BookNLP-fr, the French Versant of BookNLP. A Tailored Pipeline for 19th and 20th Century French Literature.”*
+  Journal of Computational Literary Studies, Darmstadt, Nov 2024.
+  [10.48694/jcls.3924](https://doi.org/10.48694/jcls.3924)
+
+
+## Conference articles
+
+*Barré et al “Modeling the Birth of a Literary Archetype: The case of the Detective Figure in French Fiction.”*
+Conference on Computational Humanities Research CHR2025, Dec 2025, Esch-sur-Alzette, Luxembourg.
+[2511.00627](http://arxiv.org/abs/2511.00627)
+
+*Brottrager et al “Patterns of Canon: A Multilingual Network Study.*
+Conference on Computational Humanities Research CHR2025, Dec 2025, Esch-sur-Alzette, Luxembourg. 
+
+*Gabay et al “The times are a-changin': présent vs passé simple in French novels (1811-2020).”*
+Digital Humanities Benelux, Jun 2025, Amsterdam, Netherlands.
+[hal-04984105](https://hal.science/hal-04984105)
+
+
+*Barré “Latent Structures of Intertextuality in French Fiction.”*
+  Proceedings of the Conference Computational Humanities Research CHR2024, Dec 2024, Aarhus, Denmark. 
+  [2410.17759](https://arxiv.org/abs/2410.17759)
+
+*Chen et al. “Network Analysis, Plot Theory: Revisiting French Literature through Character Networks.”*
+  DH2024, Washington, Jul 2024.
+  [hal-04855204](https://hal.science/hal-04855204)
+
+*Barré et al. “Détection automatique de l'architextualité dans le roman d'aventures. Une tentative d'opérationnalisation.”*
+  Humanistica 2024, Association francophone des humanités numériques, May 2024, Meknès, Maroc.
+  [hal-04559749](https://hal.science/hal-04559749)
+
+*Barré et al. “Beyond Canonicity. Modeling Canon/Archive Literary Change in French Fiction.”*
+  Proceedings of the Conference on Computational Humanities Research CHR2023, Dec 2023, Paris, France.
+  [CHR Proceedings](https://ceur-ws.org/Vol-3558/paper9925.pdf), [hal-04279087](https://hal.science/hal-04279087)
+
+*Vianne et al. “Gender Bias in French Literature.”*
+  Proceedings of the Conference on Computational Humanities Research CHR2023, Dec 2023, Paris, France.
+  [CHR Proceedings](https://ceur-ws.org/Vol-3558/paper2449.pdf)
+
+*Barré et al. “Pour une Détection Automatique de l’Espace Personnage dans les Romans.”*
+  Humanistica, Association francophone des humanités numériques, Jun 2023, Genève, Suisse,
+  [hal-04105537](https://hal.science/HUMANISTICA-2023/hal-04105537v1)
+
+*Grunspan et al. “Event Annotation for Literary Corpora Analysis.”*
+  DH2022, Tokyo, Jul 2022.
+  [hal-03738806](https://hal.science/hal-03738806)
+
+<!-- 
+## Working Papers
+*Barré et al. “The Detective Figure in French Fiction: A Computational Analysis of the Construction of a Literary Archetype”*  
+CHR2025
+-->
+
+
+# Teaching
+## As course instructor
+
+||| <!-- headerless table; the number of "-" in the next line specifies how wide the first and second column are-->
+|-|---------|
+| Fall 2025 | **F1TCB01 – TD Récit et Argumentation**, L1 Lettres Modernes (LLFL), Sorbonne Nouvelle |
+| Fall 2025 | **Applied NLP for Computational Literary Studies**, CPES-PSL, Bachelor Data Science, Arts & Cultures |
+| Fall 2025 | **Python for Computational Humanities**, École Nationale des Chartes, Master Humanités Numériques |
+| Spring 2025  | **Applied NLP for Computational Literary Studies**, CPES - Data, art and cultures, Lycée Louis le Grand, PSL University |
+| Fall 2024    | **Python for Digital Humanities, MSc in Digital Humanities**, École nationale des Chartes |
+| Mar 2024     | **Using Large Language Models to Study Fiction**, DH meet AI - PSL University intensive week |
+| Fall 2023    | **Python for Digital Humanities**, MSc in Digital Humanities, École nationale des Chartes |
+| Nov 2022     | **A Computational Literary History of Gender in French Fiction**, DH meet AI, PSL University intensive week |
+
+## As teaching assistant
+
+||| <!-- headerless table; the number of "-" in the next line specifies how wide the first and second column are-->
+|-|---------|
+| Spring 2025   | **Introduction to Computational Literary Studies**, with F. Cafiero for the Department of Literature and Language, École Normale Supérieure|
+| Fall 2024     | **Introduction to Natural Language Processing**, with T. Poibeau for the MSc in Digital Humanities, École nationale des Chartes|
+| Spring 2024   | **Introduction to Computational Literary Studies**, with F. Cafiero for the Department of Literature and Language, École Normale Supérieure|
+<!-- 
+## Student Supervision 
+Damien Conceicao - 
+-->
+
+
+
+# Scientific activities
+
+
+## Reviewer for: 
+Journal and Conference for Computational Humanities Research, Conference Humanistica 
+
+## Events Organized:
+
+Le texte de l'autre. Dialogue interdisciplinaire autour de l'intertextualité et du discours rapporté, [Colloque](https://intertextualite.sciencesconf.org/), July 1-2-3, 2025, Paris
+
+AI and Large Language Models (LLMs) for the Analysis of Large Literary Corpora, [Workshop](https://workshop-llms4cls.github.io/), December 5, 2023, Paris
+
+## Other:
+Organization for "Digital Humanities" Master Degree - Participation in building the pedagogical model, Member of the admissions panel
+
+Representative of doctoral students at the Lattice Laboratory 
+
+Students Supervision - Damien Conceicao M1 HN
+<!-- 
+# Awards & grants
+|-|---------|
+| 2023          | Small research grant, University of Vienna € 2,000 |
+| 2021          | Dissertation award  by the KfW Development Bank and the Development Group of the German Economic Association, € 5,000 |
+-->
+<!-- 
+# Professional activities and memberships
+## Presentations and invited seminars
+**2024**: Central European University (planned);
+**2023**: Vienna University of Economics and Business; Standing Committee on Development Economics of the German Economic Association; University of Passau; TU Dresden (planned);
+-->
+
+<!-- ## Scientific refereeing
+Journal of Development Economics, American Journal of Agricultural Economics, Journal of Environmental Economics and Management, Economic Development and Cultural Change, Land Use Policy, Party Politics
+
+ # References -->
+<!-- |||| <!-- headerless table; the number of "-" in the next line specifies how wide the first and second columns are-->
+<!-- |--|--|--| -->
+<!-- | Professor Matthias Schündeln, PhD             | Professor Marcel Fafchamps, PhD                 | Professor Daniel Gutknecht, PhD | -->
+<!-- | Goethe University Frankfurt                   | Stanford University                             | Goethe University  Frankfurt | -->
+<!-- | [schuendeln@wiwi.uni-frankfurt.de](mailto:schuendeln@wiwi.uni-frankfurt.de), +49-69-798-34798 | [fafchamp@stanford.edu](mailto:fafchamp@stanford.edu), +1-650-497-4602 | [gutknecht@wiwi.uni-frankfurt.de](mailto:gutknecht@wiwi.uni-frankfurt.de), +49-69-798-34766 | -->
+
+\vfill\hfill\tiny last updated: \today
