@@ -71,11 +71,26 @@
     a {
       color: #1772d0;
       text-decoration: none;
-      transition: color 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     a:hover {
       color: #f09228;
+    }
+
+    /* Publication title links */
+    a.pub-link {
+      color: inherit;
+      background-color: transparent;
+      padding: 2px 4px;
+      margin: -2px -4px;
+      border-radius: 3px;
+      transition: all 0.2s ease;
+    }
+
+    a.pub-link:hover {
+      background-color: #000;
+      color: #fff;
     }
 
     /* Social Icons */
@@ -138,10 +153,10 @@
 
     /* New badge */
     .newgif {
-      width: 28px;
-      height: 28px;
+      width: 64px;
+      height: 64px;
       vertical-align: middle;
-      margin-right: 8px;
+      margin-right: 16px;
     }
 
     /* Teaching entries */
@@ -256,7 +271,7 @@
     
     <div class="pub-entry first">
       <img class="newgif" src="./images/new.gif" alt="New">
-      <span class="pub-title">Modeling the Birth of a Literary Archetype: The case of the Detective Figure in French Fiction</span><br>
+      <a href="https://arxiv.org/abs/2511.00627" target="_blank" class="pub-link"><span class="pub-title">Modeling the Birth of a Literary Archetype: The case of the Detective Figure in French Fiction</span></a><br>
       <strong>Barré, J.</strong> et al. (2025). <em>Conference on Computational Humanities Research CHR2025, Esch-sur-Alzette, Luxembourg.</em><br>
       <a href="https://arxiv.org/abs/2511.00627" target="_blank">ArXiv</a> | <a href="./pdfs/BARRE_DETECTIVE_ARCHETYPE.pdf" target="_blank">PDF</a>
     </div>
@@ -271,13 +286,13 @@
     <h2>Journal Articles</h2>
 
     <div class="pub-entry first">
-      <span class="pub-title">BookNLP-fr, the French Versant of BookNLP. A Tailored Pipeline for 19th and 20th Century French Literature</span><br>
+      <a href="https://doi.org/10.48694/jcls.3924" target="_blank" class="pub-link"><span class="pub-title">BookNLP-fr, the French Versant of BookNLP. A Tailored Pipeline for 19th and 20th Century French Literature</span></a><br>
       Mélanie-Becquet, F. et al. (2024). <em>Journal of Computational Literary Studies, 3(1), 1-34.</em><br>
       <a href="https://doi.org/10.48694/jcls.3924" target="_blank">DOI</a> | <a href="./pdfs/jcls-3924-mélanie-becquet.pdf" target="_blank">PDF</a>
     </div>
 
     <div class="pub-entry">
-      <span class="pub-title">Operationalizing Canonicity: A Quantitative Study of French 19th and 20th Century Literature</span><br>
+      <a href="https://doi.org/10.22148/001c.88113" target="_blank" class="pub-link"><span class="pub-title">Operationalizing Canonicity: A Quantitative Study of French 19th and 20th Century Literature</span></a><br>
       <strong>Barré, J.</strong> et al. (2023). <em>Journal of Cultural Analytics, 8(1).</em><br>
       <a href="https://doi.org/10.22148/001c.88113" target="_blank">DOI</a> | <a href="./pdfs/operationalizing_canonicity_barré_2023.pdf" target="_blank">PDF</a>
     </div>
@@ -287,56 +302,56 @@
 
     <div class="pub-entry first">
       <span class="datespan">2025</span> | 
-      <span class="pub-title">The times are a-changin': présent vs passé simple in French novels (1811-2020)</span><br>
+      <a href="https://hal.science/hal-04984105" target="_blank" class="pub-link"><span class="pub-title">The times are a-changin': présent vs passé simple in French novels (1811-2020)</span></a><br>
       Gabay et al. <em>Digital Humanities Benelux, Amsterdam.</em><br>
       <a href="https://hal.science/hal-04984105" target="_blank">HAL</a> | <a href="./pdfs/DHBenelux_2025_style.pdf" target="_blank">PDF</a>
     </div>
 
     <div class="pub-entry">
       <span class="datespan">2024</span> | 
-      <span class="pub-title">Latent Structures of Intertextuality in French Fiction</span><br>
+      <a href="https://ceur-ws.org/Vol-3834/paper97.pdf" target="_blank" class="pub-link"><span class="pub-title">Latent Structures of Intertextuality in French Fiction</span></a><br>
       <strong>Barré, J.</strong> <em>CHR2024, Aarhus, Denmark.</em><br>
       <a href="https://ceur-ws.org/Vol-3834/paper97.pdf" target="_blank">Proceedings</a> | <a href="https://arxiv.org/abs/2410.17759" target="_blank">ArXiv</a> | <a href="./pdfs/Barre_Latent_CHR2024.pdf" target="_blank">PDF</a>
     </div>
 
     <div class="pub-entry">
       <span class="datespan">2024</span> | 
-      <span class="pub-title">Network Analysis, Plot Theory: Revisiting French Literature through Character Networks</span><br>
+      <a href="https://dh24-abstracts.netlify.app/assets/poibeau_thierry_network_analysis__plot_theory__revisiting_fr" target="_blank" class="pub-link"><span class="pub-title">Network Analysis, Plot Theory: Revisiting French Literature through Character Networks</span></a><br>
       Chen et al. <em>DH2024, Washington.</em><br>
       <a href="https://dh24-abstracts.netlify.app/assets/poibeau_thierry_network_analysis__plot_theory__revisiting_fr" target="_blank">DH2024</a> | <a href="./pdfs/DH2024_chen_etal.pdf" target="_blank">PDF</a>
     </div>
 
     <div class="pub-entry">
       <span class="datespan">2024</span> | 
-      <span class="pub-title">Détection automatique de l'architextualité dans le roman d'aventures</span><br>
+      <a href="https://hal.science/hal-04559749" target="_blank" class="pub-link"><span class="pub-title">Détection automatique de l'architextualité dans le roman d'aventures</span></a><br>
       <strong>Barré, J.</strong> et al. <em>Humanistica 2024, Meknès, Maroc.</em><br>
       <a href="https://hal.science/hal-04559749" target="_blank">HAL</a> | <a href="./pdfs/2024_Humanistica_Barre.pdf" target="_blank">PDF</a>
     </div>
 
     <div class="pub-entry">
       <span class="datespan">2023</span> | 
-      <span class="pub-title">Beyond Canonicity. Modeling Canon/Archive Literary Change in French Fiction</span><br>
+      <a href="https://ceur-ws.org/Vol-3558/paper9925.pdf" target="_blank" class="pub-link"><span class="pub-title">Beyond Canonicity. Modeling Canon/Archive Literary Change in French Fiction</span></a><br>
       <strong>Barré, J.</strong> et al. <em>CHR2023, Paris, France.</em><br>
       <a href="https://ceur-ws.org/Vol-3558/paper9925.pdf" target="_blank">Proceedings</a> | <a href="https://hal.science/hal-04279087" target="_blank">HAL</a> | <a href="./pdfs/Beyond_Canonicity.pdf" target="_blank">PDF</a>
     </div>
 
     <div class="pub-entry">
       <span class="datespan">2023</span> | 
-      <span class="pub-title">Gender Bias in French Literature</span><br>
+      <a href="https://ceur-ws.org/Vol-3558/paper2449.pdf" target="_blank" class="pub-link"><span class="pub-title">Gender Bias in French Literature</span></a><br>
       Vianne et al. <em>CHR2023, Paris, France.</em><br>
       <a href="https://ceur-ws.org/Vol-3558/paper2449.pdf" target="_blank">Proceedings</a> | <a href="./pdfs/Gender_bias_in_french_literature.pdf" target="_blank">PDF</a>
     </div>
 
     <div class="pub-entry">
       <span class="datespan">2023</span> | 
-      <span class="pub-title">Pour une Détection Automatique de l'Espace Personnage dans les Romans</span><br>
+      <a href="https://hal.science/HUMANISTICA-2023/hal-04105537v1" target="_blank" class="pub-link"><span class="pub-title">Pour une Détection Automatique de l'Espace Personnage dans les Romans</span></a><br>
       <strong>Barré, J.</strong> et al. <em>Humanistica 2023, Genève, Suisse.</em><br>
       <a href="https://hal.science/HUMANISTICA-2023/hal-04105537v1" target="_blank">HAL</a> | <a href="./pdfs/Humanistica_2023_barré.pdf" target="_blank">PDF</a>
     </div>
 
     <div class="pub-entry">
       <span class="datespan">2022</span> | 
-      <span class="pub-title">Event Annotation for Literary Corpora Analysis</span><br>
+      <a href="https://hal.science/hal-03738806" target="_blank" class="pub-link"><span class="pub-title">Event Annotation for Literary Corpora Analysis</span></a><br>
       Grunspan et al. <em>DH2022, Tokyo.</em><br>
       <a href="https://hal.science/hal-03738806" target="_blank">HAL</a> | <a href="./pdfs/Event_annotation_dh2022-2.pdf" target="_blank">PDF</a>
     </div>
