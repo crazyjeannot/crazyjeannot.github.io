@@ -18,7 +18,7 @@
   </script>
 </head>
 
-<body>
+<body class="dark-mode-loading">
   <!-- Sticky Navigation -->
   <nav class="sticky-nav" id="stickyNav">
     <div class="nav-content">
@@ -159,6 +159,15 @@
   </div>
   
   <script>
+    // Dark mode - Apply immediately to prevent flash
+    const body = document.body;
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+    }
+    // Remove loading class to make page visible
+    body.classList.remove('dark-mode-loading');
+  
     // Sticky Navigation
     let lastScrollTop = 0;
     const stickyNav = document.getElementById('stickyNav');
@@ -182,13 +191,13 @@
       
       lastScrollTop = scrollTop;
     });
-
+  
     // Mobile menu toggle
     mobileMenuBtn.addEventListener('click', function() {
       navLinks.classList.toggle('active');
       this.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
     });
-
+  
     // Close mobile menu when clicking a link
     document.querySelectorAll('.nav-links a').forEach(link => {
       link.addEventListener('click', function() {
@@ -196,16 +205,9 @@
         mobileMenuBtn.textContent = '☰';
       });
     });
-
-    // Dark mode toggle
+  
+    // Dark mode toggle button
     const themeToggle = document.getElementById('themeToggle');
-    const body = document.body;
-    
-    // Check for saved theme preference or default to light mode
-    const currentTheme = localStorage.getItem('theme') || 'light';
-    if (currentTheme === 'dark') {
-      body.classList.add('dark-mode');
-    }
     
     themeToggle.addEventListener('click', function() {
       body.classList.toggle('dark-mode');
