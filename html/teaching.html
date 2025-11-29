@@ -9,16 +9,9 @@
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
-  <script>
-    // Apply dark mode immediately before page renders
-    if (localStorage.getItem('theme') === 'dark') {
-      document.documentElement.classList.add('dark-mode');
-      document.body.classList.add('dark-mode');
-    }
-  </script>
 </head>
 
-<body>
+<body class="dark-mode-loading">
   <!-- Sticky Navigation -->
   <nav class="sticky-nav" id="stickyNav">
     <div class="nav-content">
@@ -138,6 +131,15 @@
   </div>
 
   <script>
+    // Dark mode - Apply immediately to prevent flash
+    const body = document.body;
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+    }
+    // Remove loading class to make page visible
+    body.classList.remove('dark-mode-loading');
+  
     // Sticky Navigation
     let lastScrollTop = 0;
     const stickyNav = document.getElementById('stickyNav');
@@ -161,13 +163,13 @@
       
       lastScrollTop = scrollTop;
     });
-
+  
     // Mobile menu toggle
     mobileMenuBtn.addEventListener('click', function() {
       navLinks.classList.toggle('active');
       this.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
     });
-
+  
     // Close mobile menu when clicking a link
     document.querySelectorAll('.nav-links a').forEach(link => {
       link.addEventListener('click', function() {
@@ -175,16 +177,9 @@
         mobileMenuBtn.textContent = '☰';
       });
     });
-
-    // Dark mode toggle
+  
+    // Dark mode toggle button
     const themeToggle = document.getElementById('themeToggle');
-    const body = document.body;
-    
-    // Check for saved theme preference or default to light mode
-    const currentTheme = localStorage.getItem('theme') || 'light';
-    if (currentTheme === 'dark') {
-      body.classList.add('dark-mode');
-    }
     
     themeToggle.addEventListener('click', function() {
       body.classList.toggle('dark-mode');
