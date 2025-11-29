@@ -15,18 +15,132 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #333;
+      --link-color: #1772d0;
+      --link-hover: #f09228;
+      --border-color: #f0f0f0;
+      --news-bg: #f9f9f9;
+      --gray-text: #666;
+    }
+
+    body.dark-mode {
+      --bg-color: #1a1a1a;
+      --text-color: #e0e0e0;
+      --link-color: #6bb6ff;
+      --link-hover: #ffa940;
+      --border-color: #333;
+      --news-bg: #252525;
+      --gray-text: #999;
+    }
+
     body {
       font-family: 'Lato', Verdana, Helvetica, sans-serif;
       font-size: 18px;
       line-height: 1.6;
-      background-color: #ffffff;
-      color: #333;
+      background-color: var(--bg-color);
+      color: var(--text-color);
       padding: 20px;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .container {
       max-width: 900px;
       margin: 0 auto;
+      padding-top: 20px;
+    }
+
+    /* Sticky Navigation */
+    .sticky-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--bg-color);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      z-index: 1000;
+      transform: translateY(-100%);
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      padding: 12px 20px;
+    }
+
+    body.dark-mode .sticky-nav {
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .sticky-nav.visible {
+      transform: translateY(0);
+    }
+
+    .nav-content {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .nav-controls {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    /* Dark mode toggle */
+    .theme-toggle {
+      background: none;
+      border: 2px solid var(--text-color);
+      border-radius: 20px;
+      width: 50px;
+      height: 28px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+      padding: 0;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--link-hover);
+    }
+
+    .theme-toggle::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: var(--text-color);
+      top: 2px;
+      left: 2px;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    body.dark-mode .theme-toggle::after {
+      transform: translateX(22px);
+    }
+
+    /* Mobile menu */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--text-color);
+      padding: 0;
+      line-height: 1;
     }
 
     /* Header */
@@ -50,7 +164,7 @@
     }
 
     h1:hover {
-      color: #f09228;
+      color: var(--link-hover);
       cursor: default;
     }
 
@@ -58,7 +172,7 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 16px;
       margin-bottom: 20px;
-      color: #666;
+      color: var(--gray-text);
     }
 
     .portrait img {
@@ -69,13 +183,13 @@
 
     /* Links */
     a {
-      color: #1772d0;
+      color: var(--link-color);
       text-decoration: none;
       transition: all 0.3s ease;
     }
 
     a:hover {
-      color: #f09228;
+      color: var(--link-hover);
     }
 
     /* Publication title links */
@@ -91,6 +205,11 @@
     a.pub-link:hover {
       background-color: #000;
       color: #fff;
+    }
+
+    body.dark-mode a.pub-link:hover {
+      background-color: #fff;
+      color: #000;
     }
 
     /* Social Icons */
@@ -119,8 +238,9 @@
       font-weight: 700;
       margin-top: 48px;
       margin-bottom: 16px;
-      border-bottom: 2px solid #f0f0f0;
+      border-bottom: 2px solid var(--border-color);
       padding-bottom: 8px;
+      scroll-margin-top: 80px;
     }
 
     p {
@@ -133,7 +253,7 @@
       font-size: 0.9em;
       margin-right: 8px;
       white-space: nowrap;
-      color: #666;
+      color: var(--gray-text);
     }
 
     /* Publication entries */
@@ -153,37 +273,91 @@
 
     /* New badge */
     .newgif {
-      width: 64px;
-      height: 64px;
+      width: 28px;
+      height: 28px;
       vertical-align: middle;
-      margin-right: 16px;
-    }
-
-    /* Teaching entries */
-    .teaching-entry {
-      margin-bottom: 20px;
+      margin-right: 8px;
     }
 
     /* News section */
     .news-box {
-      background-color: #f9f9f9;
+      background-color: var(--news-bg);
       padding: 20px;
       border-radius: 8px;
       margin: 24px 0;
+      transition: background-color 0.3s ease;
     }
 
-    /* Footer */
-    footer {
-      margin-top: 60px;
-      padding-top: 20px;
-      border-top: 1px solid #e0e0e0;
-      text-align: right;
-      font-size: 14px;
-      color: #999;
+    .news-item {
+      margin-bottom: 12px;
+    }
+
+    .news-item:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Research interests */
+    .interests {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .interest-tag {
+      background-color: var(--news-bg);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .interest-tag:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    body.dark-mode .interest-tag:hover {
+      box-shadow: 0 4px 8px rgba(255,255,255,0.1);
+    }
+
+    /* Download buttons */
+    .download-buttons {
+      display: flex;
+      gap: 16px;
+      margin: 24px 0;
+      flex-wrap: wrap;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background-color: var(--link-color);
+      color: white;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .download-btn:hover {
+      background-color: var(--link-hover);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
     /* Responsive */
     @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      .container {
+        padding-top: 10px;
+      }
+
       .header-section {
         flex-direction: column-reverse;
         align-items: center;
@@ -202,11 +376,74 @@
         width: 40px;
         height: 40px;
       }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 52px;
+        left: 0;
+        right: 0;
+        background-color: var(--bg-color);
+        padding: 0;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        flex-direction: column;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .nav-links.active {
+        max-height: 300px;
+      }
+
+      .nav-links a {
+        padding: 16px 20px;
+        width: 100%;
+        display: block;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .nav-links a:hover {
+        background-color: var(--news-bg);
+      }
+
+      .download-buttons {
+        flex-direction: column;
+      }
+
+      .download-btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      h2 {
+        scroll-margin-top: 60px;
+      }
     }
   </style>
 </head>
 
 <body>
+  <!-- Sticky Navigation -->
+  <nav class="sticky-nav" id="stickyNav">
+    <div class="nav-content">
+      <div class="nav-links" id="navLinks">
+        <a href="#publications">Publications</a>
+        <a href="#projects">Projects</a>
+        <a href="#talks">Talks</a>
+        <a href="#teaching">Teaching</a>
+      </div>
+      <div class="nav-controls">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode"></button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
+      </div>
+    </div>
+  </nav>
+
   <div class="container">
     <!-- Header -->
     <div class="header-section">
@@ -223,7 +460,7 @@
         </p>
       </div>
       <div class="portrait">
-        <img src="images/jean.jpg" alt="Jean Barré">
+        <img src="images/juanito.jpeg" alt="Jean Barré">
       </div>
     </div>
 
@@ -235,6 +472,18 @@
     <p>
       My doctoral research focuses on French narrative fiction from the late nineteenth to the first half of the twentieth century, studying the emergence and reconfiguration of novelistic subgenres such as detective and adventure fiction. Using large-scale corpora, vector-space representations, and network analysis, I model the evolution of textual structures and character archetypes—notably the figure of the detective.
     </p>
+
+    <!-- Research Interests -->
+    <h2>Research Interests</h2>
+    <div class="interests">
+      <span class="interest-tag">Computational Literary Studies</span>
+      <span class="interest-tag">Natural Language Processing</span>
+      <span class="interest-tag">Literary Genre Evolution</span>
+      <span class="interest-tag">Intertextuality</span>
+      <span class="interest-tag">Network Analysis</span>
+      <span class="interest-tag">Digital Humanities</span>
+      <span class="interest-tag">French Literature (19th-20th c.)</span>
+    </div>
 
     <!-- Social Icons -->
     <div class="social-icons">
@@ -261,9 +510,53 @@
       </a>
     </div>
 
-    <!-- News -->
+    <!-- Download Buttons -->
+    <div class="download-buttons">
+      <a href="./pdfs/CV-JB.pdf" class="download-btn" target="_blank">
+        📄 Download CV
+      </a>
+      <a href="./pdfs/publications_list.pdf" class="download-btn" target="_blank">
+        📚 Download Publications List
+      </a>
+    </div>
+
+    <!-- Recent Updates -->
+    <h2>Recent Updates</h2>
     <div class="news-box">
-      <strong>News:</strong> Attending <a href="https://2025.computational-humanities-research.org/" target="_blank">CHR2025</a> in Luxembourg (December 9-12, 2025)
+      <div class="news-item">
+        <span class="datespan">2025/12</span> | 
+        Attending <a href="https://2025.computational-humanities-research.org/" target="_blank">CHR2025</a> in Luxembourg (December 9-12)
+      </div>
+      <div class="news-item">
+        <span class="datespan">2024/11</span> | 
+        New blog post: <a href="https://distreadings.hypotheses.org/1" target="_blank">Large Language Models in Quest for Adventure</a>
+      </div>
+      <div class="news-item">
+        <span class="datespan">2024/12</span> | 
+        Paper accepted at CHR2024: <em>Latent Structures of Intertextuality in French Fiction</em>
+      </div>
+    </div>
+
+    <!-- Software Projects -->
+    <h2 id="projects">Software & Projects</h2>
+    
+    <div class="pub-entry first">
+      <a href="https://github.com/crazyjeannot/BookNLP-fr" target="_blank" class="pub-link"><span class="pub-title">BookNLP-fr</span></a><br>
+      A tailored NLP pipeline for processing 19th and 20th century French literature. Adapts BookNLP for French novels, including named entity recognition, coreference resolution, and character extraction.<br>
+      <a href="https://github.com/crazyjeannot/BookNLP-fr" target="_blank">GitHub</a> | <a href="./pdfs/jcls-3924-mélanie-becquet.pdf" target="_blank">Publication</a>
+    </div>
+
+    <div class="pub-entry">
+      <span class="pub-title">Refined Gallica Corpus</span><br>
+      A curated corpus of French novels from Gallica (BnF's digital library), cleaned and processed for computational literary analysis. Includes metadata enrichment and OCR quality filtering for 19th-20th century fiction.
+    </div>
+
+    <div class="pub-entry">
+      <span class="pub-title">Research Replication Materials</span><br>
+      Code and data for reproducing key findings from my publications:<br>
+      <a href="https://github.com/crazyjeannot/operationalizing-canonicity" target="_blank">Operationalizing Canonicity</a> | 
+      <a href="https://github.com/crazyjeannot/latent-intertextuality" target="_blank">Latent Intertextuality</a> | 
+      <a href="https://github.com/crazyjeannot/detective-archetype" target="_blank">Detective Archetype</a>
     </div>
 
     <!-- Preprints -->
@@ -586,5 +879,63 @@
       <a href="https://pournaki.com" target="_blank" rel="noopener noreferrer">Armin Pournaki</a>.
     </footer>
   </div>
+
+  <script>
+    // Sticky Navigation
+    let lastScrollTop = 0;
+    const stickyNav = document.getElementById('stickyNav');
+    const navLinks = document.getElementById('navLinks');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    
+    window.addEventListener('scroll', function() {
+      let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      if (scrollTop > 300) {
+        if (scrollTop > lastScrollTop) {
+          // Scrolling down
+          stickyNav.classList.remove('visible');
+        } else {
+          // Scrolling up
+          stickyNav.classList.add('visible');
+        }
+      } else {
+        stickyNav.classList.remove('visible');
+      }
+      
+      lastScrollTop = scrollTop;
+    });
+
+    // Mobile menu toggle
+    mobileMenuBtn.addEventListener('click', function() {
+      navLinks.classList.toggle('active');
+      this.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+    });
+
+    // Close mobile menu when clicking a link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', function() {
+        navLinks.classList.remove('active');
+        mobileMenuBtn.textContent = '☰';
+      });
+    });
+
+    // Dark mode toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+    }
+    
+    themeToggle.addEventListener('click', function() {
+      body.classList.toggle('dark-mode');
+      
+      // Save theme preference
+      const theme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+      localStorage.setItem('theme', theme);
+    });
+  </script>
 </body>
 </html>
