@@ -211,8 +211,8 @@
     }
 
     .social-icons a img {
-      width: 256px;
-      height: 256px;
+      width: 64px;
+      height: 64px;
       transition: transform 0.3s ease, opacity 0.3s ease;
     }
 
