@@ -150,64 +150,73 @@
     </footer>
   </div>
   
-  <script>
-    // Dark mode - Apply immediately to prevent flash
-    const body = document.body;
-    const currentTheme = localStorage.getItem('theme') || 'light';
-    if (currentTheme === 'dark') {
-      body.classList.add('dark-mode');
-    }
-    // Remove loading class to make page visible
-    body.classList.remove('dark-mode-loading');
+<script>
+  // Dark mode - Apply immediately to prevent flash
+  const body = document.body;
+  const currentTheme = localStorage.getItem('theme') || 'light';
+  if (currentTheme === 'dark') {
+    body.classList.add('dark-mode');
+  }
+  // Remove loading class to make page visible
+  body.classList.remove('dark-mode-loading');
+
+  // Sticky Navigation
+  let lastScrollTop = 0;
+  const stickyNav = document.getElementById('stickyNav');
+  const navLinks = document.getElementById('navLinks');
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
   
-    // Sticky Navigation
-    let lastScrollTop = 0;
-    const stickyNav = document.getElementById('stickyNav');
-    const navLinks = document.getElementById('navLinks');
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  window.addEventListener('scroll', function() {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     
-    window.addEventListener('scroll', function() {
-      let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      
-      if (scrollTop > 300) {
-        if (scrollTop > lastScrollTop) {
-          // Scrolling down
-          stickyNav.classList.remove('visible');
-        } else {
-          // Scrolling up
-          stickyNav.classList.add('visible');
-        }
-      } else {
+    if (scrollTop > 300) {
+      if (scrollTop > lastScrollTop) {
+        // Scrolling down
         stickyNav.classList.remove('visible');
+      } else {
+        // Scrolling up
+        stickyNav.classList.add('visible');
       }
-      
-      lastScrollTop = scrollTop;
-    });
-  
-    // Mobile menu toggle
-    mobileMenuBtn.addEventListener('click', function() {
-      navLinks.classList.toggle('active');
-      this.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
-    });
-  
-    // Close mobile menu when clicking a link
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', function() {
-        navLinks.classList.remove('active');
-        mobileMenuBtn.textContent = '☰';
-      });
-    });
-  
-    // Dark mode toggle button
-    const themeToggle = document.getElementById('themeToggle');
+    } else {
+      stickyNav.classList.remove('visible');
+    }
     
-    themeToggle.addEventListener('click', function() {
-      body.classList.toggle('dark-mode');
-      
-      // Save theme preference
-      const theme = body.classList.contains('dark-mode') ? 'dark' : 'light';
-      localStorage.setItem('theme', theme);
+    lastScrollTop = scrollTop;
+  });
+
+  // Mobile menu toggle
+  mobileMenuBtn.addEventListener('click', function() {
+    navLinks.classList.toggle('active');
+    this.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+  });
+
+  // Close mobile menu when clicking a link
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', function() {
+      navLinks.classList.remove('active');
+      mobileMenuBtn.textContent = '☰';
     });
-  </script>
+  });
+
+  // Dark mode toggle button
+  const themeToggle = document.getElementById('themeToggle');
+  
+  themeToggle.addEventListener('click', function() {
+    body.classList.toggle('dark-mode');
+    
+    // Save theme preference
+    const theme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+    localStorage.setItem('theme', theme);
+    
+    // Update CSS variables immediately
+    if (theme === 'dark') {
+      document.documentElement.style.setProperty('--bg-color', '#1a1a1a');
+      document.documentElement.style.setProperty('--text-color', '#e0e0e0');
+    } else {
+      document.documentElement.style.setProperty('--bg-color', '#ffffff');
+      document.documentElement.style.setProperty('--text-color', '#333');
+    }
+  });
+</script>
 </body>
 </html>
