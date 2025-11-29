@@ -205,14 +205,14 @@
     .social-icons {
       display: flex;
       justify-content: center;
-      gap: 24px;
+      gap: 64px;
       margin: 40px 0;
       flex-wrap: wrap;
     }
 
     .social-icons a img {
-      width: 48px;
-      height: 48px;
+      width: 128px;
+      height: 128px;
       transition: transform 0.3s ease, opacity 0.3s ease;
     }
 
