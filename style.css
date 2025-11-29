@@ -14,15 +14,16 @@
       --gray-text: #666;
     }
 
-    body.dark-mode {
-      --bg-color: #1a1a1a;
-      --text-color: #e0e0e0;
-      --link-color: #6bb6ff;
-      --link-hover: #ffa940;
-      --border-color: #333;
-      --news-bg: #252525;
-      --gray-text: #999;
-    }
+      html.dark-mode,
+      body.dark-mode {
+        --bg-color: #1a1a1a;
+        --text-color: #e0e0e0;
+        --link-color: #6bb6ff;
+        --link-hover: #ffa940;
+        --border-color: #333;
+        --news-bg: #252525;
+        --gray-text: #999;
+      }
 
     body {
       font-family: 'Lato', Verdana, Helvetica, sans-serif;
