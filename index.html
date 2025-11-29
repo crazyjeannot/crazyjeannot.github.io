@@ -9,6 +9,15 @@
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script>
+    (function() {
+      const theme = localStorage.getItem('theme');
+      if (theme === 'dark') {
+        document.documentElement.style.setProperty('--bg-color', '#1a1a1a');
+        document.documentElement.style.setProperty('--text-color', '#e0e0e0');
+      }
+    })();
+  </script>
 </head>
 
 <body class="dark-mode-loading">
@@ -19,8 +28,8 @@
         <a href="index.html">Home</a>
         <a href="html/publications.html">Publications</a>
         <a href="#projects">Projects</a>
-        <a href="html/talks">Talks</a>
-        <a href="html/teaching">Teaching</a>
+        <a href="html/talks.html">Talks</a>
+        <a href="html/teaching.html">Teaching</a>
       </div>
       <div class="nav-controls">
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode"></button>
