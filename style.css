@@ -205,8 +205,8 @@
     .social-icons {
       display: flex;
       justify-content: center;
-      gap: 256px;
-      margin: 128px 0;
+      gap: 100px;
+      margin: 50px 0;
       flex-wrap: wrap;
     }
 
