@@ -421,4 +421,27 @@
       h2 {
         scroll-margin-top: 60px;
       }
+       /* Page headers for subpages */
+.page-header {
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 3px solid var(--border-color);
+}
+
+.page-header h1 {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+
+.page-subtitle {
+  font-size: 18px;
+  color: var(--gray-text);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.teaching-entry {
+  margin-bottom: 24px;
+  padding-left: 0;
+}
     }
