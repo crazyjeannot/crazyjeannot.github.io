@@ -8,6 +8,16 @@
   <link rel="icon" type="image/jpg" href="images/jean.jpg">
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    // Must be inline in head to prevent flash
+    (function() {
+      if (localStorage.getItem('theme') === 'dark') {
+        document.documentElement.style.backgroundColor = '#1a1a1a';
+        document.body.style.backgroundColor = '#1a1a1a';
+      }
+    })();
+  </script>
+  
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -151,8 +161,6 @@
     body.classList.add('dark-mode');
     html.classList.add('dark-mode');
   }
-  // Remove loading class to make page visible
-  body.classList.remove('dark-mode-loading');
 
   // Sticky Navigation
   let lastScrollTop = 0;
