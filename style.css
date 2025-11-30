@@ -30,8 +30,8 @@ body.dark-mode {
   --border-color: #333;
   --news-bg: #252525;
   --gray-text: #999;
+  background-color: #1a1a1a; /* This line is critical */
 }
-
 body {
   font-family: 'Lato', Verdana, Helvetica, sans-serif;
   font-size: 18px;
