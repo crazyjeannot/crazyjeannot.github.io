@@ -126,9 +126,12 @@
 <script>
   // Dark mode - Apply immediately to prevent flash
   const body = document.body;
+  const html = document.documentElement;
   const currentTheme = localStorage.getItem('theme') || 'light';
+
   if (currentTheme === 'dark') {
     body.classList.add('dark-mode');
+    html.classList.add('dark-mode');
   }
   // Remove loading class to make page visible
   body.classList.remove('dark-mode-loading');
@@ -176,19 +179,11 @@
   
   themeToggle.addEventListener('click', function() {
     body.classList.toggle('dark-mode');
+    html.classList.toggle('dark-mode');
     
     // Save theme preference
     const theme = body.classList.contains('dark-mode') ? 'dark' : 'light';
     localStorage.setItem('theme', theme);
-    
-    // Update CSS variables immediately
-    if (theme === 'dark') {
-      document.documentElement.style.setProperty('--bg-color', '#1a1a1a');
-      document.documentElement.style.setProperty('--text-color', '#e0e0e0');
-    } else {
-      document.documentElement.style.setProperty('--bg-color', '#ffffff');
-      document.documentElement.style.setProperty('--text-color', '#333');
-    }
   });
 </script>
 </body>
