@@ -1,4 +1,25 @@
-   * {
+    /* Prevent flash - set default to user's preference */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-color: #1a1a1a;
+        --text-color: #e0e0e0;
+        --link-color: #6bb6ff;
+        --link-hover: #ffa940;
+        --border-color: #333;
+        --news-bg: #252525;
+        --gray-text: #999;
+        background-color: #1a1a1a;
+      }
+    }
+    
+    /* Force light mode initially if no preference saved */
+    body:not(.dark-mode) {
+      --bg-color: #ffffff;
+      --text-color: #333;
+      background-color: #ffffff;
+    } 
+
+    * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
