@@ -6,15 +6,11 @@
   <title>Selected Talks - Jean Barré</title>
   <meta name="description" content="Selected Talks of Jean Barré">
   
-  <script>
-    // Must be inline in head to prevent flash
-    (function() {
-      if (localStorage.getItem('theme') === 'dark') {
-        document.documentElement.style.backgroundColor = '#1a1a1a';
-        document.body.style.backgroundColor = '#1a1a1a';
-      }
-    })();
-  </script>
+<script>
+  if (localStorage.getItem('theme') === 'dark') {
+    document.documentElement.classList.add('dark-mode');
+  }
+</script>
   
   <link rel="icon" type="image/png" href="../images/jean.jpg">
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
