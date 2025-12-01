@@ -470,7 +470,7 @@ footer {
   .pub-image {
     display: block;
     max-width: 600px;   /* Upper bound: shrink big PNGs */
-    width: 100%;        /* But scale down nicely on small screens */
+    width: 30%;        /* But scale down nicely on small screens */
     height: auto;
     margin: 0 auto;
   }
