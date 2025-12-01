@@ -412,14 +412,12 @@ body.dark-mode .pub-image {
 .pub-iframe {
   display: block;
   width: 100%;
-  max-width: 100%;
-  height: 600px;       /* Taller on desktop */
+  max-width: 1200px;    /* Wider to fit all clusters horizontally */
+  height: 800px;        /* INCREASE HEIGHT - much taller to show full viz */
   margin: 1.5rem auto;
   border: 1px solid var(--border-color);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transform: scale(1);  /*0.7  scales content to 70% */
-  transform-origin: center center;
 }
 
 body.dark-mode .pub-iframe {
@@ -509,7 +507,8 @@ body.dark-mode .pub-iframe {
   }
   
   .pub-iframe {
-    height: 500px;      /* Slightly shorter on mobile */
+    max-width: 100%;
+    height: 600px;      /* Taller on mobile too */
     margin: 1rem auto;
   }
 }
@@ -517,7 +516,7 @@ body.dark-mode .pub-iframe {
 /* For very small screens */
 @media (max-width: 480px) {
   .pub-iframe {
-    height: 400px;      /* Even more compact on tiny screens */
+    height: 500px;
   }
 }
 }
