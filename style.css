@@ -418,8 +418,6 @@ body.dark-mode .pub-image {
   border: 1px solid var(--border-color);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transform: scale(0.5);  /* scales content to 50% */
-  transform-origin: center center;
 }
 
 body.dark-mode .pub-iframe {
