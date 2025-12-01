@@ -460,30 +460,32 @@ footer {
     scroll-margin-top: 60px;
   }
 /* Wrapper for figures (images + iframes in publications) */
-  .pub-figure {
-    margin-top: 0.75rem;
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-  
-  /* PNGs: 3–4x smaller on desktop, still responsive */
-  .pub-image {
-    display: block;
-    max-width: 600px;   /* Upper bound: shrink big PNGs */
-    width: 30%;        /* But scale down nicely on small screens */
-    height: auto;
-    margin: 0 auto;
-  }
-  
-  /* Interactive iframe: 3–4x bigger than default */
-  .pub-iframe {
-    display: block;
-    width: 100%;
-    max-width: 900px;   /* Wider than the image */
-    height: 600px;      /* Increase height (try 600–700 if needed) */
-    margin: 0.5rem auto;
-    border: none;
-    border-radius: 8px;
-  }
+/* Wrapper for figures (images + iframes in publications) */
+.pub-figure {
+  margin-top: 0.75rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* PNGs: always fully visible, fit inside the page */
+.pub-image {
+  display: block;
+  width: 100%;        /* take the width of the text column */
+  max-width: 100%;    /* never exceed the container width */
+  height: auto;       /* keep aspect ratio, no cropping */
+  margin: 0 auto;     /* center the image */
+}
+
+/* Interactive iframe: larger viewport for the HTML viz */
+.pub-iframe {
+  display: block;
+  width: 100%;
+  max-width: 1000px;  /* a bit wider if the container allows it */
+  height: 800px;      /* much taller viewport */
+  margin: 1rem auto;
+  border: none;
+  border-radius: 8px;
+}
+
 
 }
