@@ -229,6 +229,14 @@ body.dark-mode a.pub-link:hover {
   opacity: 0.8;
 }
 
+/* Invert only black/dark icons in dark mode */
+body.dark-mode .social-icons a img[src*="cv-icon"],
+body.dark-mode .social-icons a img[src*="email-icon"],
+body.dark-mode .social-icons a img[src*="google-scholar"],
+body.dark-mode .social-icons a img[src*="hal-logo"],
+body.dark-mode .social-icons a img[src*="hf_logo"] {
+  filter: invert(1);
+}
 /* Sections */
 h2 {
   font-size: 26px;
