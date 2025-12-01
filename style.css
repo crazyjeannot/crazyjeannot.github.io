@@ -459,15 +459,31 @@ footer {
   h2 {
     scroll-margin-top: 60px;
   }
+/* Wrapper for figures (images + iframes in publications) */
   .pub-figure {
-    margin-top: 0.5rem;
+    margin-top: 0.75rem;
+    margin-bottom: 1rem;
+    text-align: center;
   }
-
+  
+  /* PNGs: 3–4x smaller on desktop, still responsive */
+  .pub-image {
+    display: block;
+    max-width: 600px;   /* Upper bound: shrink big PNGs */
+    width: 100%;        /* But scale down nicely on small screens */
+    height: auto;
+    margin: 0 auto;
+  }
+  
+  /* Interactive iframe: 3–4x bigger than default */
   .pub-iframe {
+    display: block;
     width: 100%;
-    max-width: 100%;
-    height: 550px;   /* adjust if needed */
+    max-width: 900px;   /* Wider than the image */
+    height: 600px;      /* Increase height (try 600–700 if needed) */
+    margin: 0.5rem auto;
     border: none;
     border-radius: 8px;
   }
+
 }
