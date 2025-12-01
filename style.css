@@ -384,6 +384,47 @@ footer {
   color: var(--gray-text);
 }
 
+/* ADD THESE RULES HERE - BEFORE @media */
+
+/* Wrapper for figures (images + iframes in publications) */
+.pub-figure {
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* PNGs: constrain size on desktop, full width on mobile */
+.pub-image {
+  display: block;
+  width: 100%;
+  max-width: 700px;     /* Maximum width on desktop */
+  height: auto;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+body.dark-mode .pub-image {
+  box-shadow: 0 2px 8px rgba(255,255,255,0.1);
+}
+
+/* Interactive iframe: responsive sizing */
+.pub-iframe {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 600px;       /* Taller on desktop */
+  margin: 1.5rem auto;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+body.dark-mode .pub-iframe {
+  box-shadow: 0 2px 8px rgba(255,255,255,0.1);
+}
+
+/* NOW START THE @media SECTION */
 /* Responsive */
 @media (max-width: 768px) {
   body {
@@ -460,61 +501,21 @@ footer {
     scroll-margin-top: 60px;
   }
   
-  /* Wrapper for figures (images + iframes in publications) */
-  .pub-figure {
-    margin-top: 1.5rem;
-    margin-bottom: 2rem;
-    text-align: center;
-  }
-  
-  /* PNGs: constrain size on desktop, full width on mobile */
+  /* Mobile adjustments for images/iframes */
   .pub-image {
-    display: block;
-    width: 100%;
-    max-width: 700px;     /* Maximum width on desktop - adjust as needed */
-    height: auto;
-    margin: 0 auto;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    max-width: 100%;    /* Full width on mobile */
   }
   
-  body.dark-mode .pub-image {
-    box-shadow: 0 2px 8px rgba(255,255,255,0.1);
-  }
-  
-  /* Interactive iframe: responsive sizing */
   .pub-iframe {
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    height: 600px;       /* Taller on desktop */
-    margin: 1.5rem auto;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    height: 500px;      /* Slightly shorter on mobile */
+    margin: 1rem auto;
   }
-  
-  body.dark-mode .pub-iframe {
-    box-shadow: 0 2px 8px rgba(255,255,255,0.1);
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .pub-image {
-      max-width: 100%;    /* Full width on mobile */
-    }
-    
-    .pub-iframe {
-      height: 500px;      /* Slightly shorter on mobile but still visible */
-      margin: 1rem auto;
-    }
-  }
-  
-  /* For very small screens */
-  @media (max-width: 480px) {
-    .pub-iframe {
-      height: 400px;      /* Even more compact on tiny screens */
-    }
-  }
+}
 
+/* For very small screens */
+@media (max-width: 480px) {
+  .pub-iframe {
+    height: 400px;      /* Even more compact on tiny screens */
+  }
+}
 }
