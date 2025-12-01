@@ -231,6 +231,8 @@ body.dark-mode a.pub-link:hover {
 
 /* Invert only black/dark icons in dark mode */
 body.dark-mode .social-icons a img[src*="cv-icon"],
+body.dark-mode .social-icons a img[src*="iconbluesky"],
+body.dark-mode .social-icons a img[src*="icongithub"],
 body.dark-mode .social-icons a img[src*="email-icon"],
 body.dark-mode .social-icons a img[src*="google-scholar"],
 body.dark-mode .social-icons a img[src*="hal-logo"],
