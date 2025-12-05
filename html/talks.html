@@ -223,6 +223,26 @@
     const theme = body.classList.contains('dark-mode') ? 'dark' : 'light';
     localStorage.setItem('theme', theme);
   });
+  // Track PDF downloads
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get all PDF links
+    const pdfLinks = document.querySelectorAll('a[href$=".pdf"]');
+    
+    pdfLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        const pdfName = this.getAttribute('href').split('/').pop();
+        
+        // Track with Plausible
+        if (window.plausible) {
+          plausible('PDF Download', {
+            props: {
+              file: pdfName
+            }
+          });
+        }
+      });
+    });
+  });
 </script>
 </body>
 </html>
