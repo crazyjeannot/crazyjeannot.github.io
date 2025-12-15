@@ -413,7 +413,7 @@ body.dark-mode .pub-image {
   display: block;
   width: 100%;
   max-width: 1200px;    /* Wider to fit all clusters horizontally */
-  height: 100%;       
+  height: 500px;       
   margin: 1.5rem auto;
   border: 1px solid var(--border-color);
   border-radius: 8px;
