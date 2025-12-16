@@ -374,6 +374,64 @@ body.dark-mode .interest-tag:hover {
   line-height: 1.6;
 }
 
+
+
+/* Code blocks for citations + button  */
+.highlight {
+  background-color: var(--news-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  margin: 1rem 0;
+  overflow-x: auto;
+  position: relative;
+}
+
+.highlight pre {
+  margin: 0;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.highlight code {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-color);
+  display: block;
+  white-space: pre;
+}
+
+/* Dark mode adjustments */
+body.dark-mode .highlight {
+  background-color: #2d2d2d;
+  border-color: #444;
+}
+
+body.dark-mode .highlight code {
+  color: #e0e0e0;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  background-color: var(--link-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.copy-btn:hover {
+  opacity: 1;
+}
+
+
+
 /* Footer */
 footer {
   margin-top: 60px;
