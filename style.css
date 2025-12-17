@@ -236,7 +236,10 @@ body.dark-mode .social-icons a img[src*="icongithub"],
 body.dark-mode .social-icons a img[src*="email-icon"],
 body.dark-mode .social-icons a img[src*="google-scholar"],
 body.dark-mode .social-icons a img[src*="hal-logo"],
-body.dark-mode .social-icons a img[src*="hf_logo"] {
+body.dark-mode .social-icons a img[src*="hf_logo"],
+body.dark-mode img[src*="propp_logo_favicon"],
+body.dark-mode img[src*="books.svg"],
+body.dark-mode img[src*="recycle_research"]{
   filter: invert(1);
 }
 /* Sections */
