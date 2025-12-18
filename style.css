@@ -333,6 +333,7 @@ body.dark-mode .interest-tag:hover {
 
 /* Download buttons */
 .download-buttons {
+  justify-content: center;
   display: flex;
   gap: 16px;
   margin: 24px 0;
