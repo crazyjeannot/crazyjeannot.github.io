@@ -155,80 +155,6 @@
 
         <!-- Featured Publications -->
     <h2>Featured Publications</h2>
-
-    <!-- Operationalizing Canonicity -->
-    <div class="pub-entry">
-      <a href="https://doi.org/10.22148/001c.88113" target="_blank" class="pub-link">
-        <span class="pub-title">Operationalizing Canonicity: A Quantitative Study of French 19th and 20th Century Literature</span>
-      </a><br>
-      <strong>Barré, J.</strong> ; Camps, JB. ; Poibeau, T. (2023). <em>Journal of Cultural Analytics, 8(1).</em><br>
-      <a href="https://doi.org/10.22148/001c.88113" target="_blank">DOI</a> | 
-      <a href="/pdfs/operationalizing_canonicity_barré_2023.pdf" target="_blank">PDF</a>
-      <br><br>
-      <div class="pub-figure">
-        <img src="/images/Colette.png"
-             alt="Visualization of canonized/non-canonized Colette's novels from Operationalizing Canonicity"
-             class="pub-image">
-      </div>
-      This figure zooms in on a single author, Colette, and maps each of her novels as a point in a 2D space built from their writing style (using the same kind of text-based features as in the main model). The blue dots are the novels that later became canonical, the orange ones are the rest. On this map, Colette’s canonical books cluster tightly together, mostly in a region corresponding to works from the late 1920s–1930s, while earlier popular series like Claudine sit farther away. This suggests that even within one author’s oeuvre, only a subset of texts shares the stylistic “signature” that institutions tend to select and preserve as canonical.
-     <br><br>
-      <p><strong>Cite this work</strong>
-      <div class="highlight">
-      <button class="copy-btn" onclick="copyBibtex(this)">Copy</button>
-      <pre><code>@article{barre_operationalizingcanonicityquantitative_2023,
-          	title = {Operationalizing Canonicity: A Quantitative Study of French 19th and 20th Century Literature},
-          	volume = {8},
-          	doi = {10.22148/001c.88113},
-          	shorttitle = {Operationalizing Canonicity},
-          	pages = {1--29},
-          	number = {1},
-          	journaltitle = {Journal of Cultural Analytics},
-          	author = {Barré, Jean and Camps, Jean-Baptiste and Poibeau, Thierry},
-          	date = {2023},
-          	langid = {english},
-          	keywords = {canon},
-          }
-      </code></pre>
-    </div></p>
-    </div>
-
-    <h2></h2>
-    <!-- Latent Structures of Intertextuality -->
-    <div class="pub-entry">
-      <a href="https://ceur-ws.org/Vol-3834/paper97.pdf" target="_blank" class="pub-link">
-        <span class="pub-title">Latent Structures of Intertextuality in French Fiction</span>
-      </a><br>
-      <strong>Barré, J.</strong> (2024). <em>Conference on Computational Humanities Research (CHR 2024), Aarhus, Denmark.</em><br>
-      <a href="https://ceur-ws.org/Vol-3834/paper97.pdf" target="_blank">Proceedings</a> | 
-      <a href="https://arxiv.org/abs/2410.17759" target="_blank">ArXiv</a> | 
-      <a href="/pdfs/Barre_Latent_CHR2024.pdf" target="_blank">PDF</a>
-      <br><br>
-      <div class="pub-figure">
-        <img src="/images/PIC_30_ANS_CANON_CONFIDENCE_SAMPLED_DECADES_SE.png"
-             alt="Intertextual clusters visualization from Latent Structures of Intertextuality"
-             class="pub-image">
-      </div>
-      This figure shows how much each novel “resembles” other novels published before and after it, and compares two groups: canonical works (blue) and the rest of the archive (orange). For every book, we turn its text into a numerical vector and measure how similar it is to novels from different years, centering the graph on its publication date (0 on the x-axis). Both curves peak around the year of publication: books look most like the novels of their own time. But after that, the blue curve stays higher than the orange one: canonical novels remain more similar to later fiction than ordinary novels do. In other words, once they appear, canonical works keep “speaking the language” of future literature for longer, while most other books fade more quickly from the intertextual landscape.
-      <br><br>
-      <p><strong>Cite this work</strong>
-      <div class="highlight">
-      <button class="copy-btn" onclick="copyBibtex(this)">Copy</button>
-      <pre><code>@inproceedings{barre_latentstructuresintertextuality_2024,
-        location = {Aarhus},
-        title = {Latent Structures of Intertextuality in French Fiction},
-        rights = {Creative Commons Attribution 4.0 International},
-        eventtitle = {{CHR} 2024},
-        pages = {21--26},
-        booktitle = {Proceedings of the Computational Humanities Research Conference 2024},
-        author = {Barré, Jean},
-        date = {2024},
-        url={https://ceur-ws.org/Vol-3834/paper97.pdf},
-        keywords = {notion, Computation and Language (cs.{CL}), {FOS}: Computer and information sciences},
-        }
-      </code></pre>
-    </div></p>
-    </div>
-
     <h2 id="detectives"></h2>
     <!-- Modeling the Detective Archetype -->
     <div class="pub-entry">
@@ -268,6 +194,81 @@
       </code></pre>
     </div></p>
 
+
+    <h2></h2>
+    <!-- Latent Structures of Intertextuality -->
+    <div class="pub-entry">
+      <a href="https://ceur-ws.org/Vol-3834/paper97.pdf" target="_blank" class="pub-link">
+        <span class="pub-title">Latent Structures of Intertextuality in French Fiction</span>
+      </a><br>
+      <strong>Barré, J.</strong> (2024). <em>Conference on Computational Humanities Research (CHR 2024), Aarhus, Denmark.</em><br>
+      <a href="https://ceur-ws.org/Vol-3834/paper97.pdf" target="_blank">Proceedings</a> | 
+      <a href="https://arxiv.org/abs/2410.17759" target="_blank">ArXiv</a> | 
+      <a href="/pdfs/Barre_Latent_CHR2024.pdf" target="_blank">PDF</a>
+      <br><br>
+      <div class="pub-figure">
+        <img src="/images/PIC_30_ANS_CANON_CONFIDENCE_SAMPLED_DECADES_SE.png"
+             alt="Intertextual clusters visualization from Latent Structures of Intertextuality"
+             class="pub-image">
+      </div>
+      This figure shows how much each novel “resembles” other novels published before and after it, and compares two groups: canonical works (blue) and the rest of the archive (orange). For every book, we turn its text into a numerical vector and measure how similar it is to novels from different years, centering the graph on its publication date (0 on the x-axis). Both curves peak around the year of publication: books look most like the novels of their own time. But after that, the blue curve stays higher than the orange one: canonical novels remain more similar to later fiction than ordinary novels do. In other words, once they appear, canonical works keep “speaking the language” of future literature for longer, while most other books fade more quickly from the intertextual landscape.
+      <br><br>
+      <p><strong>Cite this work</strong>
+      <div class="highlight">
+      <button class="copy-btn" onclick="copyBibtex(this)">Copy</button>
+      <pre><code>@inproceedings{barre_latentstructuresintertextuality_2024,
+        location = {Aarhus},
+        title = {Latent Structures of Intertextuality in French Fiction},
+        rights = {Creative Commons Attribution 4.0 International},
+        eventtitle = {{CHR} 2024},
+        pages = {21--26},
+        booktitle = {Proceedings of the Computational Humanities Research Conference 2024},
+        author = {Barré, Jean},
+        date = {2024},
+        url={https://ceur-ws.org/Vol-3834/paper97.pdf},
+        keywords = {notion, Computation and Language (cs.{CL}), {FOS}: Computer and information sciences},
+        }
+      </code></pre>
+    </div></p>
+    </div>
+    <h2></h2>
+
+
+    <!-- Operationalizing Canonicity -->
+    <div class="pub-entry">
+      <a href="https://doi.org/10.22148/001c.88113" target="_blank" class="pub-link">
+        <span class="pub-title">Operationalizing Canonicity: A Quantitative Study of French 19th and 20th Century Literature</span>
+      </a><br>
+      <strong>Barré, J.</strong> ; Camps, JB. ; Poibeau, T. (2023). <em>Journal of Cultural Analytics, 8(1).</em><br>
+      <a href="https://doi.org/10.22148/001c.88113" target="_blank">DOI</a> | 
+      <a href="/pdfs/operationalizing_canonicity_barré_2023.pdf" target="_blank">PDF</a>
+      <br><br>
+      <div class="pub-figure">
+        <img src="/images/Colette.png"
+             alt="Visualization of canonized/non-canonized Colette's novels from Operationalizing Canonicity"
+             class="pub-image">
+      </div>
+      This figure zooms in on a single author, Colette, and maps each of her novels as a point in a 2D space built from their writing style (using the same kind of text-based features as in the main model). The blue dots are the novels that later became canonical, the orange ones are the rest. On this map, Colette’s canonical books cluster tightly together, mostly in a region corresponding to works from the late 1920s–1930s, while earlier popular series like Claudine sit farther away. This suggests that even within one author’s oeuvre, only a subset of texts shares the stylistic “signature” that institutions tend to select and preserve as canonical.
+     <br><br>
+      <p><strong>Cite this work</strong>
+      <div class="highlight">
+      <button class="copy-btn" onclick="copyBibtex(this)">Copy</button>
+      <pre><code>@article{barre_operationalizingcanonicityquantitative_2023,
+          	title = {Operationalizing Canonicity: A Quantitative Study of French 19th and 20th Century Literature},
+          	volume = {8},
+          	doi = {10.22148/001c.88113},
+          	shorttitle = {Operationalizing Canonicity},
+          	pages = {1--29},
+          	number = {1},
+          	journaltitle = {Journal of Cultural Analytics},
+          	author = {Barré, Jean and Camps, Jean-Baptiste and Poibeau, Thierry},
+          	date = {2023},
+          	langid = {english},
+          	keywords = {canon},
+          }
+      </code></pre>
+    </div></p>
+    </div>
 
     <!-- FOOTER -->
     <footer>
