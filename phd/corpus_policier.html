@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corpus du roman policier — Fictions de Gallica</title>
+<meta name="description" content="Liste des 830 romans policier identifiés dans les Fictions Littéraires de Gallica.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAF6F0;
+  --bg-card: #FFFFFF;
+  --text: #2C1810;
+  --text-muted: #6B5B4F;
+  --text-light: #9B8B7F;
+  --accent: #2F5B6B;
+  --gold: #A67C52;
+  --gold-light: #D4A96A;
+  --border: #E8E0D6;
+  --border-light: #F0EBE4;
+  --shadow: rgba(44, 24, 16, 0.06);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Source Serif 4', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.7;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* BACK LINK */
+.back-link {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-decoration: none;
+  z-index: 10;
+}
+.back-link:hover { color: var(--accent); }
+
+/* HERO */
+.hero {
+  padding: 5rem 2rem 3rem;
+  text-align: center;
+  background: linear-gradient(180deg, #F5EDE3 0%, var(--bg) 100%);
+  position: relative;
+}
+.hero-inner { max-width: 720px; margin: 0 auto; }
+.hero-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 560px;
+  margin: 0 auto 2rem;
+  font-style: italic;
+}
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.1;
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-top: 0.2rem;
+}
+.stat-item { text-align: center; }
+
+.container { max-width: 1080px; margin: 0 auto; padding: 0 2rem; }
+section { padding: 3rem 0; }
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+h2 {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+/* METHODO BOX */
+.methodo {
+  background: var(--bg-card);
+  border-left: 3px solid var(--accent);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0 2.5rem;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+.methodo strong { color: var(--text); }
+
+/* TABLE CONTROLS */
+.table-controls {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.search-box {
+  flex: 1;
+  min-width: 220px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-card);
+  color: var(--text);
+  outline: none;
+}
+.search-box:focus { border-color: var(--accent); }
+.filter-select {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-card);
+  color: var(--text);
+  cursor: pointer;
+}
+.result-count {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-light);
+  margin-left: auto;
+}
+
+/* TABLE */
+.corpus-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  background: var(--bg-card);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px var(--shadow);
+}
+.corpus-table thead th {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  text-align: left;
+  padding: 0.85rem 0.75rem;
+  background: #F5F0EA;
+  border-bottom: 2px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.corpus-table thead th:hover { color: var(--accent); }
+.corpus-table thead th.sorted { color: var(--accent); }
+.corpus-table thead th .sort-arrow { font-size: 0.6rem; margin-left: 0.3rem; }
+.corpus-table tbody td {
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: top;
+}
+.corpus-table tbody tr:hover { background: rgba(166, 124, 82, 0.04); }
+.corpus-table tbody tr:last-child td { border-bottom: none; }
+.col-author {
+  font-weight: 600;
+  width: 200px;
+  font-size: 0.88rem;
+}
+.col-bio {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-light);
+  white-space: nowrap;
+  width: 80px;
+}
+.col-title {
+  font-style: italic;
+  color: var(--text-muted);
+}
+.col-year {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  width: 60px;
+  white-space: nowrap;
+  text-align: right;
+}
+.col-score {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--accent);
+  width: 70px;
+  text-align: right;
+  white-space: nowrap;
+}
+.col-score.placeholder { color: var(--text-light); font-weight: 300; }
+
+@media (max-width: 700px) {
+  .col-bio { display: none; }
+  .col-author { width: auto; }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+.pagination button {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-card);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.pagination button:hover:not(:disabled):not(.active) {
+  border-color: var(--accent); color: var(--text);
+}
+.pagination button.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+.pagination button:disabled { cursor: default; opacity: 0.5; }
+
+footer {
+  text-align: center;
+  padding: 3rem 2rem;
+  font-size: 0.82rem;
+  color: var(--text-light);
+  border-top: 1px solid var(--border-light);
+  margin-top: 2rem;
+}
+footer a { color: var(--gold); text-decoration: none; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { opacity: 0; animation: fadeUp 0.5s ease forwards; }
+</style>
+</head>
+<body>
+
+<a href="corpus_fictions_gallica_raffine.html" class="back-link">← Retour au corpus général</a>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-label fade-in">Sous-corpus générique</div>
+    <h1 class="fade-in">Le roman <em>policier</em></h1>
+    <p class="hero-sub fade-in">830 romans policiers identifiés dans le corpus Gallica par classification supervisée et correction par graphe de similarité.</p>
+    <div class="stats-row fade-in">
+      <div class="stat-item">
+        <div class="stat-num">830</div>
+        <div class="stat-label">Romans identifiés</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">1880–1930</div>
+        <div class="stat-label">Période d'essor</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <div class="section-label">Méthode</div>
+    <h2>Identification du genre</h2>
+    <div class="methodo">
+      <strong>Amorce d'entraînement.</strong> Romans policiers historiques tirés de la liste Boltanski–Esquenazi du genre, complétés par des œuvres canoniques de Gaboriau, Du Boisgobey, Leroux, Leblanc, Souvestre et Allain.<br><br>
+    <strong>Classifieur.</strong> SVM linéaire sur représentation BoW (5 000 mots les plus fréquents).<br><br>
+    <strong>Correction par graphe.</strong> Construction d'un graphe <em>k</em>-NN sur des embeddings de paragraphes ; protocole identique au sous-corpus aventures.<br><br>
+    <em>Les scores d'appartenance pour ce sous-corpus seront ajoutés dans une mise à jour ultérieure.</em>
+    </div>
+
+    <div class="section-label" style="margin-top: 2rem;">Liste complète</div>
+    <h2>Parcourir le corpus</h2>
+
+    <div class="table-controls">
+      <input type="text" class="search-box" id="searchInput" placeholder="Rechercher un auteur ou un titre…">
+      <select class="filter-select" id="decadeFilter">
+        <option value="">Toutes les décennies</option>
+      </select>
+      <span class="result-count" id="resultCount"></span>
+    </div>
+
+    <table class="corpus-table">
+      <thead>
+        <tr>
+          <th class="col-author" data-sort="a" onclick="sortTable('a')">Auteur <span class="sort-arrow">▲</span></th>
+          <th class="col-bio">Dates</th>
+          <th class="col-title" data-sort="t" onclick="sortTable('t')">Titre <span class="sort-arrow"></span></th>
+          <th class="col-year" data-sort="y" onclick="sortTable('y')">Année <span class="sort-arrow"></span></th>
+          <th class="col-score" data-sort="s" onclick="sortTable('s')">Score <span class="sort-arrow"></span></th>
+        </tr>
+      </thead>
+      <tbody id="corpusBody"></tbody>
+    </table>
+
+    <div class="pagination" id="pagination"></div>
+  </div>
+</section>
+
+<footer>
+  <p>Jean Barré · Thèse de doctorat · 2025</p>
+  <p><a href="corpus_fictions_gallica_raffine.html">Retour au corpus général</a> · <a href="https://jeanbarre.eu">jeanbarre.eu</a></p>
+</footer>
+
+<script>
+const CORPUS=[{"y":1876,"a":"A. Dominique","t":"Les évadés de Cayenne","b":"","s":"..."},{"y":1879,"a":"A. Matthey","t":"La revanche de Clodion","b":"1850–1930","s":"..."},{"y":1879,"a":"A. Matthey","t":"La revanche de Clodion","b":"1850–1930","s":"..."},{"y":1882,"a":"A. Matthey","t":"La revanche de Clodion","b":"","s":"..."},{"y":1883,"a":"A. Matthey","t":"Cherchez la femme","b":"1850–1930","s":"..."},{"y":1884,"a":"A. Matthey","t":"La belle Julie","b":"1850–1930","s":"..."},{"y":1885,"a":"A. Matthey","t":"Le point noir","b":"1850–1930","s":"..."},{"y":1885,"a":"A. Matthey","t":"Un gendre","b":"1850–1930","s":"..."},{"y":1885,"a":"A. Matthey","t":"Le roi des mendiants","b":"1850–1930","s":"..."},{"y":1886,"a":"A. Matthey","t":"La fête de Saint-Rémy","b":"1850–1930","s":"..."},{"y":1886,"a":"A. Matthey","t":"Le billet de mille","b":"","s":"..."},{"y":1915,"a":"A. Matthey","t":"A. Matthey. Le Corps d'Elisa","b":"1850–1930","s":"..."},{"y":1873,"a":"Abel Quinton","t":"Un gentilhomme de 89","b":"","s":"..."},{"y":1887,"a":"Abel Richard","t":"Inconduite et travail","b":"","s":"..."},{"y":1913,"a":"Abel Sibrès","t":"Dans les ténèbres","b":"1877–1950","s":"..."},{"y":1867,"a":"Adolphe Belot","t":"Le drame de la rue de la Paix","b":"1829–1890","s":"..."},{"y":1868,"a":"Adolphe Belot","t":"Mémoires d'un caissier","b":"1829–1890","s":"..."},{"y":1873,"a":"Adolphe Belot","t":"Le parricide","b":"1829–1890","s":"..."},{"y":1875,"a":"Adolphe Belot","t":"Une Maison centrale de femmes","b":"1829–1890","s":"..."},{"y":1875,"a":"Adolphe Belot","t":"Les Mystères mondains","b":"1829–1890","s":"..."},{"y":1876,"a":"Adolphe Belot","t":"Le secret terrible","b":"1829–1890","s":"..."},{"y":1879,"a":"Adolphe Belot","t":"Mme Vitel et Mlle Lelièvre","b":"1829–1890","s":"..."},{"y":1879,"a":"Adolphe Belot","t":"Les Étrangleurs","b":"1829–1890","s":"..."},{"y":1879,"a":"Adolphe Belot","t":"La grande Florine","b":"1829–1890","s":"..."},{"y":1879,"a":"Adolphe Belot","t":"La Vénus de Gordes","b":"","s":"..."},{"y":1881,"a":"Adolphe Belot","t":"Le roi des Grecs","b":"1829–1890","s":"..."},{"y":1882,"a":"Adolphe Belot","t":"Fleur de crime","b":"1829–1890","s":"..."},{"y":1883,"a":"Adolphe Belot","t":"Reine de beauté","b":"1829–1890","s":"..."},{"y":1884,"a":"Adolphe Belot","t":"Fleur de Crime","b":"1829–1890","s":"..."},{"y":1885,"a":"Adolphe Belot","t":"Une affolée d'amour","b":"1829–1890","s":"..."},{"y":1885,"a":"Adolphe Belot","t":"Adulter","b":"1829–1890","s":"..."},{"y":1885,"a":"Adolphe Belot","t":"La couleuvre","b":"1829–1890","s":"..."},{"y":1887,"a":"Adolphe Belot","t":"Alphonsine","b":"1829–1890","s":"..."},{"y":1890,"a":"Adolphe Belot","t":"La bouche de madame X","b":"","s":"..."},{"y":1891,"a":"Adolphe Belot","t":"Les étrangleurs","b":"1829–1890","s":"..."},{"y":1896,"a":"Adolphe d' Ennery","t":"Seule !","b":"1811–1899","s":"..."},{"y":1860,"a":"Adolphe de Lescure","t":"Eux et elles","b":"1833–1892","s":"..."},{"y":1860,"a":"Adolphe de Lescure","t":"Eux et elles","b":"1833–1892","s":"..."},{"y":1904,"a":"Adrien Guignery","t":"La conscience du juge","b":"1900–2000","s":"..."},{"y":1866,"a":"Adrien Robert","t":"Les proscrits de 93","b":"","s":"..."},{"y":1913,"a":"Albert Cim","t":"Le gros lot","b":"1845–1924","s":"..."},{"y":1874,"a":"Albert Delpit","t":"La Vengeresse","b":"1849–1893","s":"..."},{"y":1880,"a":"Albert Humbert","t":"Les Tribulations de Poudrevec","b":"1835–1886","s":"..."},{"y":1895,"a":"Albert Laurent","t":"La bande Michelou","b":"1885–1978","s":"..."},{"y":1901,"a":"Albert Savine","t":"Le crime de Corancez","b":"1859–1927","s":"..."},{"y":1864,"a":"Alcide Dusolier","t":"Mémoires et révélations dun v","b":"","s":"..."},{"y":1854,"a":"Alexandre Dumas","t":"Catherine Blum","b":"1914–2000","s":"..."},{"y":1855,"a":"Alexandre Dumas","t":"Catherine Blum","b":"","s":"..."},{"y":1861,"a":"Alexandre Dumas","t":"Bernard, histoire pour les cha","b":"1914–2000","s":"..."},{"y":1876,"a":"Alexis Bouvier","t":"Les créanciers de l'échafaud","b":"1836–1892","s":"..."},{"y":1879,"a":"Alexis Bouvier","t":"La grande Iza","b":"1836–1892","s":"..."},{"y":1880,"a":"Alexis Bouvier","t":"Caulot le garde-chasse","b":"1836–1892","s":"..."},{"y":1880,"a":"Alexis Bouvier","t":"La belle Grêlée","b":"","s":"..."},{"y":1880,"a":"Alexis Bouvier","t":"Mademoiselle Olympe (ancienne maison Palmyre)","b":"1836–1892","s":"..."},{"y":1881,"a":"Alexis Bouvier","t":"Mademoiselle Beau-Sourire","b":"1836–1892","s":"..."},{"y":1881,"a":"Alexis Bouvier","t":"Les créanciers de léchafaud","b":"","s":"..."},{"y":1881,"a":"Alexis Bouvier","t":"La grande Iza","b":"","s":"..."},{"y":1882,"a":"Alexis Bouvier","t":"La princesse saltimbanque","b":"1836–1892","s":"..."},{"y":1882,"a":"Alexis Bouvier","t":"Le bel Alphonse","b":"1836–1892","s":"..."},{"y":1882,"a":"Alexis Bouvier","t":"La Bouginotte, ou Le drame de Saint-Cyr","b":"1836–1892","s":"..."},{"y":1883,"a":"Alexis Bouvier","t":"Le Bel Alphonse, grand roman i","b":"","s":"..."},{"y":1889,"a":"Alexis Bouvier","t":"Les amours de sang","b":"1836–1892","s":"..."},{"y":1903,"a":"Alexis Bouvier","t":"Bayonnette","b":"1836–1892","s":"..."},{"y":1900,"a":"Alfred Capus","t":"Qui perd gagne","b":"1858–1922","s":"..."},{"y":1866,"a":"Alfred de Bréhat","t":"Une parenté fatale","b":"1822–1866","s":"..."},{"y":1887,"a":"Alfred Sirven","t":"Une gueuse","b":"","s":"..."},{"y":1913,"a":"Alphonse Allais","t":"L'affaire Blaireau","b":"1854–1905","s":"..."},{"y":1900,"a":"Alphonse Daudet","t":"Premier voyage, premier menson","b":"","s":"..."},{"y":1868,"a":"Alphonse Pagès","t":"Un arrêt d'outre-tombe","b":"1836–1894","s":"..."},{"y":1853,"a":"Amédée Aufauvre","t":"Les Masques noirs, ou le Chirurgien de Bar-sur-Seine (1815)","b":"1817–1864","s":"..."},{"y":1879,"a":"Amédée Delorme","t":"Une coquine","b":"1850–1936","s":"..."},{"y":1894,"a":"Anatole France","t":"La vierge russe","b":"1844–1924","s":"..."},{"y":1901,"a":"Anatole France","t":"Laffaire Crainquebille","b":"1844–1924","s":"..."},{"y":1895,"a":"André Talmont","t":"Au pays des kanguroos","b":"","s":"..."},{"y":1830,"a":"Ann Radcliffe","t":"La forêt, ou Labbaye de Saint","b":"","s":"..."},{"y":1831,"a":"Anonyme","t":"Les joyeusetez, facecies et fo","b":"","s":"..."},{"y":1847,"a":"Anonyme","t":"Tesoro de novelistas españoles","b":"","s":"..."},{"y":1855,"a":"Anonyme","t":"Les Misérables de Londres","b":"","s":"..."},{"y":1862,"a":"Anonyme","t":"La Femme du condamné, scène de la vie australienne, publiées par Amédée Pichot","b":"","s":"..."},{"y":1877,"a":"Anonyme","t":"Souvenirs dun bourreau de Par","b":"","s":"..."},{"y":1877,"a":"Anonyme","t":"Une soirée dans le monde des chats","b":"","s":"..."},{"y":1878,"a":"Anonyme","t":"Lous secrets daou diable","b":"","s":"..."},{"y":1878,"a":"Anonyme","t":"Les misérables de Londres","b":"","s":"..."},{"y":1882,"a":"Anonyme","t":"Les Mille et une nuits, contes","b":"","s":"..."},{"y":1883,"a":"Anonyme","t":"Les amoureuses de Paris","b":"","s":"..."},{"y":1884,"a":"Anonyme","t":"Pommes d'Eve","b":"","s":"..."},{"y":1885,"a":"Anonyme","t":"Le trésor de Monte-Cristo","b":"","s":"..."},{"y":1887,"a":"Anonyme","t":"Jeanne l'alsacienne","b":"","s":"..."},{"y":1891,"a":"Anonyme","t":"Les mystères de Saint Lazare","b":"","s":"..."},{"y":1892,"a":"Anonyme","t":"Les exploits de Ravachol, l'homme à la dynamite","b":"","s":"..."},{"y":1908,"a":"Anonyme","t":"Fables enfantines daprès Esop","b":"","s":"..."},{"y":1914,"a":"Anonyme","t":"Raoul Verneuil. Le Roman d'un prince. Ce que femme veut","b":"","s":"..."},{"y":1881,"a":"Anthony Trollope","t":"Le cousin Henry","b":"1815–1882","s":"..."},{"y":1899,"a":"Antoine Baumann","t":"Souvenirs de magistrat","b":"1860–1925","s":"..."},{"y":1885,"a":"Antoine Mathivet","t":"L'assassin de M. Le Doussat","b":"1852–1897","s":"..."},{"y":1914,"a":"Antoine Roum","t":"Le docteur Quentin","b":"","s":"..."},{"y":1906,"a":"Antonin Baratier","t":"La hache sanglante","b":"","s":"..."},{"y":1907,"a":"Antonin Baratier","t":"Le bâtard de Kervan","b":"","s":"..."},{"y":1907,"a":"Antonin Baratier","t":"Les millions de l'espionne","b":"","s":"..."},{"y":1888,"a":"Armand Dubarry","t":"Une allemande","b":"1836–1910","s":"..."},{"y":1890,"a":"Armand Dubarry","t":"Service des moeurs","b":"1836–1910","s":"..."},{"y":1898,"a":"Armand Dubarry","t":"Les déséquilibrés de l'amour","b":"1836–1910","s":"..."},{"y":1898,"a":"Armand Grébauval","t":"Le gabelou","b":"1864–1913","s":"..."},{"y":1880,"a":"Arnold Mortier","t":"Le monstre amoureux","b":"1843–1885","s":"..."},{"y":1926,"a":"Arnould Galopin","t":"La ténébreuse affaire de Green-Park","b":"1863–1934","s":"..."},{"y":1928,"a":"Arnould Galopin","t":"Le bacille","b":"1863–1934","s":"..."},{"y":1934,"a":"Arnould Galopin","t":"Le petit détective","b":"1863–1934","s":"..."},{"y":1912,"a":"Arthur Bernède","t":"Les amours d'un petit soldat","b":"1871–1937","s":"..."},{"y":1925,"a":"Arthur Bernède","t":"Arthur Bernède et Louis Feuillade. Les Nouveaux exploits de Judex, grand roman dramatique abondamment illus…","b":"1871–1937","s":"..."},{"y":1928,"a":"Arthur Bernède","t":"Les Nouveaux exploits de Chantecoq. La Maison hantée","b":"1871–1937","s":"..."},{"y":1929,"a":"Arthur Bernède","t":"Les Nouveaux Exploits de Chant","b":"","s":"..."},{"y":1929,"a":"Arthur Bernède","t":"Les nouveaux exploits de Chant","b":"","s":"..."},{"y":1913,"a":"Arthur Conan Doyle","t":"Premières aventures de Sherlock Holmes","b":"1859–1930","s":"..."},{"y":1930,"a":"Arthur Conan Doyle","t":"Nouveaux exploits de Sherlock Holmes","b":"1859–1930","s":"..."},{"y":1948,"a":"Arthur Conan Doyle","t":"La Vallée de la Peur","b":"1859–1930","s":"..."},{"y":1880,"a":"Arturo Campión","t":"Orreaga (Roncesvalles)","b":"","s":"..."},{"y":1888,"a":"Auguste Dumont","t":"La cartomancienne","b":"1843–1885","s":"..."},{"y":1897,"a":"Auguste Geoffroy","t":"La tueuse d'enfants","b":"","s":"..."},{"y":1823,"a":"Auguste Lepoitevin de L'Égreville","t":"Michel et Christine et la suite","b":"1791–1854","s":"..."},{"y":1829,"a":"Auguste Ricard","t":"Le chauffeur","b":"1768–1834","s":"..."},{"y":1867,"a":"Aurélien Scholl","t":"Les nouveaux mystères de Paris","b":"1833–1902","s":"..."},{"y":1894,"a":"B. Guyot","t":"Amours de prince, d'après Autour du trône du romancier russe Papow","b":"","s":"..."},{"y":1926,"a":"Benjamin Rabier","t":"Nos frères inférieurs","b":"","s":"..."},{"y":1931,"a":"Benjamin Rabier","t":"Tintin, petit poussin","b":"","s":"..."},{"y":1950,"a":"Benjamin Rabier","t":"Les contes de lours brun","b":"","s":"..."},{"y":1950,"a":"Benjamin Rabier","t":"Les contes du chien jaune","b":"","s":"..."},{"y":1895,"a":"Bertall","t":"Georges le distrait","b":"","s":"..."},{"y":1889,"a":"Bertol-Graivil","t":"Les deux criminels","b":"1857–1910","s":"..."},{"y":1882,"a":"Bénédict-Henry Révoil","t":"Moeurs des États Unis dAmériq","b":"1816–1882","s":"..."},{"y":1882,"a":"Camille Bonheur","t":"Le roi du crime Luro, Véloce et Cie","b":"","s":"..."},{"y":1880,"a":"Camille Debans","t":"La peau du mort","b":"1832–1919","s":"..."},{"y":1885,"a":"Camille Debans","t":"Les pudeurs de Martha","b":"1832–1919","s":"..."},{"y":1884,"a":"Camille Déa","t":"Les crimes de la rousse","b":"","s":"..."},{"y":1825,"a":"Camille Paganel","t":"Théodora, ou la Famille chréti","b":"","s":"..."},{"y":1926,"a":"Captain Hidden","t":"Rio Mix","b":"1862–1939","s":"..."},{"y":1878,"a":"Carl Georg Fullborn","t":"La muette de Portici ou Le soulèvement de Naples","b":"","s":"..."},{"y":1803,"a":"Catherine-Françoise-Adélaïde Ménage, dame de Saint-Venant","t":"Aurélie et Dorothée, ou La Religieuse par amour","b":"","s":"..."},{"y":1824,"a":"Cesse de La Ferté-Meun","t":"Léonce et Clémence, ou La confession du crime , par l'auteur des Lettres sur le Bosphore [La Cesse de La Fe…","b":"","s":"..."},{"y":1875,"a":"Champfleury","t":"Le secret de M. Ladureau","b":"","s":"..."},{"y":1860,"a":"Charles Barbara","t":"L'assassinat du Pont-Rouge","b":"1822–1886","s":"..."},{"y":1897,"a":"Charles Buet","t":"Acquitté !","b":"1846–1897","s":"..."},{"y":1879,"a":"Charles Deslys","t":"Le serment de Madeleine","b":"1821–1885","s":"..."},{"y":1904,"a":"Charles Dickens","t":"Monsieur Minns","b":"","s":"..."},{"y":1916,"a":"Charles Dodeman","t":"La bombe silencieuse","b":"1873–1934","s":"..."},{"y":1915,"a":"Charles Esquier","t":"Amant et juge","b":"1871–1931","s":"..."},{"y":1877,"a":"Charles Guy","t":"Scènes de la vie rustique","b":"","s":"..."},{"y":1863,"a":"Charles Guénot","t":"Les empoisonneurs","b":"1833–","s":"..."},{"y":1880,"a":"Charles Leroy","t":"Les S'crongnieugnieu du colonel Ramollot","b":"1816–1879","s":"..."},{"y":1883,"a":"Charles Leroy","t":"Le colonel Ramollot","b":"1816–1879","s":"..."},{"y":1887,"a":"Charles Leroy","t":"Les malheurs du capitaine Lorgnegrut","b":"1816–1879","s":"..."},{"y":1890,"a":"Charles Leroy","t":"Les malheurs du capitaine Lorg","b":"","s":"..."},{"y":1873,"a":"Charles Monselet","t":"Les Mystères du boulevard des Invalides","b":"1825–1888","s":"..."},{"y":1916,"a":"Charles Moreau-Vau","t":"Ali Baba","b":"","s":"..."},{"y":1915,"a":"Charles Mérouvel","t":"Une nuit de noces","b":"","s":"..."},{"y":1949,"a":"Charles Mérouvel","t":"Enfin vengée !","b":"1832–1920","s":"..."},{"y":1938,"a":"Charles Quinel","t":"Le cavalier blanc","b":"1868–1942","s":"..."},{"y":1925,"a":"Charles Vayre","t":"Ch. Vayre et R. Florigni. L'Aviateur masqué. Grand roman dramatique illustré par les photographies du film …","b":"1873–1941","s":"..."},{"y":1925,"a":"Charles Vayre","t":"Ch. Vayre et R. Florigni. L'Aviateur masqué. Grand roman dramatique illustré par les photographies du film …","b":"1873–1941","s":"..."},{"y":1837,"a":"Charles-Victor d' Arlincourt","t":"La Estrangera, o la Muger misteriosa, por el vizconde de Arlincourt","b":"1788–1856","s":"..."},{"y":1898,"a":"Claire-Julie de Nanteuil","t":"Monnaie de singe","b":"1834–1897","s":"..."},{"y":1938,"a":"Claude Renaudy","t":"L'homme en gris","b":"1904–1943","s":"..."},{"y":1932,"a":"Claude Syrvall","t":"La fiancée du bandit corse","b":"1865–1943","s":"..."},{"y":1869,"a":"Claude Vignon","t":"Un naufrage parisien","b":"","s":"..."},{"y":1875,"a":"Claude Vignon","t":"Élisabeth Verdier","b":"","s":"..."},{"y":1878,"a":"Clémence Altemer","t":"Le Complice","b":"","s":"..."},{"y":1872,"a":"Comtesse Dash","t":"Le fils du faussaire","b":"1804–1872","s":"..."},{"y":1878,"a":"Constant Guéroult","t":"La tabatière de M. Lubin","b":"1814–1882","s":"..."},{"y":1880,"a":"Constant Guéroult","t":"La bande à Fifi Vollard","b":"1814–1882","s":"..."},{"y":1884,"a":"Constant Guéroult","t":"L'affaire de la rue du Temple","b":"1814–1882","s":"..."},{"y":1883,"a":"Céleste de Chabrillan","t":"Les amours d'une millionnaire","b":"1824–1909","s":"..."},{"y":1905,"a":"Delphi Fabrice","t":"Nuit montmartroise","b":"1877–1937","s":"..."},{"y":1877,"a":"Décembre-A","t":"Louis de Vallières (Décembre A","b":"","s":"..."},{"y":1898,"a":"E Grand","t":"Théâtre du Châtelet. La maison du baigneur","b":"","s":"..."},{"y":1927,"a":"E. M. Laumann","t":"L'Enfant de Paris, roman","b":"1862–1928","s":"..."},{"y":1878,"a":"E.-P. Parmentin","t":"Lauberge du Grand Cerf","b":"","s":"..."},{"y":1888,"a":"Edgar Allan Poe","t":"Contes extraordinaires","b":"1809–1849","s":"..."},{"y":1897,"a":"Edgar Allan Poe","t":"Quinze histoires d'Edgar Poe","b":"1809–1849","s":"..."},{"y":1904,"a":"Edgar Allan Poe","t":"Le système du docteur Goudron et du professeur Plume","b":"1809–1849","s":"..."},{"y":1925,"a":"Edgar Allan Poe","t":"Les plus beaux contes","b":"1809–1849","s":"..."},{"y":1882,"a":"Edgar Monteil","t":"Rochefière","b":"","s":"..."},{"y":1889,"a":"Edgar Monteil","t":"Jean des Galères","b":"","s":"..."},{"y":1931,"a":"Edgar Wallace","t":"Le faussaire","b":"1875–1932","s":"..."},{"y":1856,"a":"Edmond About","t":"Les mariages de Paris","b":"1828–1885","s":"..."},{"y":1882,"a":"Edmond Auguste Texier","t":"L'inconnue","b":"1815–1887","s":"..."},{"y":1913,"a":"Edmond Coz","t":"La faute d'autrui","b":"1854–1923","s":"..."},{"y":1901,"a":"Edmond Deschaumes","t":"L'auteur mondain","b":"1856–1916","s":"..."},{"y":1887,"a":"Edmond Joseph Louis Tarbé des Sablons","t":"Le roman d'un crime","b":"1838–1900","s":"..."},{"y":1939,"a":"Edward Phillips Oppenheim","t":"La Tour hantée, roman policier traduit de l'anglais par Mme Jacques Lamolle","b":"1866–1946","s":"..."},{"y":1864,"a":"Ernest Boissières","t":"Un crime inconnu","b":"","s":"..."},{"y":1867,"a":"Ernest Capendu","t":"Le Joug de l'aigle, roman historique","b":"1825–1868","s":"..."},{"y":1874,"a":"Ernest Capendu","t":"Bibi-Tapin (2e série du Tambour de la 32e)","b":"1825–1868","s":"..."},{"y":1877,"a":"Ernest Daudet","t":"Le crime de Jean Malory","b":"1837–1921","s":"..."},{"y":1880,"a":"Ernest Daudet","t":"Jean Malory","b":"1837–1921","s":"..."},{"y":1875,"a":"Ernest Hupin","t":"Au temps du muguet","b":"1849–","s":"..."},{"y":1932,"a":"Etienne de Riche","t":"Un jour d'orage","b":"1875–1950","s":"..."},{"y":1892,"a":"Eudoxie Dupuis","t":"Les douze métiers de Pierrot","b":"","s":"..."},{"y":1871,"a":"Eugenie Marlitt","t":"Élisabeth aux cheveux d'or","b":"1825–1887","s":"..."},{"y":1878,"a":"Eugène Berthoud","t":"Le cousin du diable","b":"1828–1872","s":"..."},{"y":1886,"a":"Eugène Carré","t":"La ceinture de chasteté","b":"","s":"..."},{"y":1874,"a":"Eugène Chavette","t":"L'héritage d'un pique-assiette","b":"1827–1902","s":"..."},{"y":1874,"a":"Eugène Chavette","t":"Défunt Brichet","b":"1827–1902","s":"..."},{"y":1875,"a":"Eugène Chavette","t":"La Chambre du crime","b":"1827–1902","s":"..."},{"y":1878,"a":"Eugène Chavette","t":"La recherche d'un pourquoi","b":"1827–1902","s":"..."},{"y":1881,"a":"Eugène Chavette","t":"Le comte Omnibus","b":"1827–1902","s":"..."},{"y":1881,"a":"Eugène Chavette","t":"Un notaire en fuite","b":"1827–1902","s":"..."},{"y":1882,"a":"Eugène Chavette","t":"La bande de la belle Alliette","b":"1827–1902","s":"..."},{"y":1886,"a":"Eugène Chavette","t":"Si j'étais riche !","b":"1827–1902","s":"..."},{"y":1898,"a":"Eugène Chavette","t":"Le saucisson à pattes","b":"1827–1902","s":"..."},{"y":1898,"a":"Eugène Chavette","t":"La bande de la belle Alliette","b":"1827–1902","s":"..."},{"y":1874,"a":"Eugène Deligny","t":"Les Cabotins","b":"1816–1881","s":"..."},{"y":1865,"a":"Eugène Moret","t":"Le Médecin des femmes","b":"1835–1890","s":"..."},{"y":1876,"a":"Eugène Moret","t":"La grande criminelle","b":"1835–1890","s":"..."},{"y":1877,"a":"Eugène Parès","t":"La fille du garde côte","b":"1801–1901","s":"..."},{"y":1886,"a":"Eugène Parès","t":"Hoël de Penlostern","b":"","s":"..."},{"y":1885,"a":"Eugène Sue","t":"Les mystères de Paris","b":"","s":"..."},{"y":1884,"a":"Eugène Vachette","t":"Le saucisson à pattes","b":"1827–1902","s":"..."},{"y":1884,"a":"Fedor Mihailovič Dostoevskij","t":"Th. Dostoïevsky. Le Crime et le châtiment","b":"","s":"..."},{"y":1932,"a":"Fedor Mihailovič Dostoevskij","t":"Les frères Karamazov","b":"","s":"..."},{"y":1883,"a":"Ferdinand Hervé-Bazin","t":"Rouget, ou le Braconnier d'Anjou","b":"1847–1889","s":"..."},{"y":1906,"a":"Fergus Hume","t":"Miss Méphistophélès","b":"1856–1932","s":"..."},{"y":1914,"a":"Fergus Hume","t":"Le mystère d'un hansom cab (Melbourne, Australie)","b":"1856–1932","s":"..."},{"y":1900,"a":"Fernand Lafargue","t":"Les ciseaux d'or","b":"1856–1903","s":"..."},{"y":1907,"a":"Fernand Lafargue","t":"Dette d'honneur","b":"1856–1903","s":"..."},{"y":1874,"a":"Fortuné Du Boisgobey","t":"Les collets-noirs","b":"1821–1891","s":"..."},{"y":1876,"a":"Fortuné Du Boisgobey","t":"L'omnibus du diable","b":"1821–1891","s":"..."},{"y":1876,"a":"Fortuné Du Boisgobey","t":"Le coup de pouce","b":"1821–1891","s":"..."},{"y":1876,"a":"Fortuné Du Boisgobey","t":"Les mystères du nouveau Paris","b":"1821–1891","s":"..."},{"y":1877,"a":"Fortuné Du Boisgobey","t":"Le demi-monde sous la Terreur","b":"1821–1891","s":"..."},{"y":1877,"a":"Fortuné Du Boisgobey","t":"La Peau d'un autre, trente ans d'aventures","b":"1821–1891","s":"..."},{"y":1878,"a":"Fortuné Du Boisgobey","t":"Une affaire mystérieuse","b":"1821–1891","s":"..."},{"y":1879,"a":"Fortuné Du Boisgobey","t":"L'épingle rose","b":"1821–1891","s":"..."},{"y":1880,"a":"Fortuné Du Boisgobey","t":"Où est Zénobie ?","b":"1821–1891","s":"..."},{"y":1880,"a":"Fortuné Du Boisgobey","t":"Le tambour de Montmirail","b":"1821–1891","s":"..."},{"y":1881,"a":"Fortuné Du Boisgobey","t":"L'affaire Matapan","b":"1821–1891","s":"..."},{"y":1881,"a":"Fortuné Du Boisgobey","t":"Le pavé de Paris","b":"1821–1891","s":"..."},{"y":1881,"a":"Fortuné Du Boisgobey","t":"L'équipage du diable","b":"1821–1891","s":"..."},{"y":1882,"a":"Fortuné Du Boisgobey","t":"Le cochon d'or","b":"1821–1891","s":"..."},{"y":1882,"a":"Fortuné Du Boisgobey","t":"Les suites d'un duel","b":"1821–1891","s":"..."},{"y":1882,"a":"Fortuné Du Boisgobey","t":"Le sac de cuir","b":"1821–1891","s":"..."},{"y":1883,"a":"Fortuné Du Boisgobey","t":"Mérindol","b":"1821–1891","s":"..."},{"y":1883,"a":"Fortuné Du Boisgobey","t":"Bouche cousue","b":"1821–1891","s":"..."},{"y":1883,"a":"Fortuné Du Boisgobey","t":"Le Collier d'acier","b":"1821–1891","s":"..."},{"y":1884,"a":"Fortuné Du Boisgobey","t":"Margot la Balafrée","b":"1821–1891","s":"..."},{"y":1884,"a":"Fortuné Du Boisgobey","t":"Babiole","b":"1821–1891","s":"..."},{"y":1884,"a":"Fortuné Du Boisgobey","t":"Le secret de Berthe","b":"1821–1891","s":"..."},{"y":1885,"a":"Fortuné Du Boisgobey","t":"La voilette bleue","b":"1821–1891","s":"..."},{"y":1885,"a":"Fortuné Du Boisgobey","t":"Le pouce crochu","b":"1821–1891","s":"..."},{"y":1885,"a":"Fortuné Du Boisgobey","t":"Le crime de l'Opéra","b":"1821–1891","s":"..."},{"y":1885,"a":"Fortuné Du Boisgobey","t":"Le cri du sang","b":"1821–1891","s":"..."},{"y":1887,"a":"Fortuné Du Boisgobey","t":"Cornaline la dompteuse","b":"1821–1891","s":"..."},{"y":1888,"a":"Fortuné Du Boisgobey","t":"Mariage d'inclination","b":"1821–1891","s":"..."},{"y":1889,"a":"Fortuné Du Boisgobey","t":"Marie Bas-de-laine","b":"1821–1891","s":"..."},{"y":1889,"a":"Fortuné Du Boisgobey","t":"La loge sanglante","b":"1821–1891","s":"..."},{"y":1889,"a":"Fortuné Du Boisgobey","t":"Double blanc","b":"1821–1891","s":"..."},{"y":1889,"a":"Fortuné Du Boisgobey","t":"La pelisse du pendu","b":"1821–1891","s":"..."},{"y":1889,"a":"Fortuné Du Boisgobey","t":"Décapitée","b":"1821–1891","s":"..."},{"y":1883,"a":"Fortuné Du-Boisgob","t":"Le coup doeil de M. Piédouche","b":"","s":"..."},{"y":1884,"a":"Fortuné Du-Boisgob","t":"Les collets noirs","b":"","s":"..."},{"y":1886,"a":"Fortuné Du-Boisgob","t":"La Voilette bleue","b":"","s":"..."},{"y":1890,"a":"Fortuné Du-Boisgob","t":"Le Chêne Capitaine","b":"","s":"..."},{"y":1883,"a":"Francesco Soave","t":"Les bijoux volés","b":"","s":"..."},{"y":1883,"a":"Franz von Seeburg","t":"Joseph Haydn. Scènes de la vie","b":"1836–1894","s":"..."},{"y":1886,"a":"François Oswald","t":"Jeu mortel","b":"1839–1894","s":"..."},{"y":1936,"a":"François Poncetton","t":"Les fantômes d'Ardentes","b":"1877–1950","s":"..."},{"y":1937,"a":"François Poncetton","t":"Le sou d'or","b":"1877–1950","s":"..."},{"y":1803,"a":"François-T Arnaud","t":"Eustasia, histoire italienne","b":"","s":"..."},{"y":1874,"a":"Friedrich Gerstäcker","t":"Les voleurs de chevaux","b":"1816–1872","s":"..."},{"y":1876,"a":"Friedrich Gerstäcker","t":"Les pirates du Mississippi","b":"1816–1872","s":"..."},{"y":1830,"a":"Frédéric de Castillon","t":"La maîtresse et la femme mariée","b":"1747–1814","s":"..."},{"y":1843,"a":"Frédéric Soulié","t":"Le Château des Pyrénées","b":"1800–1847","s":"..."},{"y":1858,"a":"Frédéric Soulié","t":"Si jeunesse savait, si vieillesse pouvait","b":"1800–1847","s":"..."},{"y":1870,"a":"Frédéric Soulié","t":"Le Lion amoureux. La Femme d'un Russe. Les Drames invisibles. Marguerite Lambrun. L'Art de dire non. Le Bas…","b":"1800–1847","s":"..."},{"y":1876,"a":"Frédéric Soulié","t":"Le lion amoureux","b":"","s":"..."},{"y":1886,"a":"Frédéric Soulié","t":"Le lion amoureux","b":"1800–1847","s":"..."},{"y":1888,"a":"Frédéric Soulié","t":"Le lion amoureux","b":"","s":"..."},{"y":1927,"a":"Frédéric Soulié","t":"Le Sacrifice d'Eulalie Pontois","b":"1800–1847","s":"..."},{"y":1925,"a":"Félicien Champsaur","t":"Tuer les vieux, jouir !","b":"1858–1934","s":"..."},{"y":1850,"a":"Félix Deriège","t":"Les mystères de Rome","b":"1810–1872","s":"..."},{"y":1905,"a":"Félix Duquesnel","t":"Le mystère de Gaude","b":"1832–1915","s":"..."},{"y":1889,"a":"G. Gaulard","t":"Coco le têtu","b":"","s":"..."},{"y":1882,"a":"Gabriel de Beugny d'Hagerue","t":"La vallée maudite","b":"","s":"..."},{"y":1913,"a":"Gaspard de Weede","t":"Haine ou amour","b":"1857–1940","s":"..."},{"y":1926,"a":"Gaspard de Weede","t":"L'assassin double","b":"1857–1940","s":"..."},{"y":1884,"a":"Gaston Bergeret","t":"Dans le monde officiel","b":"1840–1921","s":"..."},{"y":1912,"a":"Gaston Leroux","t":"Balaoo","b":"1854–1942","s":"..."},{"y":1932,"a":"Gaston Leroux","t":"Le mystère de la chambre jaune","b":"1854–1942","s":"..."},{"y":1948,"a":"Gaston Leroux","t":"Chéri-Bibi et Cécily","b":"1854–1942","s":"..."},{"y":1846,"a":"George Sand","t":"Teverino","b":"1906–1972","s":"..."},{"y":1869,"a":"George Sand","t":"Teverino","b":"","s":"..."},{"y":1866,"a":"George W. M. Reynolds","t":"Les mystères de la cour de Londres","b":"1814–1879","s":"..."},{"y":1946,"a":"Georges Bernanos","t":"Nouvelle histoire de Mouchette","b":"1888–1948","s":"..."},{"y":1904,"a":"Georges Courteline","t":"Lami des lois","b":"1858–1929","s":"..."},{"y":1905,"a":"Georges Courteline","t":"Margot","b":"","s":"..."},{"y":1911,"a":"Georges de Labruyère","t":"Chantereine","b":"1856–1920","s":"..."},{"y":1886,"a":"Georges Duval","t":"Le tonnelier","b":"1847–1919","s":"..."},{"y":1875,"a":"Georges Fath","t":"Perdus au milieu de Paris","b":"1818–1900","s":"..."},{"y":1885,"a":"Georges Grison","t":"13, rue des Chantres (au 2e étage), célérité et discrétion, roman parisien","b":"1841–1928","s":"..."},{"y":1928,"a":"Georges Grison","t":"Épouse quand même, roman sentimental inédit","b":"1841–1928","s":"..."},{"y":1902,"a":"Georges Hohrod","t":"Le Roman d'un rallié","b":"1863–1937","s":"..."},{"y":1905,"a":"Georges Leclerc","t":"Un drame au faubourg St Honoré","b":"","s":"..."},{"y":1911,"a":"Georges Maldague","t":"La Boscotte","b":"1857–1938","s":"..."},{"y":1883,"a":"Georges Pradel","t":"L'oeillet bleu","b":"1840–1908","s":"..."},{"y":1887,"a":"Georges Pradel","t":"Les baisers du monstre","b":"1840–1908","s":"..."},{"y":1888,"a":"Georges Pradel","t":"L'écaillère","b":"1840–1908","s":"..."},{"y":1905,"a":"Georges Pradel","t":"L'oeil de tigre","b":"1840–1908","s":"..."},{"y":1926,"a":"Georges Spitzmüller","t":"Georges Spitzmuller. L'Amour mystérieux","b":"1866–1926","s":"..."},{"y":1932,"a":"Georges Steff","t":"Fleur de Paname","b":"1876–1949","s":"..."},{"y":1937,"a":"Georges Steff","t":"La tigresse amoureuse","b":"1876–1949","s":"..."},{"y":1938,"a":"Georges Steff","t":"L'opale au charme mortel","b":"1876–1949","s":"..."},{"y":1833,"a":"Georges Touchard-Lafosse","t":"Le Bosquet de Romainville, confidences du soir","b":"1780–1847","s":"..."},{"y":1933,"a":"Georges Trombert","t":"Le speaker mystérieux","b":"1874–1949","s":"..."},{"y":1934,"a":"Georges Trombert","t":"La chance du pendu","b":"1874–1949","s":"..."},{"y":1935,"a":"Georges Trombert","t":"Un crime au palais d'hiver","b":"1874–1949","s":"..."},{"y":1936,"a":"Georges Trombert","t":"Sous la griffe de la mort","b":"1874–1949","s":"..."},{"y":1946,"a":"Georges Trombert","t":"L'atome complice","b":"1874–1949","s":"..."},{"y":1946,"a":"Georges Trombert","t":"Paris 148 K","b":"1874–1949","s":"..."},{"y":1876,"a":"Georges Vautier","t":"Le crime du substitut","b":"1842–1911","s":"..."},{"y":1803,"a":"Germaine de Staël-Holstein","t":"Delphine","b":"1766–1817","s":"..."},{"y":1869,"a":"Germaine-d Staël-Hols","t":"Delphine","b":"","s":"..."},{"y":1867,"a":"Gustave Aimard","t":"Le Comte de Warrens","b":"1818–1883","s":"..."},{"y":1876,"a":"Gustave Aimard","t":"Les invisibles de Paris","b":"1818–1883","s":"..."},{"y":1877,"a":"Gustave Aimard","t":"Le baron Frédérick","b":"1818–1883","s":"..."},{"y":1882,"a":"Gustave Cane","t":"Le Crime de Clamart. (2e édition.)","b":"1846–1908","s":"..."},{"y":1900,"a":"Gustave Toudouze","t":"Le mystère de la Chauve-souris","b":"1847–1904","s":"..."},{"y":1888,"a":"Gyp","t":"Pour ne pas l'être ?","b":"1899–1943","s":"..."},{"y":1915,"a":"Gyp","t":"Geneviève","b":"1899–1943","s":"..."},{"y":1887,"a":"H. Noël","t":"Lâne gris","b":"","s":"..."},{"y":1894,"a":"Hector de Montperreux","t":"L'enfant du divorce","b":"1850–1917","s":"..."},{"y":1900,"a":"Hector Fleischmann","t":"Le rival de Sherlock Holmes","b":"1882–1913","s":"..."},{"y":1891,"a":"Hector-de Montperreu","t":"Mariée en blanc","b":"","s":"..."},{"y":1898,"a":"Henri Allais","t":"Histoires pénales","b":"1856–1905","s":"..."},{"y":1861,"a":"Henri de Lacretelle","t":"La Poste aux chevaux","b":"1815–1899","s":"..."},{"y":1927,"a":"Henri de Testard","t":"Conchita, farouche amante","b":"","s":"..."},{"y":1890,"a":"Henri Demesse","t":"Une fille de marbre","b":"1854–1908","s":"..."},{"y":1892,"a":"Henri Demesse","t":"La petite orpheline","b":"1854–1908","s":"..."},{"y":1895,"a":"Henri Demesse","t":"La dame blonde","b":"1854–1908","s":"..."},{"y":1897,"a":"Henri Demesse","t":"Les drames de la famille","b":"1854–1908","s":"..."},{"y":1897,"a":"Henri Demesse","t":"L'enfant de la morte","b":"1854–1908","s":"..."},{"y":1908,"a":"Henri Germain","t":"La Belle Louison","b":"1824–1905","s":"..."},{"y":1911,"a":"Henri Germain","t":"Le Calvaire d'Yvonne, roman","b":"1824–1905","s":"..."},{"y":1929,"a":"Henri Jeanne","t":"Trois ombres sur Paris","b":"1912–1992","s":"..."},{"y":1932,"a":"Henri Jeanne","t":"Jean de La Tardoire. Pour deux beaux yeux","b":"1912–1992","s":"..."},{"y":1933,"a":"Henri Jeanne","t":"H. J. Magog. Le Visage à la fenêtre","b":"1912–1992","s":"..."},{"y":1934,"a":"Henri Jeanne","t":"H. J. Magog. La Marianne de Pa","b":"","s":"..."},{"y":1937,"a":"Henri Jeanne","t":"H. J. Magog. Un coeur masqué","b":"","s":"..."},{"y":1881,"a":"Henri Rochefort","t":"Mademoiselle Bismarck","b":"1831–1913","s":"..."},{"y":1887,"a":"Henri Tessier","t":"La marée rouge","b":"","s":"..."},{"y":1936,"a":"Henri-Jeanne Magog","t":"Le roi des dandys","b":"1877–1947","s":"..."},{"y":1874,"a":"Henriette de Witt","t":"Une soeur","b":"1829–1908","s":"..."},{"y":1837,"a":"Henriette-Étiennette-Fanny Reybaud","t":"Deux à deux","b":"1802–1870","s":"..."},{"y":1875,"a":"Henry Cauvain","t":"Maximilien Heller","b":"1847–1899","s":"..."},{"y":1882,"a":"Henry Cauvain","t":"Un cas de folie","b":"1847–1899","s":"..."},{"y":1918,"a":"Henry de Chazel","t":"Nénette et Rintintin","b":"","s":"..."},{"y":1906,"a":"Henry de Graffigny","t":"Manuel pratique du conducteur d'automobiles","b":"1863–1934","s":"..."},{"y":1912,"a":"Henry de Graffigny","t":"Le menuisier amateur","b":"1863–1934","s":"..."},{"y":1867,"a":"Henry de Kock","t":"Les trois luronnes","b":"1819–1892","s":"..."},{"y":1913,"a":"Henry-de Graffigny","t":"Le tapissier décorateur","b":"","s":"..."},{"y":1890,"a":"Hippolyte Gautier","t":"En se cherchant","b":"","s":"..."},{"y":1897,"a":"Hippolyte Rodrigues","t":"La chaste Suzanne","b":"","s":"..."},{"y":1879,"a":"Hippolyte Ruy","t":"Les chevaliers du Crucifix, grand roman contemporain","b":"","s":"..."},{"y":1902,"a":"Hippolyte Sauvage","t":"Le Château Ganne, de Periers e","b":"","s":"..."},{"y":1842,"a":"Honoré de Balzac","t":"Une ténébreuse affaire","b":"1799–1850","s":"..."},{"y":1847,"a":"Honoré de Balzac","t":"La dernière incarnation de Vautrin","b":"1799–1850","s":"..."},{"y":1899,"a":"Honoré de Balzac","t":"Tony sans soin","b":"1799–1850","s":"..."},{"y":1913,"a":"J. de Neyrac","t":"Le roman de l'infidèle","b":"","s":"..."},{"y":1947,"a":"J.-H. Rosny jeune","t":"Du sang sur la neige","b":"1859–1948","s":"..."},{"y":1873,"a":"J.-M. Des Journaux","t":"La Fille des tsars, ou la Croix latine et la croix grecque","b":"","s":"..."},{"y":1913,"a":"Jacques Desvosges","t":"Le sommeil qui tue","b":"","s":"..."},{"y":1917,"a":"Jacques Dreux","t":"Le coeur brisé","b":"","s":"..."},{"y":1930,"a":"James Oliver Curwood","t":"Le piège d'or","b":"1878–1927","s":"..."},{"y":1869,"a":"Jean Bruno","t":"Les farces de Toto Carabi","b":"","s":"..."},{"y":1882,"a":"Jean Bruno","t":"Le prince choucroute","b":"1786–1832","s":"..."},{"y":1888,"a":"Jean Bruno","t":"Les reptiles prussiens en France","b":"1786–1832","s":"..."},{"y":1899,"a":"Jean Guétary","t":"Les Compagnons de l'alliance","b":"1850–","s":"..."},{"y":1907,"a":"Jean Manore","t":"La victoire de l'enfant","b":"","s":"..."},{"y":1892,"a":"Jean Richepin","t":"Cauchemars","b":"1849–1926","s":"..."},{"y":1881,"a":"Jean Vindex","t":"L'alcôve du cardinal","b":"","s":"..."},{"y":1881,"a":"Jean Vindex","t":"La belle dévote","b":"","s":"..."},{"y":1882,"a":"Jean Vindex","t":"Les amours de l'archevêque","b":"","s":"..."},{"y":1844,"a":"Jean-Baptiste-Pierre Lafitte","t":"Le docteur rouge","b":"1796–1879","s":"..."},{"y":1885,"a":"Jean-Louis Dubut de Laforest","t":"Les dévorants de Paris","b":"1853–1902","s":"..."},{"y":1891,"a":"Jean-Louis Dubut-de-L","t":"Colette et Renée","b":"","s":"..."},{"y":1949,"a":"Jean-Marie Laroche","t":"La pagode aux cobras","b":"","s":"..."},{"y":1825,"a":"Jean-Pierr Fourquet-d","t":"La famille de lémigré, ou Le","b":"","s":"..."},{"y":1934,"a":"Jean-Touss Samat","t":"Jean Toussaint Samat. Le Mort","b":"","s":"..."},{"y":1933,"a":"Jean-Toussaint Samat","t":"Jean-Toussaint Samat. Le Mort à la fenêtre, roman policier","b":"1891–1944","s":"..."},{"y":1803,"a":"Johann Wolfgang von Goethe","t":"Werther","b":"1749–1832","s":"..."},{"y":1876,"a":"Johann-Rud Wyss","t":"Robinson suisse","b":"","s":"..."},{"y":1879,"a":"John Frederick Smith","t":"Dick Tarleton","b":"1806–1890","s":"..."},{"y":1880,"a":"John Habberton","t":"Récits d'un humoriste","b":"1842–1921","s":"..."},{"y":1887,"a":"Joris-Karl Huysmans","t":"Un dilemme","b":"","s":"..."},{"y":1917,"a":"José Moselli","t":"John Strobbins, le détective-cambrioleur","b":"1882–1941","s":"..."},{"y":1924,"a":"José Moselli","t":"Assiégés par les convicts","b":"1882–1941","s":"..."},{"y":1924,"a":"José Moselli","t":"Les Diamants de l'Idole","b":"1882–1941","s":"..."},{"y":1924,"a":"José Moselli","t":"L'Auberge du Nandou","b":"1882–1941","s":"..."},{"y":1925,"a":"José Moselli","t":"Les Mystères de la mer de Corail : aux prises avec les cannibales","b":"1882–1941","s":"..."},{"y":1879,"a":"José Mármol","t":"Amalia","b":"","s":"..."},{"y":1888,"a":"Jules Beaujoint","t":"Les auberges sanglantes","b":"1830–1892","s":"..."},{"y":1865,"a":"Jules Boulabert","t":"Les Catacombes sous la Terreur","b":"1830–1887","s":"..."},{"y":1865,"a":"Jules Boulabert","t":"Le fils du supplicié","b":"1830–1887","s":"..."},{"y":1866,"a":"Jules Boulabert","t":"Le fils du supplicié","b":"","s":"..."},{"y":1867,"a":"Jules Boulabert","t":"Les Mystères de lExposition","b":"1830–1887","s":"..."},{"y":1867,"a":"Jules Boulabert","t":"La femme bandit","b":"1830–1887","s":"..."},{"y":1869,"a":"Jules Boulabert","t":"Les Mystères du Lapin blanc, drames de la cité","b":"1830–1887","s":"..."},{"y":1870,"a":"Jules Boulabert","t":"La Bande des Caroubleurs","b":"1830–1887","s":"..."},{"y":1875,"a":"Jules Boulabert","t":"La femme bandit","b":"","s":"..."},{"y":1882,"a":"Jules Boulabert","t":"Les crimes du capital, ou Les intrigues de Paris","b":"1830–1887","s":"..."},{"y":1884,"a":"Jules Boulabert","t":"Les Ratichons","b":"1830–1887","s":"..."},{"y":1891,"a":"Jules Dautin","t":"Dacolard et Lubin, suite du Pa","b":"1828–1878","s":"..."},{"y":1842,"a":"Jules David","t":"Le Procureur du roi","b":"1808–1897","s":"..."},{"y":1883,"a":"Jules de Gastyne","t":"La Femme nue","b":"1847–1920","s":"..."},{"y":1884,"a":"Jules de Gastyne","t":"La grotte du milliard","b":"1847–1920","s":"..."},{"y":1886,"a":"Jules de Gastyne","t":"L'abandonné","b":"1847–1920","s":"..."},{"y":1888,"a":"Jules de Gastyne","t":"Le drame des Chartrons","b":"1847–1920","s":"..."},{"y":1892,"a":"Jules de Gastyne","t":"Le secret de Daniel","b":"1847–1920","s":"..."},{"y":1915,"a":"Jules de Gastyne","t":"La Nuit rouge","b":"1847–1920","s":"..."},{"y":1890,"a":"Jules de Grandpré","t":"La malle sanglante","b":"1830–1892","s":"..."},{"y":1883,"a":"Jules Freval","t":"Paris coupe-gorge","b":"","s":"..."},{"y":1887,"a":"Jules Freval","t":"Le secret de Tropmann","b":"","s":"..."},{"y":1909,"a":"Jules Girardin","t":"La famille Gaudry","b":"1832–1888","s":"..."},{"y":1919,"a":"Jules Hoche","t":"Fédora","b":"1858–1926","s":"..."},{"y":1906,"a":"Jules Jovelet","t":"Le secret de Jeanne","b":"","s":"..."},{"y":1840,"a":"Jules Lacroix","t":"Le Banquier de Bristol","b":"1809–1887","s":"..."},{"y":1877,"a":"Jules Lermina","t":"La succession Tricoche et Cacolet","b":"1839–1915","s":"..."},{"y":1879,"a":"Jules Lermina","t":"Les mille et une femmes","b":"1839–1915","s":"..."},{"y":1880,"a":"Jules Lermina","t":"Les mariages maudits","b":"1839–1915","s":"..."},{"y":1881,"a":"Jules Lermina","t":"La criminelle","b":"1839–1915","s":"..."},{"y":1881,"a":"Jules Lermina","t":"La haute canaille","b":"1839–1915","s":"..."},{"y":1881,"a":"Jules Lermina","t":"Les chasseurs de femmes","b":"1839–1915","s":"..."},{"y":1883,"a":"Jules Lermina","t":"Vive la République !","b":"1839–1915","s":"..."},{"y":1883,"a":"Jules Lermina","t":"La succession Tricoche et Caco","b":"","s":"..."},{"y":1883,"a":"Jules Lermina","t":"Les loups de Paris","b":"1839–1915","s":"..."},{"y":1885,"a":"Jules Lermina","t":"Les hystériques de Paris","b":"1839–1915","s":"..."},{"y":1888,"a":"Jules Lermina","t":"Nouvelles histoires incroyables","b":"1839–1915","s":"..."},{"y":1889,"a":"Jules Lermina","t":"À tes pieds !","b":"1839–1915","s":"..."},{"y":1890,"a":"Jules Lermina","t":"Martyres damour","b":"1839–1915","s":"..."},{"y":1893,"a":"Jules Lermina","t":"Alise","b":"1839–1915","s":"..."},{"y":1895,"a":"Jules Lermina","t":"L'énigme","b":"1839–1915","s":"..."},{"y":1895,"a":"Jules Lermina","t":"Histoires incroyables","b":"1839–1915","s":"..."},{"y":1903,"a":"Jules Lermina","t":"Le fils de Monte-Cristo","b":"1839–1915","s":"..."},{"y":1903,"a":"Jules Lermina","t":"Dix mille lieues sans le vouloir","b":"1839–1915","s":"..."},{"y":1912,"a":"Jules Lermina","t":"Calvaire d'amour","b":"1839–1915","s":"..."},{"y":1913,"a":"Jules Lermina","t":"L'effrayante aventure","b":"1839–1915","s":"..."},{"y":1919,"a":"Jules Lermina","t":"La criminelle","b":"","s":"..."},{"y":1931,"a":"Jules Lévy","t":"Les gaietés de la correctionnelle","b":"1857–1935","s":"..."},{"y":1886,"a":"Jules Mary","t":"Le Wagon 303, roman parisien","b":"","s":"..."},{"y":1887,"a":"Jules Mary","t":"Roger la Honte","b":"","s":"..."},{"y":1887,"a":"Jules Mary","t":"Le baiser","b":"","s":"..."},{"y":1888,"a":"Jules Mary","t":"Un coup de revolver","b":"","s":"..."},{"y":1889,"a":"Jules Mary","t":"Guet apens","b":"","s":"..."},{"y":1890,"a":"Jules Mary","t":"Amour défendu","b":"","s":"..."},{"y":1890,"a":"Jules Mary","t":"Paradis perdu","b":"","s":"..."},{"y":1895,"a":"Jules Mary","t":"Blessée au coeur","b":"","s":"..."},{"y":1902,"a":"Jules Mary","t":"Les dernières cartouches","b":"","s":"..."},{"y":1913,"a":"Jules Mary","t":"L'Avocat des gueux. Aimée jusqu'à la mort","b":"","s":"..."},{"y":1914,"a":"Jules Mary","t":"Trompe la mort","b":"","s":"..."},{"y":1915,"a":"Jules Mary","t":"Gringalette","b":"","s":"..."},{"y":1916,"a":"Jules Mary","t":"Soldats de demain","b":"","s":"..."},{"y":1925,"a":"Jules Mary","t":"La fille sauvage","b":"","s":"..."},{"y":1926,"a":"Jules Mary","t":"La goutte de sang","b":"","s":"..."},{"y":1930,"a":"Jules Mary","t":"En détresse !","b":"","s":"..."},{"y":1937,"a":"Jules Mary","t":"Les amours de Collivet","b":"","s":"..."},{"y":1938,"a":"Jules Mary","t":"Blessée au coeur","b":"","s":"..."},{"y":1869,"a":"Jules Noriac","t":"Les coquins triomphants","b":"1826–1882","s":"..."},{"y":1905,"a":"Jules Perrin","t":"Les bonshommes en papier","b":"1862–1944","s":"..."},{"y":1906,"a":"Jules Quesnay de Beaurepaire","t":"La conspiration de demain","b":"1837–1923","s":"..."},{"y":1867,"a":"Jules Rouquette","t":"Les drames de l'amour","b":"1853–1889","s":"..."},{"y":1874,"a":"Jules Rouquette","t":"Ce que coûtent les femmes","b":"1853–1889","s":"..."},{"y":1881,"a":"Jules Verne","t":"La Jangada, huit cents lieues sur l'Amazone","b":"1828–1845","s":"..."},{"y":1885,"a":"Jules Verne","t":"Mathias Sandorf","b":"1828–1845","s":"..."},{"y":1886,"a":"Jules Verne","t":"Robur le conquérant","b":"1828–1845","s":"..."},{"y":1893,"a":"Jules Verne","t":"P'tit bonhomme","b":"1828–1845","s":"..."},{"y":1903,"a":"Jules Verne","t":"Nord contre Sud","b":"","s":"..."},{"y":1903,"a":"Jules Verne","t":"Les Frères Kip","b":"","s":"..."},{"y":1904,"a":"Jules Verne","t":"Robur le conquérant","b":"1828–1845","s":"..."},{"y":1904,"a":"Jules Verne","t":"Un drame en Livonie","b":"1828–1845","s":"..."},{"y":1905,"a":"Jules Verne","t":"Un drame en Livonie","b":"","s":"..."},{"y":1906,"a":"Jules Verne","t":"Maître du monde","b":"1828–1845","s":"..."},{"y":1915,"a":"Jules Verne","t":"Face au drapeau","b":"","s":"..."},{"y":1916,"a":"Jules Verne","t":"Face au drapeau","b":"","s":"..."},{"y":1920,"a":"Jules Verne","t":"Le pilote du Danube","b":"1828–1845","s":"..."},{"y":1948,"a":"Jules Verne","t":"Un drame en Livonie","b":"","s":"..."},{"y":1911,"a":"Jules-de Gastyne","t":"Le Secret de linconnue, grand","b":"","s":"..."},{"y":1877,"a":"Just-Jean- Roy","t":"Edmond ou Les tribulations du","b":"","s":"..."},{"y":1877,"a":"Just-Jean- Roy","t":"Le moulin de laveugle ou Les","b":"","s":"..."},{"y":1875,"a":"Justine Mie d'Aghonne","t":"L'Écluse des cadavres","b":"1823–1897","s":"..."},{"y":1884,"a":"Justine Mie d'Aghonne","t":"Guenillard Ier","b":"1823–1897","s":"..."},{"y":1875,"a":"Józef Lubomirski","t":"Chaste et infâme, par le prince Lubomirski","b":"1839–1891","s":"..."},{"y":1879,"a":"Józef Lubomirski","t":"Les viveurs d'hier","b":"1839–1891","s":"..."},{"y":1844,"a":"L.-T. Houat","t":"Les Marrons","b":"","s":"..."},{"y":1861,"a":"Lancastel","t":"Sous les tropiques","b":"","s":"..."},{"y":1886,"a":"Lecoq","t":"Le secret de Pel","b":"","s":"..."},{"y":1868,"a":"Lorenz Frølich","t":"La Petite bohémienne","b":"","s":"..."},{"y":1883,"a":"Louis Boussenard","t":"Les pirates des champs d'or","b":"1847–1910","s":"..."},{"y":1895,"a":"Louis de Caters","t":"Le lion de Camors","b":"1856–1932","s":"..."},{"y":1909,"a":"Louis Forest","t":"On vole des enfants à Paris","b":"1872–1933","s":"..."},{"y":1869,"a":"Louis Gallet","t":"Le Petit docteur, roman inédit","b":"1835–1898","s":"..."},{"y":1876,"a":"Louis Gallet","t":"Le capitaine Satan","b":"1835–1898","s":"..."},{"y":1876,"a":"Louis Gallet","t":"Le petit docteur","b":"1835–1898","s":"..."},{"y":1939,"a":"Louis Hermance","t":"Pas de Chance","b":"","s":"..."},{"y":1887,"a":"Louis Jacolliot","t":"Les mangeurs de feu","b":"1837–1890","s":"..."},{"y":1888,"a":"Louis Jacolliot","t":"Vengeance de forçats","b":"1837–1890","s":"..."},{"y":1888,"a":"Louis Jacolliot","t":"Le crime du moulin d'Usor","b":"1837–1890","s":"..."},{"y":1885,"a":"Louis Léouzon Le Duc","t":"Le serment du docteur","b":"1815–1889","s":"..."},{"y":1877,"a":"Louis Noir","t":"La femme coupée en morceaux","b":"1837–1901","s":"..."},{"y":1881,"a":"Louis Ulbach","t":"La fleuriotte","b":"1822–1889","s":"..."},{"y":1885,"a":"Louis Ulbach","t":"L'espion des écoles","b":"1822–1889","s":"..."},{"y":1935,"a":"Louis Weinert-Wilton","t":"L'Araignée blanche","b":"1875–1945","s":"..."},{"y":1868,"a":"Louis-Adolphe Turpin de Sansay","t":"Le Veilleur des morts","b":"1832–1891","s":"..."},{"y":1869,"a":"Louis-Adolphe Turpin de Sansay","t":"L'Affaire de la rue de Vaugirard. [La Maison du dimanche.] Par Turpin de Sansay","b":"1832–1891","s":"..."},{"y":1871,"a":"Louis-Adolphe Turpin de Sansay","t":"La Canaille de Paris, grand roman historique et social par Turpin de Sansay. [2e édition.]","b":"1832–1891","s":"..."},{"y":1913,"a":"Louis-Casi Teyssier","t":"Contes choisis en langue albig","b":"","s":"..."},{"y":1888,"a":"Luc Chardall","t":"Les mystères du Parc aux cerfs","b":"1829–","s":"..."},{"y":1895,"a":"Lucien Thomin","t":"Le carnet sanglant","b":"","s":"..."},{"y":1895,"a":"Lucien Thomin","t":"La route de la Sibérie","b":"","s":"..."},{"y":1879,"a":"Léo Taxil","t":"Le fils du jésuite","b":"1854–1907","s":"..."},{"y":1884,"a":"Léo Taxil","t":"Les maîtresses du pape","b":"1854–1907","s":"..."},{"y":1891,"a":"Léo Trézenik","t":"Le magot de loncle Cyrille","b":"1855–1902","s":"..."},{"y":1887,"a":"Léon Brunschwicg","t":"Les boucaniers de la fosse","b":"1853–1904","s":"..."},{"y":1879,"a":"Léon Hennique","t":"Élisabeth Couronneau","b":"1851–1935","s":"..."},{"y":1884,"a":"Léon Hennique","t":"L'accident de Monsieur Hébert","b":"1851–1935","s":"..."},{"y":1945,"a":"Léon Valbert","t":"13 crimes en 3 jours","b":"","s":"..."},{"y":1877,"a":"Léopold Stapleaux","t":"Un scandale parisien","b":"1831–1891","s":"..."},{"y":1882,"a":"Léopold Stapleaux","t":"Sergent l'empoisonneur","b":"1831–1891","s":"..."},{"y":1882,"a":"Madame Juliane","t":"LHéritière, ou la Jeune orphe","b":"","s":"..."},{"y":1850,"a":"Marc de Montifaud","t":"La fille de Rodin","b":"1845–1912","s":"..."},{"y":1918,"a":"Marc Janin","t":"L'Empire de la Sierra","b":"1852–1915","s":"..."},{"y":1938,"a":"Marcel Olivier","t":"Un sauvetage","b":"1879–1945","s":"..."},{"y":1883,"a":"Marcellin La Garde","t":"L'Enfant du carrefour maudit (1792-1815)","b":"1818–1889","s":"..."},{"y":1860,"a":"Marie de L'Épinay","t":"Clara de Noirmont","b":"1802–1864","s":"..."},{"y":1882,"a":"Marie Guerrier de Haupt","t":"Un drame au village","b":"1837–1914","s":"..."},{"y":1881,"a":"Marie Guerrier-d","t":"Un châtelain au XIXe siècle","b":"","s":"..."},{"y":1866,"a":"Marie Rattazzi","t":"Les débuts de la forgeronne","b":"1831–1902","s":"..."},{"y":1883,"a":"Marie Robert Halt","t":"Histoire d'un petit homme","b":"1849–1908","s":"..."},{"y":1913,"a":"Marie-François Goron","t":"Mémoires de Poum, chien de police","b":"1847–1933","s":"..."},{"y":1918,"a":"Marius Boisson","t":"LOmbre noire","b":"","s":"..."},{"y":1889,"a":"Marthe Bertin","t":"Qui est-elle ?","b":"1855–1940","s":"..."},{"y":1863,"a":"Mary Elizabeth Braddon","t":"Le capitaine du Vautour","b":"1835–1915","s":"..."},{"y":1864,"a":"Mary Elizabeth Braddon","t":"La trace du serpent","b":"1835–1915","s":"..."},{"y":1869,"a":"Mary Elizabeth Braddon","t":"Henry Dunbar","b":"1835–1915","s":"..."},{"y":1869,"a":"Mary Elizabeth Braddon","t":"Le secret de lady Audley","b":"1835–1915","s":"..."},{"y":1869,"a":"Mary-Eliza Braddon","t":"Le Capitaine du vautour","b":"","s":"..."},{"y":1945,"a":"Maurice Boué","t":"Le cadavre qui tue","b":"","s":"..."},{"y":1885,"a":"Maurice Drack","t":"La goutte de sang","b":"1834–1897","s":"..."},{"y":1885,"a":"Maurice Drack","t":"La dent du rat","b":"1834–1897","s":"..."},{"y":1885,"a":"Maurice Drack","t":"La revanche de Caillebotte","b":"1834–1897","s":"..."},{"y":1887,"a":"Maurice Drack","t":"Chair fraîche","b":"1834–1897","s":"..."},{"y":1883,"a":"Maurice Jogand","t":"Lenfant de la folle","b":"","s":"..."},{"y":1884,"a":"Maurice Jogand","t":"Les amours de Dumollard","b":"1850–1917","s":"..."},{"y":1884,"a":"Maurice Jogand","t":"La Bréban, ou L'affaire du Courrier de Lyon","b":"1850–1917","s":"..."},{"y":1885,"a":"Maurice Jogand","t":"Les forçats de l'amour","b":"1850–1917","s":"..."},{"y":1887,"a":"Maurice Jogand","t":"Le testament du pendu","b":"1850–1917","s":"..."},{"y":1899,"a":"Maurice Jogand","t":"Mariage in-extremis","b":"1850–1917","s":"..."},{"y":1908,"a":"Maurice Level","t":"L'épouvante","b":"1875–1926","s":"..."},{"y":1948,"a":"Maurice Renard","t":"Le maître de la lumière","b":"1885–1939","s":"..."},{"y":1914,"a":"Maurice Strauss","t":"Adam Worth","b":"1854–","s":"..."},{"y":1902,"a":"Maurice Thiéry","t":"Contes picards","b":"","s":"..."},{"y":1863,"a":"Max Valrey","t":"Les victimes du mariage","b":"1822–1865","s":"..."},{"y":1893,"a":"Maxime Juillet","t":"La nuit du crime","b":"","s":"..."},{"y":1866,"a":"Michel Masson","t":"Les Drames de la conscience","b":"","s":"..."},{"y":1886,"a":"Michel Morphy","t":"Le vampire","b":"1863–1928","s":"..."},{"y":1907,"a":"Michel Morphy","t":"La bambine","b":"1863–1928","s":"..."},{"y":1915,"a":"Michel Morphy","t":"La Dame aux violettes","b":"","s":"..."},{"y":1948,"a":"Michel Zévaco","t":"Marie-Rose vengée","b":"1860–1918","s":"..."},{"y":1948,"a":"Michel Zévaco","t":"Borgia","b":"1860–1918","s":"..."},{"y":1878,"a":"Mrs Henry Wood","t":"Le serment de lady Adelaïde","b":"1814–1887","s":"..."},{"y":1905,"a":"Musette","t":"Cagayous à la course","b":"","s":"..."},{"y":1866,"a":"Octave Féré","t":"La Bergère d'Ivry","b":"1815–1875","s":"..."},{"y":1867,"a":"Octave Féré","t":"Fualdès","b":"1815–1875","s":"..."},{"y":1872,"a":"Octave Féré","t":"Le juge-médecin","b":"1815–1875","s":"..."},{"y":1880,"a":"Odysse Barot","t":"John Marcy","b":"1830–1907","s":"..."},{"y":1882,"a":"Odysse Barot","t":"Les crimes du procureur impérial","b":"1830–1907","s":"..."},{"y":1882,"a":"Odysse Barot","t":"Le casier judiciaire","b":"1830–1907","s":"..."},{"y":1883,"a":"Odysse Barot","t":"Madame la Présidente","b":"1830–1907","s":"..."},{"y":1883,"a":"Odysse Barot","t":"Les crimes de la duchesse","b":"","s":"..."},{"y":1883,"a":"Odysse Barot","t":"Le Fort de la halle","b":"1830–1907","s":"..."},{"y":1884,"a":"Odysse Barot","t":"Les trois Bâtards","b":"1830–1907","s":"..."},{"y":1884,"a":"Odysse Barot","t":"Filles mères","b":"1830–1907","s":"..."},{"y":1876,"a":"P.-J. Stahl","t":"Cerf agile","b":"","s":"..."},{"y":1878,"a":"P.-J. Stahl","t":"La chasse au volant","b":"","s":"..."},{"y":1936,"a":"P.-J. Stahl","t":"La chasse au volant","b":"","s":"..."},{"y":1898,"a":"Paul Bilhaud","t":"Histoire du bon Cric et du méc","b":"","s":"..."},{"y":1861,"a":"Paul Bocage","t":"Fragon & Cie","b":"1824–1887","s":"..."},{"y":1887,"a":"Paul Bourget","t":"André Cornélis","b":"1852–1935","s":"..."},{"y":1899,"a":"Paul Bourget","t":"André Cornélis","b":"","s":"..."},{"y":1905,"a":"Paul Bourget","t":"André Cornélis","b":"","s":"..."},{"y":1934,"a":"Paul Bourget","t":"La dame qui a perdu son peintre","b":"1852–1935","s":"..."},{"y":1883,"a":"Paul Celières","t":"Quand il pleut","b":"1836–1883","s":"..."},{"y":1913,"a":"Paul d' Aigremont","t":"Tragique amour (père inconnu)","b":"1841–1907","s":"..."},{"y":1950,"a":"Paul d' Aigremont","t":"Magali","b":"1841–1907","s":"..."},{"y":1911,"a":"Paul d' Ivoi","t":"L'aéroplane fantôme","b":"1856–1915","s":"..."},{"y":1920,"a":"Paul de Garros","t":"Forban d'amour","b":"1867–1923","s":"..."},{"y":1852,"a":"Paul de Kock","t":"La Jolie fille du faubourg","b":"1793–1871","s":"..."},{"y":1857,"a":"Paul de Kock","t":"Le médecin des voleurs ou Paris en 1780","b":"1793–1871","s":"..."},{"y":1884,"a":"Paul de Kock","t":"Les treize nuits de Jane","b":"1793–1871","s":"..."},{"y":1868,"a":"Paul Dumanoir","t":"Les oubliettes de la tour François Ier","b":"","s":"..."},{"y":1844,"a":"Paul Féval","t":"Les mystères de Londres","b":"1816–1887","s":"..."},{"y":1844,"a":"Paul Féval","t":"Le banquier de cire","b":"","s":"..."},{"y":1845,"a":"Paul Féval","t":"Les amours de Paris","b":"1816–1887","s":"..."},{"y":1845,"a":"Paul Féval","t":"La Forêt de Rennes","b":"1816–1887","s":"..."},{"y":1847,"a":"Paul Féval","t":"Les Mystères de Londres","b":"1816–1887","s":"..."},{"y":1847,"a":"Paul Féval","t":"Les Bandits","b":"1816–1887","s":"..."},{"y":1853,"a":"Paul Féval","t":"Le tueur de tigres","b":"1816–1887","s":"..."},{"y":1863,"a":"Paul Féval","t":"Les Habits noirs","b":"1816–1887","s":"..."},{"y":1872,"a":"Paul Féval","t":"Les Compagnons du trésor","b":"1816–1887","s":"..."},{"y":1873,"a":"Paul Féval","t":"L'homme du gaz","b":"1816–1887","s":"..."},{"y":1875,"a":"Paul Féval","t":"La Bande Cadet","b":"1816–1887","s":"..."},{"y":1876,"a":"Paul Féval","t":"Les habits noirs","b":"","s":"..."},{"y":1877,"a":"Paul Féval","t":"Jean Diable","b":"1816–1887","s":"..."},{"y":1879,"a":"Paul Féval","t":"Le mendiant noir","b":"1816–1887","s":"..."},{"y":1880,"a":"Paul Féval","t":"Les errants de nuit","b":"1816–1887","s":"..."},{"y":1881,"a":"Paul Féval","t":"Roger Bontemps","b":"1816–1887","s":"..."},{"y":1881,"a":"Paul Féval","t":"Une histoire de revenants","b":"1816–1887","s":"..."},{"y":1881,"a":"Paul Féval","t":"La cavalière","b":"1816–1887","s":"..."},{"y":1883,"a":"Paul Féval","t":"Le loup blanc","b":"1816–1887","s":"..."},{"y":1890,"a":"Paul Féval","t":"Maman Léo","b":"1816–1887","s":"..."},{"y":1891,"a":"Paul Féval","t":"La vampire","b":"1816–1887","s":"..."},{"y":1907,"a":"Paul Féval","t":"Les Cinq","b":"1816–1887","s":"..."},{"y":1908,"a":"Paul Féval","t":"La hache d'abordage","b":"1816–1887","s":"..."},{"y":1925,"a":"Paul Féval","t":"Roger Bontemps","b":"","s":"..."},{"y":1927,"a":"Paul Féval","t":"L'aventurier","b":"1816–1887","s":"..."},{"y":1927,"a":"Paul Féval","t":"Lhomme de paille","b":"","s":"..."},{"y":1926,"a":"Paul Gelin-Nige","t":"La Pucelle de Saint Cucufa","b":"","s":"..."},{"y":1888,"a":"Paul Ginisty","t":"Un crime de province","b":"1855–1932","s":"..."},{"y":1841,"a":"Paul Lacroix","t":"Le Chevalier de Chaville, histoire du temps de la Terreur","b":"1806–1884","s":"..."},{"y":1890,"a":"Paul Lacroix","t":"Le braconnier","b":"","s":"..."},{"y":1884,"a":"Paul Mahalin","t":"La Belle limonadière","b":"1828–1899","s":"..."},{"y":1885,"a":"Paul Mahalin","t":"L'hôtellerie sanglante","b":"1828–1899","s":"..."},{"y":1885,"a":"Paul Mahalin","t":"La filleule de Lagardère","b":"1828–1899","s":"..."},{"y":1877,"a":"Paul Parfait","t":"L'agent secret","b":"1841–1881","s":"..."},{"y":1875,"a":"Paul Saunière","t":"Monseigneur","b":"1827–1894","s":"..."},{"y":1876,"a":"Paul Saunière","t":"L'agence Aubert","b":"1827–1894","s":"..."},{"y":1878,"a":"Paul Saunière","t":"Mamzell' Rossignol","b":"1827–1894","s":"..."},{"y":1879,"a":"Paul Saunière","t":"Le legs du pendu","b":"1827–1894","s":"..."},{"y":1880,"a":"Paul Saunière","t":"Monseigneur","b":"1827–1894","s":"..."},{"y":1881,"a":"Paul Saunière","t":"La Succession Marignan","b":"1827–1894","s":"..."},{"y":1884,"a":"Paul Saunière","t":"La petite marquise","b":"1827–1894","s":"..."},{"y":1907,"a":"Paul Segonzac","t":"La comtesse Fernande","b":"1852–1925","s":"..."},{"y":1908,"a":"Paul Segonzac","t":"Petite princesse","b":"1852–1925","s":"..."},{"y":1897,"a":"Paul Verdun","t":"Pour la Patrie !","b":"1861–1936","s":"..."},{"y":1928,"a":"Paul Vincent","t":"Le fantôme vert","b":"","s":"..."},{"y":1885,"a":"Paul-de Kock","t":"Jeorgina","b":"","s":"..."},{"y":1881,"a":"Pedro Garcias","t":"Nouvelles histoires de femmes","b":"","s":"..."},{"y":1835,"a":"Philarète Chasles","t":"Le sachet","b":"1798–1873","s":"..."},{"y":1874,"a":"Philibert Audebrand","t":"Le Drame de la Sauvagère","b":"1815–1906","s":"..."},{"y":1884,"a":"Philibert Audebrand","t":"La dot volée","b":"1815–1906","s":"..."},{"y":1884,"a":"Philippe Chaperon","t":"Histoires tragiques et contes gais","b":"1823–1906","s":"..."},{"y":1901,"a":"Philippe Chaperon","t":"Les aventures d'une émigrée","b":"1823–1906","s":"..."},{"y":1901,"a":"Philippe Gawlikowsk","t":"Guide complet de la danse","b":"","s":"..."},{"y":1916,"a":"Pierre Adam","t":"Démasqués","b":"","s":"..."},{"y":1861,"a":"Pierre Alexis Ponson du Terrail","t":"Les Gandins, par le Vte Ponson Du Terrail","b":"1829–1871","s":"..."},{"y":1866,"a":"Pierre Alexis Ponson du Terrail","t":"La résurrection de Rocambole","b":"1829–1871","s":"..."},{"y":1867,"a":"Pierre Alexis Ponson du Terrail","t":"Le Bal des Victimes. [Signé : Ponson Du Terrail.]","b":"1829–1871","s":"..."},{"y":1868,"a":"Pierre Alexis Ponson du Terrail","t":"Les misères de Londres","b":"1829–1871","s":"..."},{"y":1868,"a":"Pierre Alexis Ponson du Terrail","t":"Le secret du docteur Rousselle","b":"1829–1871","s":"..."},{"y":1876,"a":"Pierre Alexis Ponson du Terrail","t":"Le retour de Rocambole","b":"1829–1871","s":"..."},{"y":1877,"a":"Pierre Alexis Ponson du Terrail","t":"Drames de Paris","b":"1829–1871","s":"..."},{"y":1879,"a":"Pierre Alexis Ponson du Terrail","t":"La juive du Château-Trompette","b":"1829–1871","s":"..."},{"y":1888,"a":"Pierre Alexis Ponson du Terrail","t":"La juive du Château Trompette","b":"1829–1871","s":"..."},{"y":1888,"a":"Pierre Alexis Ponson du Terrail","t":"Les voleurs du grand monde","b":"1829–1871","s":"..."},{"y":1923,"a":"Pierre Billotey","t":"La Fortune de Fortuné, roman gai","b":"1886–1932","s":"..."},{"y":1876,"a":"Pierre Coeur","t":"La fille du rabbin","b":"","s":"..."},{"y":1925,"a":"Pierre Decourcelle","t":"Quand on aime","b":"1856–1926","s":"..."},{"y":1949,"a":"Pierre Decourcelle","t":"La môme aux beaux yeux","b":"1856–1926","s":"..."},{"y":1881,"a":"Pierre Delcourt","t":"L'Agence Taboureau (célérité et discrétion)","b":"1852–1931","s":"..."},{"y":1892,"a":"Pierre Delcourt","t":"Les compagnons de Ravachol","b":"1852–1931","s":"..."},{"y":1882,"a":"Pierre Durandal","t":"Le supplicié vivant","b":"1837–1916","s":"..."},{"y":1878,"a":"Pierre L'Estoile","t":"Un scandale en province","b":"","s":"..."},{"y":1907,"a":"Pierre Luguet","t":"La Flèche rouge, grand roman d'aventures américaines, adapté de l'anglais par Pierre Luguet","b":"1859–1908","s":"..."},{"y":1915,"a":"Pierre Luguet","t":"La prisonnière de la Sierra","b":"1859–1908","s":"..."},{"y":1908,"a":"Pierre Maël","t":"La fille de l'aiguilleur","b":"1851–1920","s":"..."},{"y":1915,"a":"Pierre Maël","t":"La Roche-qui-tue","b":"1851–1920","s":"..."},{"y":1886,"a":"Pierre Sales","t":"Incendiaire !","b":"1854–1914","s":"..."},{"y":1891,"a":"Pierre Sales","t":"Le diamant noir","b":"1854–1914","s":"..."},{"y":1915,"a":"Pierre Sales","t":"Moins fort que l'amour !","b":"1854–1914","s":"..."},{"y":1851,"a":"Pierre Zaccone","t":"Marguerite et Béatrix","b":"1818–1895","s":"..."},{"y":1854,"a":"Pierre Zaccone","t":"Les Mystères du vieux Paris","b":"1818–1895","s":"..."},{"y":1861,"a":"Pierre Zaccone","t":"Une banqueroute frauduleuse","b":"1818–1895","s":"..."},{"y":1863,"a":"Pierre Zaccone","t":"Les drames des catacombes","b":"1818–1895","s":"..."},{"y":1868,"a":"Pierre Zaccone","t":"Le courrier de Lyon","b":"1818–1895","s":"..."},{"y":1872,"a":"Pierre Zaccone","t":"Un drame sur les pontons","b":"1818–1895","s":"..."},{"y":1873,"a":"Pierre Zaccone","t":"La Lanterne rouge","b":"1818–1895","s":"..."},{"y":1874,"a":"Pierre Zaccone","t":"La Cellule n° 7","b":"1818–1895","s":"..."},{"y":1878,"a":"Pierre Zaccone","t":"Les pieuvres de Paris","b":"1818–1895","s":"..."},{"y":1878,"a":"Pierre Zaccone","t":"Le gamin de Paris","b":"1818–1895","s":"..."},{"y":1879,"a":"Pierre Zaccone","t":"Le courrier de Lyon","b":"","s":"..."},{"y":1879,"a":"Pierre Zaccone","t":"Les nuits du boulevard","b":"","s":"..."},{"y":1879,"a":"Pierre Zaccone","t":"Mémoires d'un commissaire de police","b":"1818–1895","s":"..."},{"y":1882,"a":"Pierre Zaccone","t":"La recluse","b":"1818–1895","s":"..."},{"y":1883,"a":"Pierre Zaccone","t":"Une haine au bagne","b":"1818–1895","s":"..."},{"y":1883,"a":"Pierre Zaccone","t":"La belle Diane","b":"1818–1895","s":"..."},{"y":1866,"a":"Pierre-Ale Ponson-du-","t":"La Jeunesse du roi Henri. Les","b":"","s":"..."},{"y":1869,"a":"Pierre-Ale Ponson-du-","t":"Ponson Du Terrail. Les Misères","b":"","s":"..."},{"y":1869,"a":"Pierre-Ale Ponson-du-","t":"Ponson Du Terrail. Le Capitain","b":"","s":"..."},{"y":1877,"a":"Pierre-Ale Ponson-du-","t":"Le retour de Rocambole","b":"","s":"..."},{"y":1884,"a":"Pierre-Ale Ponson-du-","t":"La jeunesse du roi Henri","b":"","s":"..."},{"y":1948,"a":"Pierre-Ale Ponson-du-","t":"Ponson du Terrail. Les Drames","b":"","s":"..."},{"y":1869,"a":"Pierre-Jul Hetzel","t":"Jean le Hargneux","b":"","s":"..."},{"y":1868,"a":"Pierre-Sébastien Laurentie","t":"Épisode de l'émigration française","b":"1793–1876","s":"..."},{"y":1879,"a":"Raoul de Navery","t":"L'accusé","b":"1829–1885","s":"..."},{"y":1883,"a":"Raoul de Navery","t":"Les mystères de Jumièges","b":"1829–1885","s":"..."},{"y":1881,"a":"Raoul Vast","t":"La haute pègre","b":"1850–1889","s":"..."},{"y":1936,"a":"Raoul Whitfield","t":"La vierge fatale","b":"1896–1945","s":"..."},{"y":1872,"a":"René de Pont-Jest","t":"Les Régicides","b":"1830–1904","s":"..."},{"y":1877,"a":"René de Pont-Jest","t":"Le n° 13 de la rue Marlot","b":"1830–1904","s":"..."},{"y":1887,"a":"René de Pont-Jest","t":"Le cas du docteur Plemen","b":"1830–1904","s":"..."},{"y":1888,"a":"René de Pont-Jest","t":"Sang maudit","b":"1830–1904","s":"..."},{"y":1935,"a":"René Pujol","t":"La Résurrection de M. Corme, roman policier. [Inédit.]","b":"1887–1942","s":"..."},{"y":1934,"a":"René Vincy","t":"La tendresse émerveillée","b":"1874–1944","s":"..."},{"y":1891,"a":"Richard Viller","t":"Le drame de la rue Paradis","b":"","s":"..."},{"y":1905,"a":"Robert Louis Stevenson","t":"Le mort vivant","b":"1850–1894","s":"..."},{"y":1890,"a":"Robert-Lou Stevenson","t":"Nouvelles Mille et une nuits","b":"","s":"..."},{"y":1932,"a":"Robert-Lou Stevenson","t":"Le cas étrange du docteur Jeky","b":"","s":"..."},{"y":1925,"a":"Rodolphe Bringer","t":"Un drôle de fiancé","b":"1869–1943","s":"..."},{"y":1927,"a":"Rodolphe Bringer","t":"Le Mystère du B 14","b":"1869–1943","s":"..."},{"y":1932,"a":"Rodolphe Bringer","t":"Le secret du baron des Adrets","b":"1869–1943","s":"..."},{"y":1938,"a":"Rodolphe Bringer","t":"Les Sacrifiées","b":"","s":"..."},{"y":1888,"a":"Simon Boubée","t":"Main de Cire","b":"1844–1901","s":"..."},{"y":1863,"a":"Sophie de Ségur","t":"Les bons enfants","b":"1799–1874","s":"..."},{"y":1904,"a":"Sophie-de Ségur","t":"Les bons enfants","b":"","s":"..."},{"y":1947,"a":"Stéphen Lemonnier","t":"La bande de l'oiseau sans tête","b":"1867–1912","s":"..."},{"y":1900,"a":"Sylvain Lacoste","t":"Coundes é debisets","b":"","s":"..."},{"y":1803,"a":"T.-J. Du Wicquet, Bon d' Ordre","t":"Voyage sentimental mêlé de prose et de vers, ou Les souvenirs d'un jeune émigré, rentré dans sa patrie","b":"","s":"..."},{"y":1828,"a":"Theodore Edward Hook","t":"Destinée","b":"1788–1841","s":"..."},{"y":1883,"a":"Thomas Mayne Reid","t":"Les partisans","b":"1818–1883","s":"..."},{"y":1894,"a":"Théodore Cahu","t":"Perdus dans l'espace","b":"1854–1928","s":"..."},{"y":1853,"a":"Théodore de Foudras","t":"Suzanne d'Estouteville","b":"1800–1872","s":"..."},{"y":1857,"a":"Théodore de Foudras","t":"Le Bonhomme de Maurevert, par le Mis de Foudras","b":"1800–1872","s":"..."},{"y":1882,"a":"Théodore Henry","t":"Les chauffeurs","b":"1849–1926","s":"..."},{"y":1888,"a":"Théodore Henry","t":"La belle Miette","b":"1849–1926","s":"..."},{"y":1868,"a":"Théodore Labourieu","t":"Les Carrières d'Amérique","b":"1822–1889","s":"..."},{"y":1874,"a":"Théodore Labourieu","t":"Les Bandits des deux-mondes, roman contemporain inédit","b":"1822–1889","s":"..."},{"y":1883,"a":"Théodore Labourieu","t":"Les crimes de Paris","b":"1822–1889","s":"..."},{"y":1830,"a":"Théophile Dinocourt","t":"Le Prévenu","b":"","s":"..."},{"y":1891,"a":"Tony Bardin","t":"Le crime de Courbevoie","b":"","s":"..."},{"y":1934,"a":"Tristan Bernard","t":"Visites nocturnes","b":"1866–1947","s":"..."},{"y":1935,"a":"Tristan Bernard","t":"Robins des bois","b":"1866–1947","s":"..."},{"y":1872,"a":"Victor Perceval","t":"Un drame judiciaire. La Marquise de Douhault","b":"1835–1887","s":"..."},{"y":1930,"a":"Victor Rickard","t":"Le double mystère de la maison vide","b":"","s":"..."},{"y":1880,"a":"Wilfrid Pagart","t":"Un héros de treize ans","b":"","s":"..."},{"y":1889,"a":"Wilhelm Herchenbach","t":"Millionnaire et balayeur","b":"1818–1889","s":"..."},{"y":1872,"a":"Wilkie Collins","t":"Mari et femme, roman anglais","b":"1824–1889","s":"..."},{"y":1872,"a":"Wilkie Collins","t":"Wilkie Collins. La Pierre de L","b":"1824–1889","s":"..."},{"y":1876,"a":"Wilkie Collins","t":"La piste du crime","b":"1824–1889","s":"..."},{"y":1881,"a":"Wilkie Collins","t":"L'Hôtel hanté, roman traduit de l'anglais","b":"1824–1889","s":"..."},{"y":1889,"a":"Wilkie Collins","t":"Lhôtel hanté","b":"1824–1889","s":"..."},{"y":1892,"a":"Wilkie Collins","t":"C'était écrit !","b":"1824–1889","s":"..."},{"y":1898,"a":"Wilkie Collins","t":"La pierre de lune","b":"1824–1889","s":"..."},{"y":1906,"a":"Wilkie Collins","t":"La morte vivante","b":"","s":"..."},{"y":1901,"a":"William Busnach","t":"Le crime du bois de Verrières, instruction judiciaire","b":"1832–1907","s":"..."},{"y":1874,"a":"William Cobb","t":"Les mystères de New-York","b":"","s":"..."},{"y":1868,"a":"William Godwin","t":"Caleb Williams, ou les Choses comme elles sont","b":"1803–1832","s":"..."},{"y":1878,"a":"William Harrison Ainsworth","t":"Jack Sheppard, ou Les chevaliers du brouillard","b":"1805–1882","s":"..."},{"y":1859,"a":"William Makepeace Thackeray","t":"Les Mémoires d'un valet de pied","b":"1811–1863","s":"..."},{"y":1856,"a":"Xavier de Montépin","t":"L'Idiot","b":"1823–1902","s":"..."},{"y":1857,"a":"Xavier de Montépin","t":"Les Chevaliers du lansquenet, par le Mis de Foudras et Xavier de Montépin","b":"1823–1902","s":"..."},{"y":1866,"a":"Xavier de Montépin","t":"La Fille du meurtrier","b":"1823–1902","s":"..."},{"y":1876,"a":"Xavier de Montépin","t":"Le ventriloque","b":"1823–1902","s":"..."},{"y":1877,"a":"Xavier de Montépin","t":"Une fleur aux enchères","b":"1823–1902","s":"..."},{"y":1878,"a":"Xavier de Montépin","t":"La veuve du caissier","b":"1823–1902","s":"..."},{"y":1878,"a":"Xavier de Montépin","t":"Les maris de Valentine","b":"1823–1902","s":"..."},{"y":1878,"a":"Xavier de Montépin","t":"La Bâtarde","b":"1823–1902","s":"..."},{"y":1879,"a":"Xavier de Montépin","t":"Une dame de pique","b":"1823–1902","s":"..."},{"y":1880,"a":"Xavier de Montépin","t":"Le fiacre n° 13","b":"1823–1902","s":"..."},{"y":1880,"a":"Xavier de Montépin","t":"Les filles de bronze","b":"1823–1902","s":"..."},{"y":1881,"a":"Xavier de Montépin","t":"Mam'zelle Mélie","b":"1823–1902","s":"..."},{"y":1883,"a":"Xavier de Montépin","t":"Simone et Marie","b":"1823–1902","s":"..."},{"y":1884,"a":"Xavier de Montépin","t":"L'homme aux figures de cire","b":"1823–1902","s":"..."},{"y":1884,"a":"Xavier de Montépin","t":"Le fiacre n° 13","b":"1823–1902","s":"..."},{"y":1885,"a":"Xavier de Montépin","t":"Son Altesse l'Amour, grand roman dramatique","b":"1823–1902","s":"..."},{"y":1885,"a":"Xavier de Montépin","t":"Les mystères du Palais-royal","b":"1823–1902","s":"..."},{"y":1885,"a":"Xavier de Montépin","t":"Le crime d'Asnières","b":"1823–1902","s":"..."},{"y":1888,"a":"Xavier de Montépin","t":"La belle Angèle","b":"1823–1902","s":"..."},{"y":1888,"a":"Xavier de Montépin","t":"Le gros lot","b":"1823–1902","s":"..."},{"y":1890,"a":"Xavier de Montépin","t":"Marâtre","b":"1823–1902","s":"..."},{"y":1895,"a":"Xavier de Montépin","t":"La demoiselle du château","b":"1823–1902","s":"..."},{"y":1900,"a":"Xavier de Montépin","t":"Chanteuse des rues","b":"1823–1902","s":"..."},{"y":1903,"a":"Xavier de Montépin","t":"La porteuse de pain","b":"1823–1902","s":"..."},{"y":1877,"a":"Xavier-de Montépin","t":"Les enfers de Paris","b":"","s":"..."},{"y":1879,"a":"Xavier-de Montépin","t":"La fille du meurtrier","b":"","s":"..."},{"y":1883,"a":"Xavier-de Montépin","t":"Le dernier duc dHallali","b":"","s":"..."},{"y":1883,"a":"Xavier-de Montépin","t":"Les maris de Valentine","b":"","s":"..."},{"y":1883,"a":"Xavier-de Montépin","t":"Les filles de bronze","b":"","s":"..."},{"y":1888,"a":"Xavier-de Montépin","t":"Simone et Marie","b":"","s":"..."},{"y":1887,"a":"Yves Robert","t":"La jolie blanchisseuse","b":"","s":"..."},{"y":1849,"a":"Zoé de La Ponneraye","t":"Samarite","b":"","s":"..."},{"y":1883,"a":"Édouard Ducret","t":"Paris canaille, moeurs contemporaines","b":"1854–1900","s":"..."},{"y":1919,"a":"Édouard Pinon","t":"Bon ami","b":"","s":"..."},{"y":1882,"a":"Édouard-Auguste Spoll","t":"Le banquier des jésuites","b":"1833–1914","s":"..."},{"y":1879,"a":"Élie Berthet","t":"Les cagnards de l'Hôtel-Dieu de Paris","b":"1815–1891","s":"..."},{"y":1881,"a":"Élie Berthet","t":"Le charlatan","b":"1815–1891","s":"..."},{"y":1867,"a":"Émile Gaboriau","t":"L'affaire Lerouge","b":"1832–1873","s":"..."},{"y":1867,"a":"Émile Gaboriau","t":"Le crime d'Orcival","b":"1832–1873","s":"..."},{"y":1867,"a":"Émile Gaboriau","t":"Le Dossier n°113","b":"1832–1873","s":"..."},{"y":1870,"a":"Émile Gaboriau","t":"La vie infernale","b":"1832–1873","s":"..."},{"y":1870,"a":"Émile Gaboriau","t":"Les gens de bureau","b":"1832–1873","s":"..."},{"y":1874,"a":"Émile Gaboriau","t":"La corde au cou","b":"1832–1873","s":"..."},{"y":1875,"a":"Émile Gaboriau","t":"La Clique dorée","b":"1832–1873","s":"..."},{"y":1876,"a":"Émile Gaboriau","t":"Le petit vieux des Batignolles","b":"1832–1873","s":"..."},{"y":1877,"a":"Émile Gaboriau","t":"Les gens de bureau","b":"","s":"..."},{"y":1879,"a":"Émile Gaboriau","t":"Largent des autres","b":"","s":"..."},{"y":1882,"a":"Émile Gaboriau","t":"Le Dossier n°113","b":"","s":"..."},{"y":1885,"a":"Émile Gaboriau","t":"La dégringolade","b":"1832–1873","s":"..."},{"y":1890,"a":"Émile Gaboriau","t":"La corde au cou","b":"","s":"..."},{"y":1875,"a":"Émile Richebourg","t":"La dame voilée","b":"1833–1898","s":"..."},{"y":1877,"a":"Émile Richebourg","t":"La dame voilée","b":"","s":"..."},{"y":1877,"a":"Émile Richebourg","t":"Les deux berceaux","b":"1833–1898","s":"..."},{"y":1877,"a":"Émile Richebourg","t":"La fille du chanvrier","b":"1833–1898","s":"..."},{"y":1878,"a":"Émile Richebourg","t":"La dame voilée","b":"1833–1898","s":"..."},{"y":1878,"a":"Émile Richebourg","t":"La fille maudite","b":"1833–1898","s":"..."},{"y":1878,"a":"Émile Richebourg","t":"Les deux berceaux","b":"1833–1898","s":"..."},{"y":1880,"a":"Émile Richebourg","t":"Deux mères","b":"","s":"..."},{"y":1880,"a":"Émile Richebourg","t":"Andréa la charmeuse","b":"1833–1898","s":"..."},{"y":1880,"a":"Émile Richebourg","t":"Le fils","b":"1833–1898","s":"..."},{"y":1881,"a":"Émile Richebourg","t":"Le fils","b":"1833–1898","s":"..."},{"y":1882,"a":"Émile Richebourg","t":"Jean Loup","b":"1833–1898","s":"..."},{"y":1884,"a":"Émile Richebourg","t":"Jean Loup","b":"1833–1898","s":"..."},{"y":1884,"a":"Émile Richebourg","t":"La petite Mionne","b":"1833–1898","s":"..."},{"y":1885,"a":"Émile Richebourg","t":"Les millions de monsieur Joramie","b":"1833–1898","s":"..."},{"y":1887,"a":"Émile Richebourg","t":"Le fils","b":"1833–1898","s":"..."},{"y":1888,"a":"Émile Richebourg","t":"La comtesse Paule","b":"1833–1898","s":"..."},{"y":1888,"a":"Émile Richebourg","t":"L'idiote","b":"1833–1898","s":"..."},{"y":1890,"a":"Émile Richebourg","t":"La grandmère","b":"","s":"..."},{"y":1898,"a":"Émile Richebourg","t":"Les millions de M. Joramie","b":"1833–1898","s":"..."},{"y":1927,"a":"Émile Richebourg","t":"La petite Mionne","b":"","s":"..."},{"y":1859,"a":"Émile Souvestre","t":"Le Mendiant de Saint-Roch","b":"1806–1854","s":"..."},{"y":1863,"a":"Émile Souvestre","t":"Le Mendiant de Saint Roch, par","b":"","s":"..."},{"y":1929,"a":"Émile Zavie","t":"Les dieux de la tribu","b":"1884–1943","s":"..."},{"y":1898,"a":"Étienne Ducret","t":"Le secrétaire enfantin","b":"1829–1909","s":"..."},{"y":1861,"a":"Étienne Enault","t":"Les Mystères de la conscience","b":"1816–1883","s":"..."}];
+
+const PAGE_SIZE = 50;
+let filtered = [...CORPUS];
+let currentPage = 0;
+let currentSort = { key: 'a', asc: true };
+
+// Decades from data
+const decadeSet = new Set();
+CORPUS.forEach(d => { if (d.y > 0) decadeSet.add(Math.floor(d.y/10)*10); });
+const decKeys = [...decadeSet].sort();
+const filterSelect = document.getElementById('decadeFilter');
+decKeys.forEach(d => {
+  const opt = document.createElement('option');
+  opt.value = d;
+  opt.textContent = `${d}–${d+9}`;
+  filterSelect.appendChild(opt);
+});
+
+function esc(s) {
+  if (s == null) return '';
+  const el = document.createElement('span');
+  el.textContent = s;
+  return el.innerHTML;
+}
+
+function renderTable() {
+  const tbody = document.getElementById('corpusBody');
+  const start = currentPage * PAGE_SIZE;
+  const page = filtered.slice(start, start + PAGE_SIZE);
+
+  tbody.innerHTML = page.map(d => {
+    const score = d.s || '';
+    const isPlaceholder = score === '...' || score === '';
+    return `<tr>
+      <td class="col-author">${esc(d.a)}</td>
+      <td class="col-bio">${esc(d.b || '')}</td>
+      <td class="col-title">${esc(d.t)}</td>
+      <td class="col-year">${d.y || ''}</td>
+      <td class="col-score ${isPlaceholder ? 'placeholder' : ''}">${esc(score)}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('resultCount').textContent =
+    `${filtered.length} résultat${filtered.length > 1 ? 's' : ''}`;
+
+  renderPagination();
+}
+
+function renderPagination() {
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const pag = document.getElementById('pagination');
+  if (totalPages <= 1) { pag.innerHTML = ''; return; }
+
+  let html = '';
+  if (currentPage > 0) html += `<button onclick="goPage(${currentPage - 1})">← Préc.</button>`;
+
+  const start = Math.max(0, currentPage - 2);
+  const end = Math.min(totalPages, currentPage + 3);
+
+  if (start > 0) html += `<button onclick="goPage(0)">1</button>`;
+  if (start > 1) html += `<button disabled>…</button>`;
+
+  for (let i = start; i < end; i++) {
+    html += `<button class="${i === currentPage ? 'active' : ''}" onclick="goPage(${i})">${i + 1}</button>`;
+  }
+
+  if (end < totalPages - 1) html += `<button disabled>…</button>`;
+  if (end < totalPages) html += `<button onclick="goPage(${totalPages - 1})">${totalPages}</button>`;
+
+  if (currentPage < totalPages - 1) html += `<button onclick="goPage(${currentPage + 1})">Suiv. →</button>`;
+
+  pag.innerHTML = html;
+}
+
+function goPage(n) {
+  currentPage = n;
+  renderTable();
+  document.querySelector('.corpus-table').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function applyFilters() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const dec = document.getElementById('decadeFilter').value;
+
+  filtered = CORPUS.filter(d => {
+    if (dec && Math.floor(d.y/10)*10 !== parseInt(dec)) return false;
+    if (q) {
+      const hay = ((d.a || '') + ' ' + (d.t || '') + ' ' + (d.y || '')).toLowerCase();
+      return q.split(/\s+/).every(w => hay.includes(w));
+    }
+    return true;
+  });
+  sortFiltered();
+  currentPage = 0;
+  renderTable();
+}
+
+function sortFiltered() {
+  const { key, asc } = currentSort;
+  filtered.sort((a, b) => {
+    let va = a[key], vb = b[key];
+    if (va == null) va = '';
+    if (vb == null) vb = '';
+    if (typeof va === 'string') { va = va.toLowerCase(); vb = vb.toLowerCase(); }
+    if (va < vb) return asc ? -1 : 1;
+    if (va > vb) return asc ? 1 : -1;
+    return 0;
+  });
+}
+
+function sortTable(key) {
+  if (currentSort.key === key) currentSort.asc = !currentSort.asc;
+  else currentSort = { key, asc: true };
+
+  document.querySelectorAll('.corpus-table thead th').forEach(th => {
+    const arrow = th.querySelector('.sort-arrow');
+    if (!arrow) return;
+    if (th.dataset.sort === key) {
+      arrow.textContent = currentSort.asc ? '▲' : '▼';
+      th.classList.add('sorted');
+    } else {
+      arrow.textContent = '';
+      th.classList.remove('sorted');
+    }
+  });
+  sortFiltered();
+  currentPage = 0;
+  renderTable();
+}
+
+document.getElementById('searchInput').addEventListener('input', applyFilters);
+document.getElementById('decadeFilter').addEventListener('change', applyFilters);
+
+sortFiltered();
+renderTable();
+</script>
+</body>
+</html>

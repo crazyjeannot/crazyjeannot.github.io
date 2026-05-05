@@ -3,32 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Corpus de romans d'aventures — Fictions de Gallica</title>
-<meta name="description" content="Corpus de 1 810 romans d'aventures identifiés dans les Fictions Littéraires de Gallica par classification supervisée et correction par graphe de similarité.">
+<title>Fictions Littéraires de Gallica — corpus de travail</title>
+<meta name="description" content="Corpus de 11 344 romans constitué à partir des Fictions Littéraires de Gallica : filtrage, correction OCR, enrichissement des métadonnées et identification des genres.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #FAF6F0;
   --bg-card: #FFFFFF;
+  --bg-deep: #F2EBDF;
   --text: #2C1810;
   --text-muted: #6B5B4F;
   --text-light: #9B8B7F;
   --accent: #8B3A2F;
   --accent-light: #C45A4A;
+  --accent-2: #2F5B6B;
   --gold: #A67C52;
   --gold-light: #D4A96A;
   --border: #E8E0D6;
   --border-light: #F0EBE4;
   --shadow: rgba(44, 24, 16, 0.06);
-  --shadow-md: rgba(44, 24, 16, 0.1);
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Source Serif 4', Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
-
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
 body {
   font-family: var(--font-body);
   color: var(--text);
@@ -38,9 +37,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── HERO ── */
+/* HERO */
 .hero {
-  padding: 6rem 2rem 4rem;
+  padding: 6rem 2rem 3rem;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -49,15 +48,15 @@ body {
 .hero::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  inset: 0;
   background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C4A882' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   opacity: 0.7;
 }
-.hero-inner { position: relative; max-width: 800px; margin: 0 auto; }
+.hero-inner { position: relative; max-width: 820px; margin: 0 auto; }
 .hero-label {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--gold);
   margin-bottom: 1.5rem;
@@ -66,23 +65,17 @@ body {
   font-family: var(--font-display);
   font-size: clamp(2.4rem, 5vw, 3.8rem);
   font-weight: 700;
-  line-height: 1.15;
-  color: var(--text);
-  margin-bottom: 1rem;
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
 }
-.hero h1 em {
-  font-style: italic;
-  color: var(--accent);
-}
+.hero h1 em { font-style: italic; color: var(--accent); }
 .hero-sub {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   color: var(--text-muted);
-  max-width: 600px;
+  max-width: 640px;
   margin: 0 auto 2.5rem;
   font-style: italic;
 }
-
-/* Stats row */
 .stats-row {
   display: flex;
   justify-content: center;
@@ -93,7 +86,7 @@ body {
 .stat-item { text-align: center; }
 .stat-num {
   font-family: var(--font-display);
-  font-size: 2.8rem;
+  font-size: 2.6rem;
   font-weight: 700;
   color: var(--accent);
   line-height: 1.1;
@@ -107,13 +100,13 @@ body {
   margin-top: 0.25rem;
 }
 
-/* ── SECTIONS ── */
+/* SECTIONS */
 .container { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
 section { padding: 4rem 0; }
 .section-label {
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--gold);
   margin-bottom: 0.75rem;
@@ -128,44 +121,76 @@ h2 {
 p { margin-bottom: 1rem; }
 p + p { text-indent: 1.5em; }
 
-/* ── ABOUT CARDS ── */
-.method-grid {
+/* PIPELINE */
+.pipeline {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin: 2rem 0;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  gap: 0.5rem;
+  align-items: stretch;
+  margin: 2.5rem 0;
 }
-@media (max-width: 640px) { .method-grid { grid-template-columns: 1fr; } }
-.method-card {
+@media (max-width: 800px) {
+  .pipeline {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .pipeline-arrow { display: none; }
+}
+.pipeline-step {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 1.75rem;
-  transition: box-shadow 0.2s;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  position: relative;
+  transition: all 0.2s;
 }
-.method-card:hover { box-shadow: 0 4px 20px var(--shadow); }
-.method-card .step-num {
+.pipeline-step:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--shadow);
+}
+.pipeline-step .num {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.pipeline-step .count {
   font-family: var(--font-display);
-  font-size: 2.4rem;
+  font-size: 1.6rem;
   font-weight: 700;
-  color: var(--border);
-  line-height: 1;
-  margin-bottom: 0.5rem;
+  color: var(--accent);
+  line-height: 1.1;
+  margin-bottom: 0.4rem;
 }
-.method-card h3 {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
+.pipeline-step .label {
+  font-size: 0.85rem;
+  color: var(--text);
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
 }
-.method-card p { font-size: 0.92rem; color: var(--text-muted); margin: 0; text-indent: 0; }
+.pipeline-step .detail {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: 1.4;
+}
+.pipeline-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 1.2rem;
+}
 
-/* ── CHART ── */
+/* CHART */
 .chart-wrap {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 2rem;
+  padding: 2rem 1.5rem 1.5rem;
   margin: 2rem 0;
   overflow-x: auto;
 }
@@ -179,154 +204,38 @@ p + p { text-indent: 1.5em; }
 .bar-chart {
   display: flex;
   align-items: flex-end;
-  gap: 6px;
+  gap: 4px;
   height: 220px;
   padding: 0 0.5rem;
   justify-content: center;
+  min-width: max-content;
 }
 .bar-col { display: flex; flex-direction: column; align-items: center; flex: 0 0 auto; }
 .bar {
-  width: 42px;
+  width: 28px;
   background: linear-gradient(180deg, var(--accent) 0%, var(--accent-light) 100%);
   border-radius: 3px 3px 0 0;
-  transition: all 0.3s;
-  position: relative;
-  cursor: default;
+  transition: all 0.2s;
   min-height: 2px;
 }
-.bar:hover { background: var(--gold); transform: scaleY(1.02); }
+.bar:hover { background: var(--gold); }
 .bar-val {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   color: var(--text-light);
   margin-bottom: 4px;
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity 0.15s;
 }
 .bar-col:hover .bar-val { opacity: 1; }
 .bar-label {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   color: var(--text-light);
   margin-top: 6px;
-  writing-mode: horizontal-tb;
 }
 
-/* ── TABLE ── */
-.table-controls {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-  align-items: center;
-}
-.search-box {
-  flex: 1;
-  min-width: 200px;
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  padding: 0.65rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--bg-card);
-  color: var(--text);
-  outline: none;
-  transition: border-color 0.2s;
-}
-.search-box:focus { border-color: var(--gold); }
-.search-box::placeholder { color: var(--text-light); }
-.filter-select {
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  padding: 0.65rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--bg-card);
-  color: var(--text);
-  cursor: pointer;
-}
-.result-count {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--text-light);
-  margin-left: auto;
-}
-
-.corpus-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-}
-.corpus-table thead th {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-light);
-  text-align: left;
-  padding: 0.75rem 0.5rem;
-  border-bottom: 2px solid var(--border);
-  cursor: pointer;
-  user-select: none;
-  white-space: nowrap;
-}
-.corpus-table thead th:hover { color: var(--accent); }
-.corpus-table thead th.sorted { color: var(--accent); }
-.corpus-table thead th .sort-arrow { font-size: 0.6rem; margin-left: 0.3rem; }
-.corpus-table tbody td {
-  padding: 0.5rem 0.5rem;
-  border-bottom: 1px solid var(--border-light);
-  vertical-align: top;
-}
-.corpus-table tbody tr:hover { background: rgba(166, 124, 82, 0.04); }
-.corpus-table .col-year {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  width: 60px;
-  white-space: nowrap;
-}
-.corpus-table .col-author {
-  font-weight: 600;
-  width: 220px;
-  font-size: 0.88rem;
-}
-.corpus-table .col-title {
-  font-style: italic;
-  color: var(--text-muted);
-}
-.table-footer {
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.85rem;
-  color: var(--text-light);
-}
-.pagination {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-  flex-wrap: wrap;
-}
-.pagination button {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  padding: 0.4rem 0.8rem;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  background: var(--bg-card);
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.pagination button:hover { border-color: var(--gold); color: var(--text); }
-.pagination button.active {
-  background: var(--accent);
-  color: white;
-  border-color: var(--accent);
-}
-
-/* ── AUTHORS ── */
+/* AUTHORS */
 .authors-grid {
   display: flex;
   flex-wrap: wrap;
@@ -342,66 +251,152 @@ p + p { text-indent: 1.5em; }
   border: 1px solid var(--border);
   border-radius: 20px;
   font-size: 0.82rem;
-  transition: all 0.15s;
-  cursor: default;
 }
-.author-tag:hover { border-color: var(--gold); }
 .author-tag .count {
   font-family: var(--font-mono);
   font-size: 0.65rem;
   color: var(--text-light);
 }
 
-/* ── DOWNLOAD ── */
-.download-section {
+/* SUB-CORPUS CARDS */
+.subcorpus-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+@media (max-width: 700px) { .subcorpus-grid { grid-template-columns: 1fr; } }
+.subcorpus-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2rem 1.75rem;
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 260px;
+}
+.subcorpus-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+.subcorpus-card.policier::before { background: var(--accent-2); }
+.subcorpus-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px var(--shadow);
+}
+.subcorpus-card:hover::before { transform: scaleX(1); }
+.subcorpus-card .ic {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+.subcorpus-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+.subcorpus-card .big-num {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin: 0.5rem 0 0.3rem;
+}
+.subcorpus-card.policier .big-num { color: var(--accent-2); }
+.subcorpus-card .nlbl {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+.subcorpus-card .desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  flex: 1;
+}
+.subcorpus-card .arrow {
+  margin-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+.subcorpus-card.policier .arrow { color: var(--accent-2); }
+
+/* DOWNLOAD */
+.download-box {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 2.5rem;
+  padding: 2rem;
   margin: 2rem 0;
 }
 .dl-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-top: 1.5rem;
+  gap: 0.75rem;
+  margin-top: 1rem;
 }
 .dl-item {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 1rem;
+  padding: 0.85rem 1rem;
   border: 1px solid var(--border-light);
   border-radius: 6px;
   text-decoration: none;
   color: var(--text);
   transition: all 0.2s;
 }
-.dl-item:hover { border-color: var(--gold); background: rgba(166,124,82,0.03); }
-.dl-icon { font-size: 1.5rem; }
+.dl-item:hover { border-color: var(--gold); background: rgba(166,124,82,0.04); }
+.dl-icon {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--gold);
+  width: 1.5rem;
+}
 .dl-info { display: flex; flex-direction: column; }
-.dl-name { font-weight: 600; font-size: 0.9rem; }
-.dl-desc { font-size: 0.75rem; color: var(--text-light); }
+.dl-name { font-weight: 600; font-size: 0.88rem; }
+.dl-desc { font-size: 0.72rem; color: var(--text-light); }
 
-/* ── CITATION ── */
+/* CITATION */
 .citation-box {
   background: #F5F0EA;
   border-left: 3px solid var(--gold);
   padding: 1.25rem 1.5rem;
-  margin: 2rem 0;
+  margin: 1.5rem 0;
   font-size: 0.88rem;
   border-radius: 0 6px 6px 0;
 }
 .citation-box code {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   display: block;
   white-space: pre-wrap;
   margin-top: 0.5rem;
   color: var(--text-muted);
 }
 
-/* ── FOOTER ── */
+/* FOOTER */
 footer {
   text-align: center;
   padding: 3rem 2rem;
@@ -412,7 +407,6 @@ footer {
 footer a { color: var(--gold); text-decoration: none; }
 footer a:hover { text-decoration: underline; }
 
-/* ── SEPARATOR ── */
 .sep {
   width: 40px;
   height: 2px;
@@ -421,53 +415,32 @@ footer a:hover { text-decoration: underline; }
   border-radius: 1px;
 }
 
-/* ── ANIMATIONS ── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.fade-in {
-  opacity: 0;
-  animation: fadeUp 0.6s ease forwards;
-}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { opacity: 0; animation: fadeUp 0.6s ease forwards; }
 .fade-in:nth-child(2) { animation-delay: 0.1s; }
 .fade-in:nth-child(3) { animation-delay: 0.2s; }
 .fade-in:nth-child(4) { animation-delay: 0.3s; }
-
-@media (max-width: 640px) {
-  .hero { padding: 4rem 1.5rem 3rem; }
-  .stats-row { gap: 1.5rem; }
-  .stat-num { font-size: 2rem; }
-  .bar { width: 28px; }
-  .bar-chart { gap: 3px; }
-  .corpus-table .col-author { width: auto; }
-}
 </style>
 </head>
 <body>
 
-<!-- ═══ HERO ═══ -->
 <header class="hero">
   <div class="hero-inner">
-    <div class="hero-label fade-in">Corpus numérique · Gallica / BnF</div>
-    <h1 class="fade-in">Le <em>roman d'aventures</em><br>dans les Fictions de Gallica</h1>
-    <p class="hero-sub fade-in">1&thinsp;810 romans identifiés par classification supervisée et correction par graphe de similarité, dans le corpus des Fictions Littéraires de Gallica.</p>
+    <div class="hero-label fade-in">Corpus numérique · Thèse</div>
+    <h1 class="fade-in">Les <em>Fictions Littéraires<br>de Gallica</em></h1>
+    <p class="hero-sub fade-in">Un corpus de travail de 11 344 romans, dérivé de la collection BnF, filtré, corrigé et enrichi pour l'analyse computationnelle des genres littéraires populaires.</p>
     <div class="stats-row fade-in">
       <div class="stat-item">
-        <div class="stat-num">1&thinsp;810</div>
+        <div class="stat-num">11 344</div>
         <div class="stat-label">Romans</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num">661</div>
+        <div class="stat-num">3 885</div>
         <div class="stat-label">Auteurs</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num">1802–1948</div>
-        <div class="stat-label">Période couverte</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">12&thinsp;176</div>
-        <div class="stat-label">Romans dans Gallica</div>
+        <div class="stat-num">1707–1950</div>
+        <div class="stat-label">Période</div>
       </div>
     </div>
   </div>
@@ -475,124 +448,151 @@ footer a:hover { text-decoration: underline; }
 
 <div class="sep"></div>
 
-<!-- ═══ MÉTHODOLOGIE ═══ -->
+<!-- PIPELINE -->
 <section>
   <div class="container">
-    <div class="section-label">Méthodologie</div>
-    <h2>Constitution du corpus</h2>
-    <p>Ce corpus est extrait des <em>Fictions Littéraires de Gallica</em> (Langlais, 2021), une collection de 12&thinsp;176 romans numérisés par la BnF. Le roman d'aventures n'y est pas balisé comme genre : il a fallu le <em>retrouver</em> dans cette masse textuelle, en combinant un apprentissage supervisé et une validation structurelle.</p>
+    <div class="section-label">Constitution du corpus</div>
+    <h2>Du dépôt Zenodo au corpus de travail</h2>
+    <p>Le point de départ est la collection <em>Fictions Littéraires de Gallica</em> publiée par Pierre-Carl Langlais (<a href="https://zenodo.org/records/4751204" style="color:var(--accent)">Zenodo, 2021</a>), qui rassemble 19 240 romans numérisés par la BnF. Ce corpus brut a été retravaillé en quatre étapes pour produire la base utilisée dans la thèse.</p>
 
-    <div class="method-grid">
-      <div class="method-card">
-        <div class="step-num">01</div>
-        <h3>Entraînement supervisé</h3>
-        <p>Un SVM linéaire est entraîné sur les 101 romans cités dans la thèse de Letourneux (2010) comme positifs, et un ensemble équivalent de non-aventures comme négatifs. Représentation : sac de mots (5&thinsp;000 MFW). Balanced accuracy : 89%.</p>
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <div class="num">SOURCE</div>
+        <div class="count">19 240</div>
+        <div class="label">Fictions de Gallica</div>
+        <div class="detail">Langlais 2021, Zenodo</div>
       </div>
-      <div class="method-card">
-        <div class="step-num">02</div>
-        <h3>Classification du corpus</h3>
-        <p>Le SVM est appliqué aux 12&thinsp;176 romans de Gallica. Il identifie 1&thinsp;375 romans d'aventures (~12% du corpus), dont les ¾ avec une probabilité supérieure à 90%.</p>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="num">ÉTAPE 1</div>
+        <div class="count">14 800</div>
+        <div class="label">Filtrage qualité</div>
+        <div class="detail">OCR &gt; 95 %, hors œuvres complètes</div>
       </div>
-      <div class="method-card">
-        <div class="step-num">03</div>
-        <h3>Graphe de similarité</h3>
-        <p>Un graphe <em>k</em>-NN est construit à partir d'embeddings de paragraphes. L'homophilie mesurée (0.754) confirme que les romans d'aventures forment un cluster distinct dans l'espace vectoriel.</p>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="num">ÉTAPE 2</div>
+        <div class="count">12 200</div>
+        <div class="label">Dédoublonnage</div>
+        <div class="detail">Rééditions et tomes multiples</div>
       </div>
-      <div class="method-card">
-        <div class="step-num">04</div>
-        <h3>Correction par voisinage</h3>
-        <p>113 faux positifs (isolés parmi les non-aventures) sont retirés ; 129 faux négatifs (insérés parmi les aventures) sont ajoutés. Le corpus corrigé est plus cohésif (+3.6% similarité) et mieux séparé (+5.4% homophilie).</p>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="num">FINAL</div>
+        <div class="count">11 344</div>
+        <div class="label">Corpus enrichi</div>
+        <div class="detail">Métadonnées BnF + Wikidata</div>
       </div>
     </div>
+
+    <p>Au-delà du simple filtrage, chaque entrée a été enrichie : correction des artefacts d'OCR sur les noms et titres, récupération des dates auteur via croisement BnF / Wikidata, normalisation des identités auctoriales (résolution des pseudonymes et variantes orthographiques), et identification automatique de deux sous-genres majeurs — le roman d'aventures et le roman policier.</p>
   </div>
 </section>
 
 <div class="sep"></div>
 
-<!-- ═══ DISTRIBUTION TEMPORELLE ═══ -->
+<!-- DISTRIBUTION -->
 <section>
   <div class="container">
     <div class="section-label">Répartition</div>
     <h2>Distribution temporelle</h2>
     <div class="chart-wrap">
-      <div class="chart-title">Nombre de romans par décennie</div>
+      <div class="chart-title">Romans par décennie (n = 11 344)</div>
       <div class="bar-chart" id="decadeChart"></div>
     </div>
-    <p>La production se concentre sur la période 1860–1910, avec un pic dans la décennie 1880 (381 titres). Ce profil correspond à la périodisation proposée par Letourneux, entre essor du feuilleton et âge d'or de l'aventure sérielle.</p>
+    <p>La distribution culmine dans la décennie 1880 (2 060 titres), reflet de l'âge d'or du roman-feuilleton et de la massification éditoriale du dernier tiers du <span style="font-variant:small-caps">xix</span><sup>e</sup> siècle. Le déclin après 1900 tient pour partie aux limites de la numérisation Gallica.</p>
   </div>
 </section>
 
 <div class="sep"></div>
 
-<!-- ═══ AUTEURS ═══ -->
+<!-- AUTHORS -->
 <section>
   <div class="container">
     <div class="section-label">Auteurs</div>
-    <h2>Signatures du genre</h2>
-    <p>Le corpus est structuré par quelques pôles auctoriaux majeurs — Verne, Féval, Dumas, Ponson du Terrail — tandis que 70% des auteurs ne sont représentés que par un seul titre : une littérature <em>hors d'usage</em> dont la numérisation conserve la trace.</p>
+    <h2>Signatures du corpus</h2>
+    <p>Sur 3 885 auteurs identifiés, une longue traîne caractéristique : Dumas, Montépin, Féval, Paul de Kock dominent en volume, mais l'essentiel de la production se distribue parmi des centaines de signatures peu canoniques.</p>
     <div class="authors-grid" id="authorsCloud"></div>
   </div>
 </section>
 
 <div class="sep"></div>
 
-<!-- ═══ CORPUS NAVIGABLE ═══ -->
+<!-- SUB-CORPORA -->
 <section>
   <div class="container">
-    <div class="section-label">Explorer</div>
-    <h2>Parcourir le corpus</h2>
-    <div class="table-controls">
-      <input type="text" class="search-box" id="searchInput" placeholder="Rechercher un auteur ou un titre…">
-      <select class="filter-select" id="decadeFilter">
-        <option value="">Toutes les décennies</option>
-      </select>
-      <span class="result-count" id="resultCount"></span>
+    <div class="section-label">Sous-corpus génériques</div>
+    <h2>Deux genres identifiés</h2>
+    <p>Au sein du corpus général, deux ensembles génériques ont été extraits par classification supervisée et correction par graphe de similarité, à partir d'amorces d'entraînement issues de la critique (liste Letourneux pour l'aventure, liste Boltanski–Esquenazi pour le policier).</p>
+
+    <div class="subcorpus-grid">
+      <a href="corpus_aventures.html" class="subcorpus-card">
+        <div class="ic">Sous-corpus 1</div>
+        <h3>Roman d'aventures</h3>
+        <div class="big-num">1 428</div>
+        <div class="nlbl">Romans</div>
+        <div class="desc">Identifiés par SVM linéaire sur représentation BoW, corrigés via graphe <em>k</em>-NN d'embeddings de paragraphes. Période d'essor : 1860–1910.</div>
+        <div class="arrow">CONSULTER LA LISTE →</div>
+      </a>
+
+      <a href="corpus_policier.html" class="subcorpus-card policier">
+        <div class="ic">Sous-corpus 2</div>
+        <h3>Roman policier</h3>
+        <div class="big-num">830</div>
+        <div class="nlbl">Romans</div>
+        <div class="desc">Identifiés par la même chaîne de traitement, à partir d'une amorce historique élargie. Période d'essor : 1880–1920, avec persistance jusque dans les années 1930.</div>
+        <div class="arrow">CONSULTER LA LISTE →</div>
+      </a>
     </div>
-    <table class="corpus-table">
-      <thead>
-        <tr>
-          <th class="col-year" data-sort="y" onclick="sortTable('y')">Date <span class="sort-arrow">▼</span></th>
-          <th class="col-author" data-sort="a" onclick="sortTable('a')">Auteur <span class="sort-arrow"></span></th>
-          <th class="col-title" data-sort="t" onclick="sortTable('t')">Titre <span class="sort-arrow"></span></th>
-        </tr>
-      </thead>
-      <tbody id="corpusBody"></tbody>
-    </table>
-    <div class="pagination" id="pagination"></div>
   </div>
 </section>
 
 <div class="sep"></div>
 
-<!-- ═══ TÉLÉCHARGEMENT ═══ -->
+<!-- DOWNLOAD -->
 <section>
   <div class="container">
     <div class="section-label">Données</div>
     <h2>Téléchargement et citation</h2>
-    <div class="download-section">
-      <p>Le corpus est distribué sous licence CC-BY 4.0. Les textes intégraux sont accessibles via les identifiants Gallica (ARK).</p>
+    <div class="download-box">
+      <p style="margin-bottom: 0.5rem;">L'ensemble des fichiers est distribué sous licence CC-BY 4.0 ; les textes intégraux restent accessibles via les identifiants Gallica (ARK).</p>
       <div class="dl-grid">
-        <a href="aventures_corpus_gallica.json" class="dl-item">
-          <span class="dl-icon">{ }</span>
+        <a href="data_full.json" class="dl-item">
+          <span class="dl-icon">{&nbsp;}</span>
           <div class="dl-info">
-            <span class="dl-name">corpus.json</span>
-            <span class="dl-desc">Liste des 1 810 identifiants</span>
+            <span class="dl-name">corpus_complet.json</span>
+            <span class="dl-desc">11 344 entrées · 952 KB</span>
           </div>
         </a>
-        <a href="metadata_cleaned.tsv" class="dl-item">
+        <a href="metadata_gallica_all.tsv" class="dl-item">
           <span class="dl-icon">⊞</span>
           <div class="dl-info">
             <span class="dl-name">metadata.tsv</span>
-            <span class="dl-desc">Métadonnées complètes</span>
+            <span class="dl-desc">Métadonnées BnF + Wikidata</span>
+          </div>
+        </a>
+        <a href="corpus_final_aventures.json" class="dl-item">
+          <span class="dl-icon">⚔</span>
+          <div class="dl-info">
+            <span class="dl-name">aventures.json</span>
+            <span class="dl-desc">1 428 titres</span>
+          </div>
+        </a>
+        <a href="predicted_policier_list.txt" class="dl-item">
+          <span class="dl-icon">🔍</span>
+          <div class="dl-info">
+            <span class="dl-name">policier.txt</span>
+            <span class="dl-desc">830 titres</span>
           </div>
         </a>
       </div>
     </div>
 
     <div class="citation-box">
-      <strong>Citer ce corpus :</strong>
-      <code>Jean Barré. Corpus de romans d'aventures dans les Fictions Littéraires
-de Gallica. 2025. https://jeanbarre.eu/phd/corpus_fictions_gallica_raffine.html</code>
+      <strong>Pour citer ce corpus :</strong>
+      <code>Jean Barré (2025). Fictions Littéraires de Gallica — corpus enrichi.
+Dérivé de Langlais, P.-C. (2021). Fictions littéraires de Gallica.
+Zenodo. https://doi.org/10.5281/zenodo.4751204</code>
     </div>
   </div>
 </section>
@@ -603,181 +603,32 @@ de Gallica. 2025. https://jeanbarre.eu/phd/corpus_fictions_gallica_raffine.html<
 </footer>
 
 <script>
-const CORPUS=[{"y":1802,"a":"Désirée-de Castéra","t":"Armand et Angéla"},{"y":1803,"a":"Anne-Henri Cabet Dampmartin","t":"Des romans"},{"y":1803,"a":"Catherine-Françoise-Adélaïde Ménage, dame de Saint-Venant","t":"Aurélie et Dorothée, ou La Rel"},{"y":1812,"a":"Jean-Franç André","t":"Roc de la Roche, gouverneur de"},{"y":1813,"a":"Élisabeth- Méré","t":"Les repaires du crime, ou Hist"},{"y":1817,"a":"A.-P.-F. Ménégault","t":"Le Robinson du faubourg Saint"},{"y":1822,"a":"Anonyme","t":"Léonce ou Le frère de la doctr"},{"y":1822,"a":"Augustine Gottis","t":"Jeanne d'Arc, ou l'Héroïne française"},{"y":1824,"a":"Cesse-de La-Ferté-M","t":"Léonce et Clémence, ou La conf"},{"y":1825,"a":"Camille Paganel","t":"Théodora, ou la Famille chréti"},{"y":1828,"a":"Henri Guillaume Philippe Moke","t":"La Bataille de Navarin, ou le rénégat"},{"y":1830,"a":"Ann Radcliffe","t":"La forêt, ou Labbaye de Saint"},{"y":1830,"a":"Frédéric de Castillon","t":"La maîtresse et la femme marié"},{"y":1830,"a":"Marie Aycard","t":"Le Sire de Moret, page du roi (histoire de 1679)"},{"y":1831,"a":"Eugène Thomas","t":"Jean Cavalier, ou les Camisards et les cadets de la croix, 1702-1704, récits puisés dans des manu…"},{"y":1832,"a":"André Imberdis","t":"L'Habit d'Arlequin, chronique d'hier"},{"y":1832,"a":"Charles-R.-E. de Saint-Maurice","t":"Gilbert, chronique de l'Hôtel-Dieu (1780)"},{"y":1832,"a":"J. de Lansac","t":"God-Run, histoire et contes maritimes"},{"y":1832,"a":"Paul Lacroix","t":"Vertu et tempérament, histoire"},{"y":1832,"a":"Roger de Beauvoir","t":"Lécolier de Cluny, ou Le soph"},{"y":1832,"a":"Édouard Corbière","t":"Les pilotes de lIroise"},{"y":1833,"a":"Charles Perrault","t":"Cendrillon, ou La petite panto"},{"y":1833,"a":"Edward John Trelawny","t":"Mémoires dun cadet de famille"},{"y":1833,"a":"Georges Touchard-Lafosse","t":"Le Bosquet de Romainville, con"},{"y":1833,"a":"Henri Martin","t":"Le libelliste"},{"y":1833,"a":"Étienne de Jouy","t":"Le Centenaire, roman historique et dramatique en 6 époques : l'ancien régime, la révolution, la r…"},{"y":1834,"a":"Amédée Kermel","t":"Une âme en peine"},{"y":1834,"a":"Ernest Ménard","t":"Romans historiques bretons"},{"y":1834,"a":"Eugène Sue","t":"La vigie de Koat Ven"},{"y":1834,"a":"Roland Bauchery","t":"Le Bourreau du roi"},{"y":1834,"a":"William Hamilton Maxwell","t":"La Dame noire de Doona, roman historique de Sir Maxwell"},{"y":1834,"a":"Willibald Alexis","t":"Cabanis, ou La guerre de sept ans"},{"y":1835,"a":"Antony Thouret","t":"Blanche de Saint-Simon, ou France et Bourgogne"},{"y":1835,"a":"Eugène-Lou Guérin","t":"Le Mari de la reine, 1542 1546"},{"y":1835,"a":"Eugène Bresson","t":"Passion et fanatisme"},{"y":1835,"a":"Philarète Chasles","t":"Le sachet"},{"y":1836,"a":"Jean-Mamer Cayla","t":"Chroniques du midi"},{"y":1837,"a":"Dioclès Fabre d'Olivet","t":"Les Montagnards des Alpes (1488)"},{"y":1837,"a":"Henriette-Étiennette-Fanny Reybaud","t":"Deux à deux"},{"y":1837,"a":"Louis Méry","t":"Les Boucles doreilles, souven"},{"y":1838,"a":"Alexandre Dumas","t":"Le Capitaine Paul. [La main dr"},{"y":1838,"a":"Eugène Sue","t":"Latréaumont"},{"y":1838,"a":"Jules David","t":"Le club des désoeuvrés"},{"y":1839,"a":"Alexandre Dumas","t":"Le Capitaine Pamphile"},{"y":1839,"a":"Jules Lacroix","t":"Le Bâtard"},{"y":1839,"a":"Jules Lecomte","t":"Le capitaine Sabord"},{"y":1839,"a":"Victor Lottin de Laval","t":"Les Galanteries du maréchal de Bassompierre"},{"y":1840,"a":"Alexandre Dumas","t":"Aventures de John Davys"},{"y":1840,"a":"Auguste Jal","t":"Les soirées du gaillard darri"},{"y":1840,"a":"Gottfried- Bürger","t":"Histoire et aventures du baron"},{"y":1840,"a":"James Fenimore Cooper","t":"[LÉcumeur de mer, ou La sorci"},{"y":1840,"a":"Jules Lacroix","t":"Le Banquier de Bristol"},{"y":1840,"a":"Paul de Musset","t":"Guise et Riom"},{"y":1840,"a":"Pitre-Chevalier","t":"Jeanne de Montfort (époque guerrière, 1342), règne de Philippe de Valois"},{"y":1840,"a":"Roger de Beauvoir","t":"Le chevalier de Saint Georges"},{"y":1842,"a":"Eugène Sue","t":"Les mystères de Paris"},{"y":1842,"a":"Paul Lacroix","t":"Le Singe, histoire du temps de Louis XIV, 1666"},{"y":1842,"a":"Émile Souvestre","t":"La Goutte d'eau"},{"y":1842,"a":"Étienne-Léon de Lamothe-Langon","t":"L'homme de la nuit, ou Les mystères"},{"y":1843,"a":"Eugène Chapus","t":"Deux heures de canapé"},{"y":1843,"a":"Frédéric Thomas","t":"Un coquin d'oncle"},{"y":1843,"a":"George Sand","t":"Consuelo"},{"y":1843,"a":"Jules Lacroix","t":"Un duel sans témoins, histoire"},{"y":1843,"a":"Léo Lespès","t":"Les mystères du grand opéra"},{"y":1844,"a":"Alexandre Dumas","t":"Ascanio"},{"y":1844,"a":"Eugène Sue","t":"Le juif errant"},{"y":1844,"a":"L.-T. Houat","t":"Les Marrons"},{"y":1844,"a":"Paul Féval","t":"Les chevaliers du firmament"},{"y":1844,"a":"Paul Féval","t":"Les mystères de Londres"},{"y":1844,"a":"Paul Lacroix","t":"Le Masque de velours"},{"y":1845,"a":"Alexandre Dumas","t":"La reine Margot"},{"y":1845,"a":"Alexandre Dumas","t":"Le chevalier de Maison Rouge"},{"y":1845,"a":"Alexandre Dumas","t":"Le comte de Monte Cristo"},{"y":1845,"a":"Alexandre Dumas","t":"Une fille du Régent"},{"y":1845,"a":"Alexandre Dumas","t":"Vingt ans après, suite des Trois mousquetaires"},{"y":1845,"a":"Anonyme","t":"Un bal dans le grand monde, pa"},{"y":1845,"a":"Antony Guichard","t":"Arthur et Laure ou Les petits voyageurs français en Europe"},{"y":1845,"a":"Aristide de Gondrecourt","t":"Médine"},{"y":1845,"a":"Charles Élie","t":"LOfficier bleu"},{"y":1845,"a":"Eugène Sue","t":"Atar Gull"},{"y":1845,"a":"Eugène Sue","t":"La Salamandre, roman maritime"},{"y":1845,"a":"Eugène Sue","t":"La coucaratcha"},{"y":1845,"a":"Eugène Sue","t":"Le Commandeur de Malte"},{"y":1845,"a":"Frédéric Soulié","t":"Le comte de Toulouse"},{"y":1845,"a":"Henriette-Étiennette-Fanny Reybaud","t":"Les Deux Marguerite"},{"y":1845,"a":"Louis-François Raban","t":"Les Mystères du Palais Royal"},{"y":1845,"a":"Paul Féval","t":"La Forêt de Rennes"},{"y":1845,"a":"Paul Féval","t":"Les amours de Paris"},{"y":1845,"a":"Théodore de Foudras","t":"Les Gentilshommes d'autrefois, par le Mis de Foudras"},{"y":1846,"a":"Alexandre Dumas","t":"La dame de Monsoreau"},{"y":1846,"a":"Alexandre Dumas","t":"Le bâtard de Mauléon"},{"y":1846,"a":"Alexandre Dumas","t":"Les Deux Diane"},{"y":1846,"a":"Alexandre Dumas","t":"Les Trois mousquetaires"},{"y":1846,"a":"Alexandre Dumas","t":"Mémoires dun médecin"},{"y":1846,"a":"Alexandre Dumas","t":"Vingt ans après, suite des Trois mousquetaires"},{"y":1846,"a":"Charles Élie","t":"Marco le Bourbonnien"},{"y":1846,"a":"Christian August Vulpius","t":"Rinaldo Rinaldini, chef de brigands [par C. A. Vulpius]. Traduction nouvelle par M. Roger de Blamont"},{"y":1846,"a":"Eugène Sue","t":"Deleytar"},{"y":1846,"a":"Eugène Sue","t":"La vigie de Koat Ven"},{"y":1846,"a":"Gabriel de La Landelle","t":"Aventures dun gentilhomme  l"},{"y":1846,"a":"Gabriel de La Landelle","t":"La Gorgone"},{"y":1846,"a":"George Sand","t":"Teverino"},{"y":1846,"a":"Jules Lecomte","t":"La femme pirate"},{"y":1847,"a":"Alexandre Dumas","t":"La Reine Margot"},{"y":1847,"a":"Alphonse Karr","t":"La Famille Alain"},{"y":1847,"a":"Anonyme","t":"L homme aux mille ruses"},{"y":1847,"a":"Edmond Badon","t":"Gingènes, ou Lyon en 1793"},{"y":1847,"a":"Emmanuel Gonzalès","t":"Les Francs juges"},{"y":1847,"a":"Fanny Richomme","t":"Grain de sable, ou le Sorcier"},{"y":1847,"a":"Honoré de Balzac","t":"La dernière incarnation de Vau"},{"y":1847,"a":"Jules Lacroix","t":"Le mauvais ange"},{"y":1847,"a":"Jules Lecomte","t":"Le mort vivant"},{"y":1847,"a":"Léon Guillemin","t":"Le diable médecin"},{"y":1847,"a":"Paul Féval","t":"Les Bandits"},{"y":1847,"a":"Roger de Beauvoir","t":"LHôtel Pimodan (par Roger de"},{"y":1847,"a":"Émile Labretonnière","t":"Cinq époques, chroniques roche"},{"y":1848,"a":"Anonyme","t":"Les mystères des Tuileries de"},{"y":1848,"a":"Gustav Nieritz","t":"Les Émigrants"},{"y":1848,"a":"Élie Berthet","t":"Le château dAuvergne"},{"y":1848,"a":"Élie Berthet","t":"Paul Duvert"},{"y":1849,"a":"Clara Filleul-de","t":"Le Dévouement fraternel, suivi"},{"y":1849,"a":"Élie Berthet","t":"Létang de Précigny"},{"y":1850,"a":"Alexandre Dumas","t":"La Tulipe noire"},{"y":1850,"a":"Antoine-Achille Henriot","t":"Le Besme, chronique lorraine (1641-1645) [par Ant.-Achille Henriot]"},{"y":1850,"a":"Emmanuel Gonzalès","t":"Ésaü le lépreux"},{"y":1850,"a":"Frédéric Soulié","t":"Le Comte de Toulouse"},{"y":1850,"a":"Félix Deriège","t":"Les mystères de Rome"},{"y":1850,"a":"Octave Feuillet","t":"Bellah"},{"y":1851,"a":"Alexandre Dumas","t":"Ange Pitou"},{"y":1851,"a":"Alexandre Dumas","t":"Le bâtard de Mauléon"},{"y":1851,"a":"Eugène Sue","t":"Le Juif errant"},{"y":1851,"a":"Eugène Sue","t":"Les Mystères du peuple, ou His"},{"y":1851,"a":"Eugène Sue","t":"Les mystères de Paris"},{"y":1851,"a":"Gabriel de La Landelle","t":"Le roi des rapaces"},{"y":1851,"a":"Henry Murger","t":"Le pays latin"},{"y":1851,"a":"Jean-François Marmontel","t":"Les Incas, ou la Destruction de l'empire du Pérou"},{"y":1851,"a":"Just-Jean-Étienne Roy","t":"Voyages, aventures et naufrage de Pierre Maulny, ou la Dernière campagne du Père Tropique, racont…"},{"y":1851,"a":"Mme H. de G. Nelly","t":"Une famille des montagnes, ou les Effets de la persévérance"},{"y":1851,"a":"Paul de Musset","t":"Jean le Trouveur"},{"y":1851,"a":"Théophile Gautier","t":"Partie carrée, roman par Théophile Gautier"},{"y":1851,"a":"Élie Berthet","t":"La fille des Pyrénées"},{"y":1852,"a":"Alexandre Dumas","t":"La comtesse de Charny"},{"y":1852,"a":"Alexandre Dumas","t":"Vingt ans après"},{"y":1852,"a":"André de Goy","t":"Aventures sur mer et sur terre. I. La famille Laurençay. II. Histoire d'un jeune chercheur d'or e…"},{"y":1852,"a":"Anonyme","t":"Histoire de la tour de Nesle"},{"y":1852,"a":"Arthur de Gobineau","t":"Les aventures de Nicolas Belavoir"},{"y":1852,"a":"César Lecat Bazancourt","t":"La princesse Pallianci"},{"y":1852,"a":"Emmanuel Gonzalès","t":"Les Frères de la côte. [Le Gua"},{"y":1852,"a":"Eugène Sue","t":"Le Juif errant"},{"y":1852,"a":"Gabriel de La Landelle","t":"Le morne aux serpents"},{"y":1852,"a":"Gabriel de La Landelle","t":"Les Coureurs daventures, par"},{"y":1852,"a":"Gabriel de La Landelle","t":"Les Princes d'ébène"},{"y":1852,"a":"James-Feni Cooper","t":"Le dernier des Mohicans"},{"y":1852,"a":"Joseph Méry","t":"Trafalgar"},{"y":1852,"a":"Jules-de Saint-Féli","t":"Émigrants et naufragés"},{"y":1852,"a":"Léon Gozlan","t":"Histoire de cent-trente femmes. Le Niagara"},{"y":1852,"a":"Octave Feuillet","t":"Vie de Polichinelle et ses nom"},{"y":1852,"a":"Xavier Conte","t":"Les Fées des enfants"},{"y":1852,"a":"Émile Souvestre","t":"Pendant la moisson, par Émile"},{"y":1853,"a":"Alexandre Dumas","t":"Le bâtard de Mauléon"},{"y":1853,"a":"Charles de La Varenne","t":"La Comtesse de Marciac, ou la Restauration de Henri IV"},{"y":1853,"a":"Ernst Theodor Amadeus Hoffmann","t":"Tu ne déroberas point, ou Quel"},{"y":1853,"a":"Gabriel Ferry","t":"La Chasse aux Cosaques"},{"y":1853,"a":"Joachim Heinrich Campe","t":"Le Robinson allemand"},{"y":1853,"a":"Joseph Méry","t":"Heva"},{"y":1853,"a":"Joseph Méry","t":"La Floride"},{"y":1853,"a":"Paul Duplessis","t":"Les Boucaniers"},{"y":1853,"a":"Paul Féval","t":"Le tueur de tigres"},{"y":1853,"a":"Pierre Alexis Ponson du Terrail","t":"La baronne trépassée"},{"y":1853,"a":"Théodore Pavie","t":"Scènes et récits des pays dou"},{"y":1853,"a":"Élie Berthet","t":"Le cadet de Normandie"},{"y":1854,"a":"Alexandre Dumas","t":"Ange Pitou"},{"y":1854,"a":"Alexandre Dumas","t":"Ingénue. [Blanche de Beaulieu"},{"y":1854,"a":"Alexandre Dumas","t":"Le bâtard de Mauléon"},{"y":1854,"a":"Auguste Maquet","t":"La Chute de Satan"},{"y":1854,"a":"Auguste Maquet","t":"La belle Gabrielle"},{"y":1854,"a":"Emmanuel Gonzalès","t":"La belle novice"},{"y":1854,"a":"Joseph Méry","t":"Les nuits dOrient"},{"y":1854,"a":"Jules-de Saint-Féli","t":"Les Officiers du roi"},{"y":1854,"a":"Pierre Zaccone","t":"Les Mystères du vieux Paris, p"},{"y":1854,"a":"Élie Berthet","t":"Les catacombes de Paris"},{"y":1855,"a":"Anna Blanc","t":"Falkland"},{"y":1855,"a":"Anonyme","t":"Les Misérables de Londres"},{"y":1855,"a":"Aristide de Gondrecourt","t":"Une vraie femme"},{"y":1855,"a":"Clémence Robert","t":"Contes excentriques"},{"y":1855,"a":"Comte de Saint Jean","t":"Le Serment, ou la Chapelle de Bethléem"},{"y":1855,"a":"Eugène Sue","t":"Gilbert et Gilberte"},{"y":1855,"a":"Eugène de Mirecourt","t":"La Fille de Cromwell"},{"y":1855,"a":"Franz Lubojatzki","t":"L'Atelier du diable, ou Paris sous terre, roman historique traduit d'après Fr. Lubojatzki"},{"y":1855,"a":"Félix Yvert","t":"Les zouaves"},{"y":1855,"a":"Joseph Méry","t":"Les damnés de Java"},{"y":1855,"a":"Paul Féval","t":"Le volontaire"},{"y":1855,"a":"Paul Féval","t":"Les fanfarons du roi"},{"y":1855,"a":"Pierre Alexis Ponson du Terrail","t":"Les cavaliers de la nuit"},{"y":1855,"a":"Xavier-de Montépin","t":"La perle du Palais royal"},{"y":1856,"a":"Adrien Robert","t":"Le Lord de l'Amirauté"},{"y":1856,"a":"Alfred Driou","t":"Les glaneurs de lécole buisso"},{"y":1856,"a":"Amédée Achard","t":"Parisiennes et provinciales"},{"y":1856,"a":"Edmond About","t":"Les mariages de Paris"},{"y":1856,"a":"Eugène Sue","t":"Atar-Gull"},{"y":1856,"a":"Gabriel Ferry","t":"Le Capitaine Pallavidas"},{"y":1856,"a":"Gérard de Nerval","t":"Le Marquis de Fayolle"},{"y":1856,"a":"Henry Murger","t":"Le dernier rendez vous"},{"y":1856,"a":"Joseph Méry","t":"La guerre du Nizam"},{"y":1856,"a":"Paul Duplessis","t":"Le Batteur d'estrade"},{"y":1856,"a":"Paul Féval","t":"Lhomme de fer"},{"y":1856,"a":"Paul Féval","t":"Madame Gil Blas"},{"y":1856,"a":"Paul Féval","t":"Madame Pistache"},{"y":1857,"a":"Alexandre Dumas","t":"Alexandre Dumas illustré. El S"},{"y":1857,"a":"Alexandre Dumas","t":"La comtesse de Charny"},{"y":1857,"a":"Alexandre Dumas","t":"La dame de Monsoreau"},{"y":1857,"a":"Alexandre Dumas","t":"Les compagnons de Jéhu"},{"y":1857,"a":"Auguste Maquet","t":"Dettes de coeur"},{"y":1857,"a":"Edmond About","t":"Le roi des montagnes"},{"y":1857,"a":"Eugénie Foa","t":"Les Petits guerriers, contes historiques pour la jeunesse, par feu Mme Eugénie Foa"},{"y":1857,"a":"François de Bigorie de Laschamps","t":"Le prince Blanc"},{"y":1857,"a":"Joseph Sue","t":"Henri le chancelier, souvenirs d'un voyage dans l'Amérique Centrale"},{"y":1857,"a":"Léon Gozlan","t":"Un fou couronné"},{"y":1857,"a":"Marie Aycard","t":"Le Diamant de famille"},{"y":1857,"a":"Molé-Genti","t":"Le Chevalier de Mailly"},{"y":1857,"a":"Octave Féré","t":"La chanteuse de marbre"},{"y":1857,"a":"Paul Féval","t":"Le bossu"},{"y":1857,"a":"Paul de Kock","t":"Le médecin des voleurs ou Pari"},{"y":1857,"a":"Pierre Alexis Ponson du Terrail","t":"Le page Fleur-de-mai"},{"y":1857,"a":"Théophile Gautier","t":"Avatar"},{"y":1857,"a":"Théophile Gautier","t":"Jettatura"},{"y":1857,"a":"Vincent Victor Joly","t":"Histoires ténébreuses"},{"y":1857,"a":"X.-B. Saintine","t":"Seul !"},{"y":1857,"a":"Xavier-de Montépin","t":"Deux Bretons"},{"y":1857,"a":"Xavier-de Montépin","t":"Les Chevaliers du lansquenet"},{"y":1857,"a":"Émile Souvestre","t":"Scènes et récits des Alpes, pa"},{"y":1858,"a":"Alexandre Dumas","t":"Les compagnons de Jéhu"},{"y":1858,"a":"Alexandre Dumas","t":"Mémoires dun médecin. La Comt"},{"y":1858,"a":"Alfred-de Bréhat","t":"Bras dacier"},{"y":1858,"a":"Auguste Maquet","t":"L'Envers et l'endroit, épisode de la fin du règne de Louis XIV"},{"y":1858,"a":"Auguste Ricard","t":"Le Marchand de coco, roman de moeurs"},{"y":1858,"a":"Charles Hugo","t":"Le Cochon de saint Antoine"},{"y":1858,"a":"Emmanuel Gonzalès","t":"Chroniques du temps de Duguesc"},{"y":1858,"a":"Eugène Sue","t":"Eugène Süe. Oeuvres. Latréaumo"},{"y":1858,"a":"Frédéric Soulié","t":"Si jeunesse savait, si vieille"},{"y":1858,"a":"Gabriel Ferry","t":"Scènes de la vie militaire au"},{"y":1858,"a":"Gustave Aimard","t":"Les trappeurs de l'Arkansas"},{"y":1858,"a":"Jules Lecomte","t":"Les Pontons anglais, ou le Mort vivant"},{"y":1858,"a":"Xavier-de Montépin","t":"Les Amours dun fou"},{"y":1859,"a":"Alfred Assollant","t":"Scènes de la vie des États Uni"},{"y":1859,"a":"Alfred-de Bréhat","t":"Bras dacier"},{"y":1859,"a":"Charles Vincent","t":"Le Tueur de brigands, histoires anecdotiques des principaux bandits de l'Italie"},{"y":1859,"a":"Eugène Sue","t":"Latréaumont"},{"y":1859,"a":"James Greenwood","t":"Aventures surprenantes de trois vieux marins"},{"y":1859,"a":"Joseph Méry","t":"La guerre du Nizam"},{"y":1859,"a":"Jules Rostaing","t":"Le Marquis de Carabas"},{"y":1859,"a":"Octave Féré","t":"La vipère noire"},{"y":1859,"a":"Roger de Beauvoir","t":"Les mystères de lîle Saint Lo"},{"y":1859,"a":"Thomas Mayne Reid","t":"L'Habitation du désert, ou Aventures d'une famille perdue dans les solitudes de l'Amérique, par l…"},{"y":1859,"a":"Thomas Mayne Reid","t":"À la mer ! par le capitaine Ma"},{"y":1859,"a":"X.-B. Saintine","t":"Chrisna"},{"y":1860,"a":"Alexandre Dumas","t":"Ange Pitou"},{"y":1860,"a":"Alexandre Dumas","t":"Georges"},{"y":1860,"a":"Alexandre Dumas","t":"Ingénue"},{"y":1860,"a":"Alexandre Dumas","t":"Le bâtard de Mauléon"},{"y":1860,"a":"Alexandre Dumas","t":"Les Louves de Machecoul"},{"y":1860,"a":"Alexandre Dumas","t":"Lhoroscope"},{"y":1860,"a":"Amédée Achard","t":"Les rêveurs de Paris"},{"y":1860,"a":"Auguste Maquet","t":"Le Comte de Lavernie"},{"y":1860,"a":"Ernest Capendu","t":"Les Colonnes dHercule"},{"y":1860,"a":"Ernest Capendu","t":"Les Mystificateurs"},{"y":1860,"a":"Ernest Capendu","t":"Les Rascals"},{"y":1860,"a":"Frédéric Soulié","t":"Les Quatre napolitaines"},{"y":1860,"a":"Gabriel Ferry","t":"Les Squatters. La Clairière du bois des Hogues"},{"y":1860,"a":"Gustave Aimard","t":"La grande Flibuste"},{"y":1860,"a":"Joseph Méry","t":"Le paradis terrestre"},{"y":1860,"a":"Jules Rostaing","t":"La fée Sagesse"},{"y":1860,"a":"Paul Duplessis","t":"Aventures mexicaines"},{"y":1860,"a":"Paul Duplessis","t":"Les grands jours d'Auvergne"},{"y":1860,"a":"Paul Féval","t":"La Tour du diable. Le Château"},{"y":1860,"a":"Paul Féval","t":"Le berceau de Paris"},{"y":1860,"a":"Xavier-de Montépin","t":"LIrrésistible. [Bambinelli.]"},{"y":1860,"a":"Xavier-de Montépin","t":"Les Chevaliers du poignard, pa"},{"y":1860,"a":"Xavier-de Montépin","t":"Un mystère de famille"},{"y":1860,"a":"Xavier-de Montépin","t":"Une aventure galante"},{"y":1860,"a":"Élie Berthet","t":"Les émigrans"},{"y":1860,"a":"Élie Berthet","t":"Létang de Précigny"},{"y":1861,"a":"A. Castillon","t":"Scènes et aventures maritimes"},{"y":1861,"a":"Adrien Paul","t":"Blanche Mortimer"},{"y":1861,"a":"Alexandre Dumas","t":"Aventures de Lydéric"},{"y":1861,"a":"Alexandre Dumas","t":"La guerre des femmes"},{"y":1861,"a":"Alexandre Dumas","t":"Un Gil Blas en Californie"},{"y":1861,"a":"Amédée Achard","t":"Belle-Rose"},{"y":1861,"a":"Aristide de Gondrecourt","t":"Le pays de la peur"},{"y":1861,"a":"Charles de Ribelle","t":"Les Voyages de mon oncle Vincent, sur terre, sur mer, dans les airs, et par tous les moyens de lo…"},{"y":1861,"a":"Edmond About","t":"Le roi des montagnes"},{"y":1861,"a":"Emmanuel Gonzalès","t":"Le Maréchal dAncre (2e série"},{"y":1861,"a":"Ernest Capendu","t":"L'homme rouge"},{"y":1861,"a":"Gabriel de La Landelle","t":"L'Âme et l'ombre d'un navire"},{"y":1861,"a":"Henri Vié-Anduze","t":"Henry Vié. Contes champêtres"},{"y":1861,"a":"Jules Rostaing","t":"Mignonne, ou la Bonne petite f"},{"y":1861,"a":"Jules-de Saint-Féli","t":"Les aventures de Gogoloff, vai"},{"y":1861,"a":"Lancastel","t":"Sous les tropiques"},{"y":1861,"a":"Louis-Armand Garreau","t":"Leudaste, ou Les gaulois sous les mérovingiens"},{"y":1861,"a":"Paul Bocage","t":"Fragon & Cie"},{"y":1861,"a":"Paul Duplessis","t":"L'Illustre Polinario"},{"y":1861,"a":"Pierre Zaccone","t":"Une banqueroute frauduleuse"},{"y":1861,"a":"René de Pont-Jest","t":"Le Fire fly. Souvenirs des Indes et de la Chine"},{"y":1861,"a":"Roger de Beauvoir","t":"Safia ou la décadence de Venise"},{"y":1861,"a":"Stéphanie-Félicité Du Crest comtesse de Genlis","t":"Contes moraux"},{"y":1861,"a":"Xavier Eyma","t":"Aventuriers et corsaires"},{"y":1861,"a":"Zénaïde Fleuriot","t":"Une famille bretonne, ouvrage dédié à l'adolescence"},{"y":1861,"a":"Émile Souvestre","t":"Pierre Landais"},{"y":1862,"a":"Adrien Robert","t":"Adrien Robert (C. Basset). La Princesse Sophie"},{"y":1862,"a":"Alexandre Dumas","t":"Jane"},{"y":1862,"a":"Alexandre de Saillet","t":"Le Cousin du Petit Poucet, par"},{"y":1862,"a":"Alfred-de Bréhat","t":"Aventures dun petit Parisien"},{"y":1862,"a":"Amédée Gouet","t":"Amédée Gouet. La Dette de fami"},{"y":1862,"a":"Armand Pommier","t":"La Dame au manteau rouge, histoire dalmate"},{"y":1862,"a":"Ernest Capendu","t":"Le Pré Catelan"},{"y":1862,"a":"Eugène Sue","t":"Oeuvres illustrées d'Eugène Sue. Latréaumont"},{"y":1862,"a":"G. Desvosges","t":"La Jeunesse de Pierrette, mémo"},{"y":1862,"a":"Gustave Aimard","t":"La main-ferme"},{"y":1862,"a":"H. Garnier","t":"Six semaines dans un phare"},{"y":1862,"a":"Jean Castilhon","t":"Les quatre Fils Aymon, suivis de Jean de Calais et de Geneviève de Brabant (par J. Castilhon)"},{"y":1862,"a":"Joseph Méry","t":"Les Damnés de lInde"},{"y":1862,"a":"Louis Noir","t":"Le Coupeur de têtes"},{"y":1862,"a":"Léon Gozlan","t":"Histoire d'un diamant"},{"y":1862,"a":"Léon de Laujon","t":"Contes et légendes"},{"y":1862,"a":"Manuel","t":"Histoire aussi intéressante qu"},{"y":1862,"a":"O. Chevalier Desormeaux","t":"La tête plate"},{"y":1862,"a":"Paul Bocage","t":"Christian de Sauveterre"},{"y":1862,"a":"Paul Féval","t":"Le Capitaine Fantôme"},{"y":1862,"a":"Pauline-de Grandpré","t":"Une héroïne"},{"y":1862,"a":"Pierre Alexis Ponson du Terrail","t":"La Belle Antonia, par le Vte Ponson Du Terrail"},{"y":1862,"a":"Pierre Alexis Ponson du Terrail","t":"Les spadassins de lOpéra"},{"y":1862,"a":"René de Pont-Jest","t":"Bolino le négrier, souvenirs de l'Océan Indien"},{"y":1863,"a":"Amédée Achard","t":"La traite des blondes"},{"y":1863,"a":"Anonyme","t":"Le solitaire de la Tour dAvan"},{"y":1863,"a":"Anonyme","t":"Nouvelles historiques de lanc"},{"y":1863,"a":"Céline Fallet","t":"Le Robinson de la jeunesse"},{"y":1863,"a":"Emmanuel Gonzalès","t":"LHôtesse du connétable, histo"},{"y":1863,"a":"Emmanuel Gonzalès","t":"Les proscrits de Sicile"},{"y":1863,"a":"F.","t":"Les américains coureurs des bo"},{"y":1863,"a":"Gabrielle- Éthampes","t":"Les Orphelins bretons, épisode"},{"y":1863,"a":"Hendrik Conscience","t":"Le Coureur des grèves, scènes de la vie des pêcheurs flamands"},{"y":1863,"a":"Henri-Émile Chevalier","t":"Les Requins de l'Atlantique, roman inédit"},{"y":1863,"a":"Henri-Émile Chevalier","t":"Les derniers iroquois"},{"y":1863,"a":"Henri-Émile Chevalier","t":"Lespion noir"},{"y":1863,"a":"Jules Verne","t":"Cinq semaines en ballon, voyage de découvertes en Afrique par trois Anglais, rédigé sur les notes…"},{"y":1863,"a":"Mary-Lafon","t":"La bande mystérieuse"},{"y":1863,"a":"Max Valrey","t":"Les victimes du mariage"},{"y":1863,"a":"Paul Avenel","t":"La Nuit porte conseil"},{"y":1863,"a":"Paul Féval","t":"Le poisson dor"},{"y":1863,"a":"Paul Féval","t":"Les Habits noirs"},{"y":1863,"a":"Pierre Alexis Ponson du Terrail","t":"La reine des gypsies"},{"y":1863,"a":"Sophie-de Ségur","t":"Les bons enfants"},{"y":1863,"a":"Théophile Gautier","t":"Le Capitaine Fracasse"},{"y":1864,"a":"Bénédict-H Révoil","t":"Le Bivouac des trappeurs"},{"y":1864,"a":"Emmanuel Gonzalès","t":"Les Sabotiers de la Forêt Noir"},{"y":1864,"a":"Ernest Capendu","t":"Le Chevalier du Poulailler, pa"},{"y":1864,"a":"Florian Pharaon","t":"Un drame esclavagiste, prologue de la Sécession américaine, suivi de notes sur John Brown, son pr…"},{"y":1864,"a":"Gabriel de La Landelle","t":"La frégate Lintrouvable"},{"y":1864,"a":"George John Whyte Melville","t":"Les Gladiateurs : Rome et Judée, roman antique traduit de l'anglais par Ch. Bernard Derosne, avec…"},{"y":1864,"a":"Henri Gourdon de Genouillac","t":"Les Amours à coups d'épée"},{"y":1864,"a":"Joseph Méry","t":"Ursule"},{"y":1864,"a":"Joseph Vilbort","t":"Les Héroïnes, nouvelles polona"},{"y":1864,"a":"Jules Verne","t":"Voyage au centre de la terre"},{"y":1864,"a":"Paul Avenel","t":"Le Duc des moines, roman historique"},{"y":1864,"a":"Paul Duplessis","t":"Les Peaux-rouges"},{"y":1864,"a":"Pierre Alexis Ponson du Terrail","t":"Farandole, par le Vte Ponson D"},{"y":1864,"a":"Pierre Alexis Ponson du Terrail","t":"La Comtesse de Gramont, par le"},{"y":1864,"a":"Thomas Mayne Reid","t":"Les tirailleurs au Mexique"},{"y":1864,"a":"Xavier-de Montépin","t":"La Borghetta, suite du Compère"},{"y":1864,"a":"Élie Berthet","t":"LHomme des bois, par Élie Ber"},{"y":1865,"a":"Alfred Assollant","t":"Histoire fantastique du célèbre Pierrot écrite par le magicien Alcofribas"},{"y":1865,"a":"Alfred Assollant","t":"Une Ville de garnison"},{"y":1865,"a":"Aristide de Gondrecourt","t":"Le Sergent La Violette"},{"y":1865,"a":"Bénédict-H Révoil","t":"Les Drames du Nouveau Monde, p"},{"y":1865,"a":"Capitaine Marryat","t":"Le Pirate, par le capitaine Marryat, traduction de La Bédollière. - Les Trois cutters"},{"y":1865,"a":"Charles Deslys","t":"Les diables rouges, ou Guerre"},{"y":1865,"a":"Emmanuel Gonzalès","t":"La belle novice"},{"y":1865,"a":"Emmanuel Gonzalès","t":"Les Sabotiers de la Forêt Noir"},{"y":1865,"a":"Emmanuel Gonzalès","t":"Les proscrits de Sicile"},{"y":1865,"a":"Emmanuel Gonzalès","t":"LÉpée de Suzanne, histoire du"},{"y":1865,"a":"Ernest Capendu","t":"Dolorès"},{"y":1865,"a":"Eugène Moret","t":"Le Médecin des femmes"},{"y":1865,"a":"Eugène Nyon","t":"Les Cieutat, ou le Siège de Vi"},{"y":1865,"a":"Gabriel de La Landelle","t":"Un corsaire sous la Terreur"},{"y":1865,"a":"Jules Boulabert","t":"Le fils du supplicié"},{"y":1865,"a":"Jules Boulabert","t":"Les Catacombes sous la Terreur"},{"y":1865,"a":"Jules Dolor","t":"Voyage dans lempire des morts"},{"y":1865,"a":"Jules Le Neveu","t":"Aimery de Pavie, épisodes des guerres du XIVe siècle dans l'Artois et le Calaisis"},{"y":1865,"a":"L. Le Saint","t":"Souvenirs de deux marins"},{"y":1865,"a":"Louis Noir","t":"Les Martyrs de la Pologne"},{"y":1865,"a":"Léon Massenet de Marancour","t":"Confessions d'un commis-voyageur"},{"y":1865,"a":"Pierre Alexis Ponson du Terrail","t":"La Jeunesse du roi Henri. La M"},{"y":1865,"a":"Pierre Alexis Ponson du Terrail","t":"La jeunesse du roi Henri"},{"y":1865,"a":"Pierre Alexis Ponson du Terrail","t":"Vte Ponson Du Terrail. La Jeun"},{"y":1865,"a":"René de Mont-Louis","t":"Jocrisse soldat, épisode de la"},{"y":1865,"a":"Valérie de Gasparin","t":"Bande du Jura"},{"y":1866,"a":"Adrien Paul","t":"Les Mal vivants, ou le Brigand"},{"y":1866,"a":"Adrien Robert","t":"Les proscrits de 93"},{"y":1866,"a":"Adrien Robert","t":"La Fiancée de la cour, suite d"},{"y":1866,"a":"Alexandre Dumas","t":"Le Page du duc de Savoie, par"},{"y":1866,"a":"Emmanuel Gonzalès","t":"LHeure du berger"},{"y":1866,"a":"Emmanuel Gonzalès","t":"Les amours du Vert Galant"},{"y":1866,"a":"Ernest Blum","t":"Entre Bicêtre et Charenton. Les Aventures d'un notaire. La Légende du Monsieur qui avait le friss…"},{"y":1866,"a":"Eugène Sue","t":"La Clochette dairain. Le Coll"},{"y":1866,"a":"Gabriel de La Landelle","t":"[Le Tableau de la mer. Moeurs maritimes"},{"y":1866,"a":"J.-M. Des Journaux","t":"Le chevalier aux armes vertes"},{"y":1866,"a":"James Greenwood","t":"Aventures surprenantes de troi"},{"y":1866,"a":"Johann Rudolf Wyss","t":"E. Muller. (Traduction nouvelle.) Le Robinson suisse. Revu et complété par P.-J. Stahl"},{"y":1866,"a":"Jules Boulabert","t":"Le fils du supplicié"},{"y":1866,"a":"Jules Verne","t":"Le désert de glace"},{"y":1866,"a":"Jules-Berlioz d' Auriac","t":"Le mangeur de poudre"},{"y":1866,"a":"Jules-Berlioz d' Auriac","t":"Les Pieds fourchus"},{"y":1866,"a":"Jules-Berlioz d' Auriac","t":"Rayon-de-Soleil"},{"y":1866,"a":"Octave Féré","t":"La Bergère dIvry"},{"y":1866,"a":"Pierre Alexis Ponson du Terrail","t":"La Jeunesse du roi Henri. Les Amours du valet de trèfle"},{"y":1866,"a":"Pierre Alexis Ponson du Terrail","t":"La veuve de Sologne"},{"y":1866,"a":"Pierre Alexis Ponson du Terrail","t":"Les exploits de Rocambole"},{"y":1866,"a":"Pierre Alexis Ponson du Terrail","t":"Mémoires de deux saltimbanques"},{"y":1866,"a":"Raoul de Navery","t":"Le Missionnaire de la terre maudite"},{"y":1866,"a":"Rudolf Erich Raspe","t":"Aventures du Baron de Münchhausen"},{"y":1866,"a":"Thomas Mayne Reid","t":"Aventures d'un officier américain"},{"y":1866,"a":"Xavier-de Montépin","t":"Diane et Blanche, troisième pa"},{"y":1866,"a":"Xavier-de Montépin","t":"Le Moulin rouge"},{"y":1866,"a":"Élie Berthet","t":"La bastide rouge"},{"y":1866,"a":"Édouard Auger","t":"Histoires américaines"},{"y":1867,"a":"Ange Vigne","t":"Lémeraude de Berthe"},{"y":1867,"a":"Anonyme","t":"Mémoires dune institutrice É"},{"y":1867,"a":"Aurélien Scholl","t":"Les nouveaux mystères de Paris"},{"y":1867,"a":"Bénédict-H Révoil","t":"Les drames du Nouveau Monde"},{"y":1867,"a":"Ernest Capendu","t":"Le Joug de l'aigle, roman historique"},{"y":1867,"a":"Ernest LÉpine","t":"Histoire aussi intéressante qu"},{"y":1867,"a":"Franz Hoffmann","t":"Toby et Maly, histoire pour la jeunesse"},{"y":1867,"a":"Gabriel de La Landelle","t":"Aventures dun gentilhomme"},{"y":1867,"a":"Gabriel de La Landelle","t":"Une haine É  bord"},{"y":1867,"a":"Gustave Aimard","t":"Balle franche"},{"y":1867,"a":"Gustave Aimard","t":"Le Comte de Warrens"},{"y":1867,"a":"Henry de Kock","t":"Les trois luronnes"},{"y":1867,"a":"James Fenimore Cooper","t":"Le tueur de daims"},{"y":1867,"a":"Jules Verne","t":"Cinq semaines en ballon, voyag"},{"y":1867,"a":"Jules Verne","t":"Les anglais au Pôle Nord"},{"y":1867,"a":"Jules Verne","t":"Voyage au centre de la terre"},{"y":1867,"a":"Jules Verne","t":"Voyages et aventures du Capitaine Hatteras"},{"y":1867,"a":"Jules-Berlioz d' Auriac","t":"La caravane des sombreros"},{"y":1867,"a":"Jules-Berlioz d' Auriac","t":"Les forestiers du Michigan"},{"y":1867,"a":"Jules-Berlioz d' Auriac","t":"Oeil-de-feu"},{"y":1867,"a":"Laurence de Savigny","t":"Le Robinson des Alpes"},{"y":1867,"a":"Octave Féré","t":"Fualdès"},{"y":1867,"a":"Pierre Alexis Ponson du Terrail","t":"La Jeunesse du roi Henri. [III"},{"y":1867,"a":"Pierre Alexis Ponson du Terrail","t":"Le Bal des Victimes. [Signé"},{"y":1867,"a":"Pierre Alexis Ponson du Terrail","t":"Les fils de Judas"},{"y":1867,"a":"Pierre Alexis Ponson du Terrail","t":"Mémoires dun gendarme"},{"y":1867,"a":"Pierre Alexis Ponson du Terrail","t":"Ponson Du Terrail. Les Contes"},{"y":1867,"a":"William Darville","t":"L'armurier de Québec, ou Les derniers partisans français canadiens"},{"y":1867,"a":"Élie Berthet","t":"Le bon vieux temps"},{"y":1868,"a":"Adolphe Belot","t":"Mémoires dun caissier"},{"y":1868,"a":"Charles Guénot","t":"Le chevalier au cor dargent"},{"y":1868,"a":"Charles Guénot","t":"Le vieux pilote"},{"y":1868,"a":"Charles Perrault","t":"Cendrillon"},{"y":1868,"a":"Gabriel de La Landelle","t":"Études marines. Jean Bart et C"},{"y":1868,"a":"Henri-Émile Chevalier","t":"Jacques Cartier"},{"y":1868,"a":"Jules Verne","t":"Les Enfants du Capitaine Grant, voyage autour du monde"},{"y":1868,"a":"Lorenz FrÉ¸lich","t":"La Petite bohémienne, par Élie"},{"y":1868,"a":"Louis Noir","t":"Jacques la Hache"},{"y":1868,"a":"P. Lavayssière","t":"Un missionnaire en Californie"},{"y":1868,"a":"Paul Dumanoir","t":"Les oubliettes de la tour François Ier"},{"y":1868,"a":"Pierre Alexis Ponson du Terrail","t":"La Jeunesse du roi Henri. [IV"},{"y":1868,"a":"Pierre Alexis Ponson du Terrail","t":"Le grillon du moulin"},{"y":1868,"a":"Pierre Alexis Ponson du Terrail","t":"Le secret du docteur Rousselle"},{"y":1868,"a":"Pierre Alexis Ponson du Terrail","t":"Les misères de Londres"},{"y":1868,"a":"Pierre Alexis Ponson du Terrail","t":"Ponson Du Terrail. La Dame au"},{"y":1868,"a":"Pierre Alexis Ponson du Terrail","t":"Ponson Du Terrail. Le Dernier"},{"y":1868,"a":"Pierre Vésinier","t":"Le mariage de la cousine de l"},{"y":1868,"a":"Pierre Zaccone","t":"Le courrier de Lyon"},{"y":1868,"a":"Pierre-Sébastien Laurentie","t":"Épisode de lémigration frança"},{"y":1868,"a":"Théodore Labourieu","t":"Les Carrières d'Amérique"},{"y":1868,"a":"Théodore de Grave","t":"Les Duellistes. Préface"},{"y":1868,"a":"Théodore de Langeac","t":"Les aventures d'un sultan"},{"y":1868,"a":"Édouard Laboulaye","t":"Le Prince Caniche, par Édouard"},{"y":1869,"a":"Anonyme","t":"Lars Vonved ou Le pirate de la"},{"y":1869,"a":"Aristide Roger","t":"Aventures extraordinaires de Trinitus. Voyage sous les flots, rédigé d'après le journal de bord d…"},{"y":1869,"a":"Charles Guénot","t":"Le Soldat de 93, par labbé Ch"},{"y":1869,"a":"Charles Guénot","t":"Mosa lIsraélite, par labbé C"},{"y":1869,"a":"Emmanuel Gonzalès","t":"Les Trois fiancées"},{"y":1869,"a":"Félix de Servan","t":"Louis XI à Amiens"},{"y":1869,"a":"Gabriel de La Landelle","t":"Les géants de la mer"},{"y":1869,"a":"George Sand","t":"Teverino"},{"y":1869,"a":"Joseph Méry","t":"Un carnaval de Paris"},{"y":1869,"a":"Lucien Biart","t":"Benito Vasquez, étude de moeurs mexicaines"},{"y":1869,"a":"Marceline Desbordes-","t":"Contes et scènes de la vie de"},{"y":1869,"a":"Narcisse Blanpain","t":"Les Alliés en Champagne, 1814"},{"y":1869,"a":"O Dupin","t":"Le petit Noël"},{"y":1869,"a":"P.-J. Stahl","t":"Hector le Fanfaron"},{"y":1869,"a":"Paul Réveillère","t":"Récits et nouvelles"},{"y":1869,"a":"Pierre Alexis Ponson du Terrail","t":"La Messe noire"},{"y":1869,"a":"Pierre Alexis Ponson du Terrail","t":"La reine des barricades"},{"y":1869,"a":"Pierre Alexis Ponson du Terrail","t":"Le Forgeron de la Cour Dieu, p"},{"y":1869,"a":"Pierre Alexis Ponson du Terrail","t":"Lorgue de Barbarie"},{"y":1869,"a":"Pierre Alexis Ponson du Terrail","t":"Ponson Du Terrail. Le Capitain"},{"y":1869,"a":"Pierre Alexis Ponson du Terrail","t":"Ponson Du Terrail. Les Misères"},{"y":1869,"a":"Ruelle-Pomponne","t":"Une épopée au Brésil"},{"y":1869,"a":"Thomas Mayne Reid","t":"Les chasseurs de girafes"},{"y":1869,"a":"Thomas Mayne Reid","t":"Les jeunes esclaves"},{"y":1869,"a":"Thomas Mayne Reid","t":"William le mousse"},{"y":1869,"a":"William Harrison Ainsworth","t":"Crichton"},{"y":1869,"a":"Élie Berthet","t":"Le démon de la chasse"},{"y":1870,"a":"Ernest Capendu","t":"Le Capitaine La Chesnaye"},{"y":1870,"a":"Frédéric Soulié","t":"Le Lion amoureux. La Femme du"},{"y":1870,"a":"Gabriel de La Landelle","t":"Les quarts de jour"},{"y":1870,"a":"Jules Boulabert","t":"La Bande des Caroubleurs"},{"y":1871,"a":"Alfred-de Bréhat","t":"Les Amours dune noble dame, p"},{"y":1871,"a":"Charles Joliet","t":"Les Romans patriotiques, l'occupation"},{"y":1871,"a":"Charles Perrault","t":"Les contes de fées de Perrault"},{"y":1871,"a":"Friedrich-Wilhelm Hackländer","t":"La vie militaire en Prusse"},{"y":1871,"a":"Jules Verne","t":"De la terre à la lune"},{"y":1871,"a":"Jules Verne","t":"Une ville flottante"},{"y":1871,"a":"Jules Verne","t":"Vingt mille lieues sous les me"},{"y":1871,"a":"Louis-Adolphe Turpin de Sansay","t":"La Canaille de Paris, grand roman historique et social par Turpin de Sansay. [2e édition.]"},{"y":1871,"a":"Léon Beauvallet","t":"Les secrets du capitaine Buridan (deuxième époque)"},{"y":1872,"a":"Alexandre Dumas","t":"Joseph Balsamo"},{"y":1872,"a":"Alexandre de Lamothe","t":"Le taureau des Vosges"},{"y":1872,"a":"Charles-d Héricault","t":"Thermidor"},{"y":1872,"a":"Ernest Daudet","t":"Fleur de péché"},{"y":1872,"a":"Eugène Berthoud","t":"Le beau Roland"},{"y":1872,"a":"Eugène Muller","t":"Mémoires dun franc tireur"},{"y":1872,"a":"Hector Grard","t":"Les Deux frères, ou les Singes de Jean-le-manchot"},{"y":1872,"a":"Hendrik Conscience","t":"Le bourgmestre de Liége"},{"y":1872,"a":"Jules Noriac","t":"Les Amants de la liberté, grand roman dramatique"},{"y":1872,"a":"Jules Verne","t":"Autour de la lune"},{"y":1872,"a":"Jules Verne","t":"Aventures de trois Russes et de trois Anglais dans l'Afrique australe"},{"y":1872,"a":"Paul de Kock","t":"La Grande empoisonneuse"},{"y":1872,"a":"Pierre Zaccone","t":"Un drame sur les pontons"},{"y":1872,"a":"Thomas Mayne Reid","t":"Les chasseurs de bisons"},{"y":1872,"a":"Thomas Mayne Reid","t":"Les vacances des jeunes Boërs"},{"y":1873,"a":"Albert Blanquet","t":"Les Amours de dArtagnan, par"},{"y":1873,"a":"Aristide Roger","t":"Aventures extraordinaires de T"},{"y":1873,"a":"Armand Durantin","t":"LHéritage de la folie"},{"y":1873,"a":"Bret Harte","t":"Récits californiens"},{"y":1873,"a":"Charles Buet","t":"Scènes de la vie montagnarde"},{"y":1873,"a":"Gaston Mazoyer","t":"Les Capuces aux deux couleurs. Préface par Jules Janin"},{"y":1873,"a":"George Alfred Henty","t":"Les jeunes francs-tireurs"},{"y":1873,"a":"J.-M. Des Journaux","t":"La Fille des tsars, ou la Croix latine et la croix grecque"},{"y":1873,"a":"Jacques Vindex","t":"Le Château noir, roman histori"},{"y":1873,"a":"James-Feni Cooper","t":"Le dernier des Mohicans"},{"y":1873,"a":"Jean Bruno","t":"Brisefer l'insurgé"},{"y":1873,"a":"Jules Rouquette","t":"La route fatale"},{"y":1873,"a":"Paul Féval","t":"Paris, suite du Paradis des fe"},{"y":1873,"a":"Paul Parfait","t":"L'Assassin du Bel Antoine"},{"y":1873,"a":"Pierre Zaccone","t":"La Lanterne rouge"},{"y":1873,"a":"William Darville","t":"Larmurier de Québec, ou Les d"},{"y":1873,"a":"Xavier-de Montépin","t":"Le Médecin des pauvres"},{"y":1873,"a":"Édouard Auger","t":"Récits doutre mer. A bord du"},{"y":1873,"a":"Étienne Enault","t":"L'enfant trouvé"},{"y":1874,"a":"A. Des-Tilleu","t":"La princesse aux violettes"},{"y":1874,"a":"A. Des-Tilleu","t":"Le fils de Polichinelle"},{"y":1874,"a":"Albert Delpit","t":"Jean nu pieds, chronique de 18"},{"y":1874,"a":"Albert Delpit","t":"La Vengeresse"},{"y":1874,"a":"Albert Delpit","t":"Les compagnons du roi"},{"y":1874,"a":"Alfred Assollant","t":"Le Seigneur de Lanterne"},{"y":1874,"a":"Armand Dubarry","t":"L'Alsace-Lorraine en Australie. Histoire d'une famille d'émigrants sur le continent austral"},{"y":1874,"a":"Candoré","t":"Azur le Page et la fée Candour"},{"y":1874,"a":"Capitaine Marryat","t":"Les enfants de la Forêt-Neuve"},{"y":1874,"a":"Charles Buet","t":"A petite Cloche grand son"},{"y":1874,"a":"Charles Narrey","t":"Le Bal du diable, Le petit chaperon rose, Les cheveux du diable, Misère et pauvreté"},{"y":1874,"a":"Ernest Billaudel","t":"Les Vengeurs de Lorraine, grand roman historique, de Ernest Billaudel"},{"y":1874,"a":"Ernest Capendu","t":"Surcouf"},{"y":1874,"a":"Eugène de Mirecourt","t":"Le Fou par amour, [La clé de c"},{"y":1874,"a":"Friedrich Gerstäcker","t":"Les voleurs de chevaux"},{"y":1874,"a":"Jules Rouquette","t":"Ce que coûtent les femmes"},{"y":1874,"a":"Julien Thoulet","t":"Mon premier voyage en mer"},{"y":1874,"a":"Louis Noir","t":"Le Secret du trappeur"},{"y":1874,"a":"Paul Féval","t":"Contes de Bretagne"},{"y":1874,"a":"Pierre Zaccone","t":"Les gueux"},{"y":1874,"a":"Théodore Labourieu","t":"Les Bandits des deux-mondes, roman contemporain inédit"},{"y":1874,"a":"Théodore Labourieu","t":"Mémoires dun déporté"},{"y":1874,"a":"Victor Hugo","t":"Quatre-vingt-treize"},{"y":1874,"a":"William Cobb","t":"Les mystères de New York"},{"y":1875,"a":"A. Halnare","t":"Le bâtard errant"},{"y":1875,"a":"Albéric Second","t":"Les Demoiselles du Ronçay"},{"y":1875,"a":"Alexandre Dumas","t":"La Dame de Monsoreau"},{"y":1875,"a":"Alfred Assollant","t":"Le Puy de Montchal"},{"y":1875,"a":"Armand Dubarry","t":"Trois histoires de terre et de mer"},{"y":1875,"a":"Auguste Maquet","t":"La Maison du baigneur"},{"y":1875,"a":"Clémence Robert","t":"Le secret de maître André"},{"y":1875,"a":"Edgar Allan Poe","t":"Aventures d'Arthur Gordon Pym par Edgar Poë, traduction de Charles Baudelaire, nouvelle édition"},{"y":1875,"a":"Ernest Capendu","t":"La Tour aux rats, grand roman historique par Ernest Capendu"},{"y":1875,"a":"Ernest Hupin","t":"Au temps du muguet"},{"y":1875,"a":"Eugène Sue","t":"Eugène Süe. Oeuvres. Paula Mon"},{"y":1875,"a":"Eugène Sue","t":"Le juif errant"},{"y":1875,"a":"Gabriel Ferry","t":"Costal l'Indien, ou le Dragon de la Reine"},{"y":1875,"a":"Gabriel de La Landelle","t":"La plus heureuse des femmes"},{"y":1875,"a":"Gustave Toudouze","t":"La sirène"},{"y":1875,"a":"Hector Malot","t":"Lauberge du monde"},{"y":1875,"a":"Henry Cauvain","t":"Maximilien Heller"},{"y":1875,"a":"Jean Bruno","t":"Aventures de Paul enlevé par u"},{"y":1875,"a":"Jules Gondry Du Jardinet","t":"L'anneau du meurtrier"},{"y":1875,"a":"Jules Verne","t":"Lîle mystérieuse"},{"y":1875,"a":"Jules Verne","t":"Vingt mille lieues sous les me"},{"y":1875,"a":"Julien Thoulet","t":"Mon premier voyage en mer"},{"y":1875,"a":"Louis Noir","t":"Les Compagnons de la hache. Deuxième série des Drames du désert"},{"y":1875,"a":"Léon Cahun","t":"Les Aventures du capitaine Magon, ou Une exploration phénicienne mille ans avant l'ère chrétienne"},{"y":1875,"a":"Paul Féval","t":"La Bande Cadet"},{"y":1875,"a":"Paul Saunière","t":"Monseigneur"},{"y":1875,"a":"Pierre Alexis Ponson du Terrail","t":"Les masques rouges"},{"y":1875,"a":"Pierre Ferragut","t":"Le capitaine Caderousse"},{"y":1875,"a":"Émile Gaboriau","t":"Largent des autres"},{"y":1876,"a":"Achille Simon","t":"Les petits troupiers"},{"y":1876,"a":"Adolphe Belot","t":"Le secret terrible"},{"y":1876,"a":"Alexandre Dumas","t":"Le vicomte de Bragelonne"},{"y":1876,"a":"Alphonse Brown","t":"Voyage à dos de baleine"},{"y":1876,"a":"Amédée Achard","t":"Belle Rose"},{"y":1876,"a":"Amédée Achard","t":"La traite des blondes"},{"y":1876,"a":"Anonyme","t":"Une poignée danecdotes"},{"y":1876,"a":"Anonyme","t":"Histoire de Robinson Crusoé"},{"y":1876,"a":"Anonyme","t":"Le petit nègre"},{"y":1876,"a":"Anonyme","t":"Lenfer social"},{"y":1876,"a":"Bénédict-H Révoil","t":"Voyage au pays des Kangarous"},{"y":1876,"a":"Bénédict-H Révoil","t":"À travers les prairies. Les Pe"},{"y":1876,"a":"Charles Buet","t":"Philippe-Monsieur"},{"y":1876,"a":"Clémence Robert","t":"La fille de Satan"},{"y":1876,"a":"D. Pérégrine","t":"La fille aux serpents"},{"y":1876,"a":"Ernest d' Hervilly","t":"Histoires divertissantes"},{"y":1876,"a":"Eugène Sue","t":"Les Romans parisiens. Nouvelle édition illustrée, contenant les Mystères de Paris"},{"y":1876,"a":"Friedrich Gerstäcker","t":"Les pirates du Mississippi"},{"y":1876,"a":"Frédéric Soulié","t":"Le lion amoureux"},{"y":1876,"a":"Félix de Servan","t":"Lépée de Charles Quint"},{"y":1876,"a":"Gustave Aimard","t":"Les Outlaws du Missouri"},{"y":1876,"a":"Gustave Aimard","t":"Les bisons blancs"},{"y":1876,"a":"Henri Bernardin-","t":"Paul et Virginie"},{"y":1876,"a":"Henri Guenot","t":"Walter Killanoe"},{"y":1876,"a":"Henry-de Foville","t":"Le Volontaire de 1870, roman c"},{"y":1876,"a":"James Greenwood","t":"Métamorphoses de Pierre le Cru"},{"y":1876,"a":"Johann-Rud Wyss","t":"Robinson suisse"},{"y":1876,"a":"Jonathan Swift","t":"Voyages de Gulliver"},{"y":1876,"a":"Jules Verne","t":"Michel Strogoff, Moscou, Irkoutsk"},{"y":1876,"a":"Julie Lavergne","t":"Bourdoux"},{"y":1876,"a":"Just-Jean-Étienne Roy","t":"Théodore et Louis ou Le rempla"},{"y":1876,"a":"Louis Bailleul","t":"Les chasseurs d'ivoire"},{"y":1876,"a":"Louis Gallet","t":"Le capitaine Satan"},{"y":1876,"a":"Louis Jacolliot","t":"La côte dÉbène"},{"y":1876,"a":"Louis Noir","t":"Jean Chacal, souvenirs dun zo"},{"y":1876,"a":"Louis Noir","t":"Le secret du trappeur"},{"y":1876,"a":"Marcel Tissot","t":"Le Capitaine philosophe"},{"y":1876,"a":"Oscar Comettant","t":"Le Nouveau Monde"},{"y":1876,"a":"P. Lavayssière","t":"Les pionniers allemands en Amérique"},{"y":1876,"a":"P.-J. Stahl","t":"Cerf agile"},{"y":1876,"a":"Pierre Alexis Ponson du Terrail","t":"Lauberge de la rue des enfant"},{"y":1876,"a":"Pierre Alexis Ponson du Terrail","t":"Le filleul du roi"},{"y":1876,"a":"Pierre Alexis Ponson du Terrail","t":"Le retour de Rocambole"},{"y":1876,"a":"Pierre Alexis Ponson du Terrail","t":"Les cavaliers de la nuit"},{"y":1876,"a":"Pierre Coeur","t":"La fille du rabbin"},{"y":1876,"a":"Richard Cortambert","t":"Un drame au fond de la mer"},{"y":1876,"a":"Richard Hildreth","t":"Lesclave blanc"},{"y":1876,"a":"Victor Hugo","t":"Bug Jargal"},{"y":1876,"a":"William Henry Giles Kingston","t":"Une croisière autour du monde"},{"y":1876,"a":"Xavier-de Montépin","t":"Le ventriloque"},{"y":1876,"a":"Élie Berthet","t":"Le monde inconnu"},{"y":1877,"a":"Adolphe de Lescure","t":"Les cadets de Gascogne"},{"y":1877,"a":"Albert Fornelles","t":"L'aventure de M. de Troenic"},{"y":1877,"a":"Alfred Séguin","t":"Le robinson noir"},{"y":1877,"a":"Anonyme","t":"Les aides de père et de mère"},{"y":1877,"a":"Anonyme","t":"Une soirée dans le monde des c"},{"y":1877,"a":"Auguste-Marc Bayeux","t":"Diana"},{"y":1877,"a":"Charles Buet","t":"La mitre et l'épée"},{"y":1877,"a":"Charles Guitard","t":"Mon ami Duroseau, roman bouffe"},{"y":1877,"a":"Charles-d Héricault","t":"Les Cousins de Normandie, roma"},{"y":1877,"a":"Eugène Parès","t":"La fille du garde côte"},{"y":1877,"a":"Eugène Parès","t":"Les aventures de léveillé, ou"},{"y":1877,"a":"Ferdinand Fabre","t":"Les Courbezon"},{"y":1877,"a":"Fortuné Du Boisgobey","t":"La Peau d'un autre, trente ans d'aventures"},{"y":1877,"a":"Gabrielle- Éthampes","t":"Les colombes de La Forlière"},{"y":1877,"a":"Gustave Aimard","t":"DoÉ±a Flor"},{"y":1877,"a":"Gustave Aimard","t":"Le baron Frédérick"},{"y":1877,"a":"Gustave Aimard","t":"Les rois de l'océan"},{"y":1877,"a":"Hendrik Conscience","t":"La préférée"},{"y":1877,"a":"Henri Gourdon de Genouillac","t":"Une luronne"},{"y":1877,"a":"Henry de Kock","t":"La maison blanche"},{"y":1877,"a":"Henry-de Foville","t":"Le volontaire de 1870"},{"y":1877,"a":"James Fenimore Cooper","t":"Le pilote"},{"y":1877,"a":"Jules Noriac","t":"La falaise d'Houlgate"},{"y":1877,"a":"Jules Verne","t":"Hector Servadac"},{"y":1877,"a":"Jules Verne","t":"Le Chancellor"},{"y":1877,"a":"Jules Verne","t":"Les Indes noires"},{"y":1877,"a":"Jules Verne","t":"Les enfants du capitaine Grant"},{"y":1877,"a":"Jules Verne","t":"Voyage au centre de la terre"},{"y":1877,"a":"Just-Jean-Étienne Roy","t":"Le moulin de laveugle ou Les"},{"y":1877,"a":"Louis Jacolliot","t":"LAfrique mystérieuse"},{"y":1877,"a":"Louis Jacolliot","t":"La Cité des sables. El Temin"},{"y":1877,"a":"Louis Jacolliot","t":"La Côte dIvoire. Lhomme des"},{"y":1877,"a":"Louis Noir","t":"La femme coupée en morceaux"},{"y":1877,"a":"Léon Cahun","t":"La Bannière bleue. Aventures d"},{"y":1877,"a":"Paul Féval","t":"Jean Diable"},{"y":1877,"a":"Paul Féval","t":"La fée des grèves"},{"y":1877,"a":"Paul Féval","t":"La première aventure de Corent"},{"y":1877,"a":"Paul Féval","t":"Le bossu, ou Le petit parisien"},{"y":1877,"a":"Paul Féval","t":"Lhomme de fer"},{"y":1877,"a":"Pierre Alexis Ponson du Terrail","t":"Drames de Paris"},{"y":1877,"a":"Pierre Alexis Ponson du Terrail","t":"La jeunesse du roi Henri"},{"y":1877,"a":"Pierre Alexis Ponson du Terrail","t":"Les amours dAurore"},{"y":1877,"a":"Robert de Fauconnet","t":"Une poignée d'anecdotes"},{"y":1877,"a":"Roger-de Beauvoir","t":"Les mystères de lîle Saint Lo"},{"y":1877,"a":"S. Merville","t":"Les blancs"},{"y":1877,"a":"Théophile Gautier","t":"Le Capitaine Fracasse"},{"y":1877,"a":"Victor Cherbuliez","t":"Le comte Kostia"},{"y":1877,"a":"Xavier-de Montépin","t":"La traite des blanches"},{"y":1877,"a":"Xavier-de Montépin","t":"Lagent de police"},{"y":1877,"a":"Xavier-de Montépin","t":"Le Médecin des pauvres"},{"y":1877,"a":"Xavier-de Montépin","t":"Les enfers de Paris"},{"y":1877,"a":"Élie Berthet","t":"Le braconnier"},{"y":1877,"a":"Élie Berthet","t":"Le sauvage"},{"y":1877,"a":"Émile Richebourg","t":"Les deux berceaux"},{"y":1877,"a":"Évariste Carrance","t":"Les aventures du Docteur Van-der-Bader"},{"y":1878,"a":"Adolphe Pieyre","t":"Débora la bohémienne"},{"y":1878,"a":"Albert Delpit","t":"La famille Cavalié"},{"y":1878,"a":"Alexandre Dumas","t":"Les compagnons de Jéhu"},{"y":1878,"a":"Alexandre de Lamothe","t":"Les faucheurs de la mort"},{"y":1878,"a":"Alfred Assollant","t":"Montluc le Rouge"},{"y":1878,"a":"Alfred Driou","t":"La fille du sonneur"},{"y":1878,"a":"Alfred de Bougy","t":"La vengeance du bravo"},{"y":1878,"a":"Anonyme","t":"Les misérables de Londres"},{"y":1878,"a":"Armand Lapointe","t":"Les déserts africains"},{"y":1878,"a":"Auguste Salières","t":"Une poignée de héros"},{"y":1878,"a":"Bénédict-H Révoil","t":"La Panthère noire, aventures a"},{"y":1878,"a":"Bénédict-H Révoil","t":"Voyage au pays des Kangarous"},{"y":1878,"a":"Carl Georg Fullborn","t":"La muette de Portici ou Le soulèvement de Naples"},{"y":1878,"a":"Charles Buet","t":"Le Maréchal de Montmayeur, 146"},{"y":1878,"a":"Charles Deslys","t":"La fille É  Jacques"},{"y":1878,"a":"Charles Guénot","t":"Le pêcheur de Penmarck"},{"y":1878,"a":"E.-P. Parmentin","t":"Lauberge du Grand Cerf"},{"y":1878,"a":"Emmanuel Gonzalès","t":"La fiancée de la mer"},{"y":1878,"a":"Emmanuel Gonzalès","t":"Les frères de la côte"},{"y":1878,"a":"Eugène Berthoud","t":"Le cousin du diable"},{"y":1878,"a":"Gabriel Ferry","t":"Le coureur des bois ou Les che"},{"y":1878,"a":"Gabrielle- Éthampes","t":"Les illusions dHélène"},{"y":1878,"a":"Georges Fath","t":"Un drôle de voyage"},{"y":1878,"a":"Gustave Aimard","t":"La guérilla fantôme"},{"y":1878,"a":"Gustave Aimard","t":"Le scalpeur des Ottawas"},{"y":1878,"a":"Hendrik Conscience","t":"Une affaire embrouillée"},{"y":1878,"a":"Henri de La Blanchère","t":"Le club des toqués"},{"y":1878,"a":"Henri-Émile Chevalier","t":"La Fille du pirate, légende de"},{"y":1878,"a":"Henri-Émile Chevalier","t":"Lîle de Sable"},{"y":1878,"a":"Hippolyte Audeval","t":"La dame guerrière"},{"y":1878,"a":"J-B. Penaud","t":"Le monstre du XIVme siècle"},{"y":1878,"a":"James Fenimore Cooper","t":"Oeil-de-Faucon (tueur de daims)"},{"y":1878,"a":"Johann Rudolf Wyss","t":"Le Nouveau Robinson suisse"},{"y":1878,"a":"Jules Cornély","t":"Loeil du diable"},{"y":1878,"a":"Jules Noriac","t":"La Comtesse de Bruges"},{"y":1878,"a":"Jules Verne","t":"Autour de la lune"},{"y":1878,"a":"Jules Verne","t":"Le Chancellor"},{"y":1878,"a":"Jules Verne","t":"Un capitaine de quinze ans"},{"y":1878,"a":"Jules Verne","t":"Voyages et aventures du Capitaine Hatteras"},{"y":1878,"a":"Just-Jean-Étienne Roy","t":"Laurent et Jérôme ou Les deux jeunes poètes"},{"y":1878,"a":"L.-V. Denancé","t":"Les pontons anglais, ou Le vie"},{"y":1878,"a":"Louis Friedel","t":"Les naufragés au Spitzberg, ou Les salutaires effets de la confiance en Dieu"},{"y":1878,"a":"Louise Diard","t":"La batelière de Venise"},{"y":1878,"a":"Léo-de Marck","t":"Les amoureuses de Dumanet"},{"y":1878,"a":"Marie Maréchal","t":"Le mariage de Nancy"},{"y":1878,"a":"Olga de Pitray","t":"Le fils du maquignon"},{"y":1878,"a":"P.-J. Stahl","t":"Bonsoir, petit père"},{"y":1878,"a":"Paul Féval","t":"Contes de Bretagne"},{"y":1878,"a":"Paul Féval","t":"Contes de Bretagne"},{"y":1878,"a":"Paul Féval","t":"Oeuvres de Paul Féval soigneus"},{"y":1878,"a":"Paul Saunière","t":"Le capitaine Belle Humeur"},{"y":1878,"a":"Philibert Audebrand","t":"Un petit-fils de Robinson"},{"y":1878,"a":"Philibert Audebrand","t":"Voyage et aventures autour du"},{"y":1878,"a":"Pierre Zaccone","t":"Le gamin de Paris"},{"y":1878,"a":"Raoul de Navery","t":"Jean Canada"},{"y":1878,"a":"Robert Michael Ballantyne","t":"Le Capitaine de l'écume"},{"y":1878,"a":"Robert-de Fauconnet","t":"Laffaire numéro 112"},{"y":1878,"a":"Thomas Mayne Reid","t":"Les chasseurs de bisons"},{"y":1878,"a":"Thomas Mayne Reid","t":"Les chasseurs de chevelures"},{"y":1878,"a":"William Darville","t":"Les trois frères"},{"y":1878,"a":"Xavier-de Montépin","t":"Confessions dun bohême"},{"y":1878,"a":"Xavier-de Montépin","t":"La Bâtarde"},{"y":1878,"a":"Élie Berthet","t":"Le Val dAndorre"},{"y":1878,"a":"Émile Gaboriau","t":"Le Capitaine Coutanceau"},{"y":1878,"a":"Étienne Enault","t":"L'Enfant trouvé"},{"y":1879,"a":"Adolphe de Lescure","t":"Mademoiselle de Cagliostro"},{"y":1879,"a":"Albert Robida","t":"Voyages très extraordinaires de Saturnin Farandoul"},{"y":1879,"a":"Alexandre de Lamothe","t":"Les soirées de Constantinople"},{"y":1879,"a":"Alexis Bouvier","t":"La femme du mort"},{"y":1879,"a":"Alfred Assollant","t":"Deux amis en 1792"},{"y":1879,"a":"Auguste Maquet","t":"La maison du baigneur"},{"y":1879,"a":"Capitaine Marryat","t":"Laspirant de marine"},{"y":1879,"a":"Charles Deslys","t":"La revanche de Marguerite"},{"y":1879,"a":"Charles-d Héricault","t":"Le premier amour de Lord Saint"},{"y":1879,"a":"Edgar Allan Poe","t":"Nouvelles américaines. Traduction nouvelle, précédée d'une notice sur Edgard Poe par Lavergnolle"},{"y":1879,"a":"Emmanuel Gonzalès","t":"La vierge de lOpéra"},{"y":1879,"a":"Emmanuel Gonzalès","t":"Lhôtesse du connétable"},{"y":1879,"a":"Ernest Candèze","t":"La Gileppe, les infortunes du"},{"y":1879,"a":"Eugène Parès","t":"Voyage et aventures de trois j"},{"y":1879,"a":"G. Teniers","t":"Les mystères de Venise, ou Mar"},{"y":1879,"a":"Gabriel de La Landelle","t":"Une haine à bord"},{"y":1879,"a":"Gustave Aimard","t":"Coeur de panthère"},{"y":1879,"a":"Gustave Aimard","t":"Jim lIndien"},{"y":1879,"a":"Gustave Aimard","t":"Le rapt"},{"y":1879,"a":"Gustave Aimard","t":"Les forestiers du Michigan"},{"y":1879,"a":"Gustave Aimard","t":"Les terres dor"},{"y":1879,"a":"Gustave Aimard","t":"Oeil de feu"},{"y":1879,"a":"Gustave Aimard","t":"Par mer et par terre"},{"y":1879,"a":"Henri-Émile Chevalier","t":"Le Gibet"},{"y":1879,"a":"James Fenimore Cooper","t":"Les Bas-de-Cuir"},{"y":1879,"a":"John Frederick Smith","t":"Dick Tarleton"},{"y":1879,"a":"Joseph Bournichon","t":"Sitting-Bull, le héros du désert"},{"y":1879,"a":"Jules Girardin","t":"Aventures et mésaventures du b"},{"y":1879,"a":"Jules Lermina","t":"Les mille et une femmes"},{"y":1879,"a":"Jules Verne","t":"De la terre É  la lune, trajet"},{"y":1879,"a":"Jules Verne","t":"Les Cinq cents millions de la"},{"y":1879,"a":"Jules Verne","t":"Les Tribulations d'un Chinois en Chine"},{"y":1879,"a":"Jules Verne","t":"Les Tribulations d'un Chinois en Chine"},{"y":1879,"a":"Jules Verne","t":"Michel Strogoff"},{"y":1879,"a":"Jules Verne","t":"Michel Strogoff, Moscou Irkout"},{"y":1879,"a":"Julie Gouraud","t":"Les enfants de la ferme"},{"y":1879,"a":"Lemoine","t":"La guerre pendant les vacances"},{"y":1879,"a":"Louis Boussenard","t":"A travers l'Australie. Les Dix millions de l'Opossum Rouge"},{"y":1879,"a":"Louis Noir","t":"L'homme de bronze"},{"y":1879,"a":"Louis Rousselet","t":"Le Charmeur de serpents"},{"y":1879,"a":"Lucien Biart","t":"Un voyage involontaire"},{"y":1879,"a":"Léon Cladel","t":"Petits cahiers"},{"y":1879,"a":"M. O. Rolfe","t":"Le cavalier fantôme"},{"y":1879,"a":"Madame Juliane","t":"Noël ou Lenfant trouvé"},{"y":1879,"a":"Matteo Bandello","t":"Nouvelles de Bandello"},{"y":1879,"a":"Montesquie","t":"Le temple de Gnide"},{"y":1879,"a":"Nicholas Wiseman","t":"Fabiola, ou L'Église des catacombes"},{"y":1879,"a":"Paul Duplessis","t":"Maurevert l'aventurier"},{"y":1879,"a":"Paul Féval","t":"La Première aventure de Corent"},{"y":1879,"a":"Paul Féval","t":"Valentine de Rohan"},{"y":1879,"a":"Percy Saint-John","t":"Le Robinson du Nord"},{"y":1879,"a":"Pierre Alexis Ponson du Terrail","t":"La juive du Château Trompette"},{"y":1879,"a":"Pierre Alexis Ponson du Terrail","t":"Le serment des hommes rouges"},{"y":1879,"a":"Pierre Zaccone","t":"Le courrier de Lyon"},{"y":1879,"a":"Pierre Zaccone","t":"Les volontaires de 93"},{"y":1879,"a":"Pierre Zaccone","t":"Mémoires dun commissaire de p"},{"y":1879,"a":"Raoul de Navery","t":"La péruvienne"},{"y":1879,"a":"Thomas Mayne Reid","t":"La quarteronne"},{"y":1879,"a":"Théodore Henry","t":"La duchesse Hélène"},{"y":1879,"a":"Théodore Labourieu","t":"Les exploits du capitaine Roland, ou L'amour d'une créole"},{"y":1879,"a":"Wilfrid de Fonvielle","t":"Néridah"},{"y":1879,"a":"Xavier-de Montépin","t":"La Sirène"},{"y":1879,"a":"Xavier-de Montépin","t":"La gitane"},{"y":1879,"a":"Xavier-de Montépin","t":"Le médecin des folles"},{"y":1879,"a":"Zulma Carraud","t":"Historiettes véritables pour les enfants de quatre à huit ans"},{"y":1879,"a":"Élie Berthet","t":"Les cagnards de l'Hôtel-Dieu de Paris"},{"y":1879,"a":"Élie Berthet","t":"Paul Duvert"},{"y":1880,"a":"Albert Caise","t":"Contes oubliés des Mille et une nuits"},{"y":1880,"a":"Alfred Driou","t":"Aventures dun aéronaute paris"},{"y":1880,"a":"Camille Debans","t":"Les drames É  toute vapeur"},{"y":1880,"a":"Charles Buet","t":"A petite cloche grand son"},{"y":1880,"a":"Charles Rowcroft","t":"Contes des colonies. Le Colon de Van Diémen"},{"y":1880,"a":"Constant Guéroult","t":"La bande É  Fifi Vollard"},{"y":1880,"a":"Emmanuel Gonzalès","t":"Lépée de Suzanne"},{"y":1880,"a":"Ernest Capendu","t":"Le marquis de Loc Ronan"},{"y":1880,"a":"Ernest Capendu","t":"Marcof le Malouin"},{"y":1880,"a":"Eugène Parès","t":"Du Gabon É  Zanzibar"},{"y":1880,"a":"Eugène Parès","t":"Le Zambèze"},{"y":1880,"a":"Eugène Parès","t":"Les grands lacs du centre de l"},{"y":1880,"a":"Fortuné Du Boisgobey","t":"Le tambour de Montmirail"},{"y":1880,"a":"Jules Claretie","t":"La fugitive"},{"y":1880,"a":"Jules Verne","t":"La maison É  vapeur"},{"y":1880,"a":"Louis Boussenard","t":"Le tour du monde d'un gamin de Paris"},{"y":1880,"a":"Louis Noir","t":"Alexandra la Nihiliste"},{"y":1880,"a":"Mary-Lafon","t":"La boîte dor"},{"y":1880,"a":"Paul Féval","t":"Fontaine aux perles"},{"y":1880,"a":"Paul Féval","t":"Le prince Coriolani"},{"y":1880,"a":"Paul Féval","t":"Les compagnons du silence"},{"y":1880,"a":"Paul Féval","t":"Les errants de nuit"},{"y":1880,"a":"Paul Féval","t":"Les parvenus"},{"y":1880,"a":"Paul Saunière","t":"Flamberge"},{"y":1880,"a":"Paul Saunière","t":"Monseigneur"},{"y":1880,"a":"Pierre Alexis Ponson du Terrail","t":"Larmurier de Milan"},{"y":1880,"a":"Pierre Alexis Ponson du Terrail","t":"Les aventures du capitaine La Palisse"},{"y":1880,"a":"Raoul-de CroÉ¿","t":"A la recherche de diamants dan"},{"y":1880,"a":"Wilfrid Pagart","t":"Un héros de treize ans"},{"y":1880,"a":"Xavier-de Montépin","t":"La sirène"},{"y":1880,"a":"Xavier-de Montépin","t":"Le dernier des Courtenay"},{"y":1880,"a":"Xavier-de Montépin","t":"Les filles de bronze"},{"y":1880,"a":"Élie Berthet","t":"L'homme des bois"},{"y":1880,"a":"Émile Richebourg","t":"Le fils"},{"y":1881,"a":"Alfred Assollant","t":"La mort de Roland"},{"y":1881,"a":"Alfred-de Bréhat","t":"Les aventures de Charlot"},{"y":1881,"a":"Anonyme","t":"Aventures de Marc Willis"},{"y":1881,"a":"Charles Buet","t":"Histoires à dormir debout"},{"y":1881,"a":"Charles Guénot","t":"Le Soldat de 93, par labbé Ch"},{"y":1881,"a":"Eugène Parès","t":"Les Explorateurs français en A"},{"y":1881,"a":"Eugène Sue","t":"La salamandre"},{"y":1881,"a":"Eugène Sue","t":"Le morne au diable"},{"y":1881,"a":"Eugène Sue","t":"Les misères des enfants trouvé"},{"y":1881,"a":"Eugène de Mirecourt","t":"A feu et É  sang !"},{"y":1881,"a":"François Bernard","t":"Un drame É  Naples"},{"y":1881,"a":"Gabriel Ferry","t":"Les aventures d'un Français au pays des Caciques"},{"y":1881,"a":"Harriet Martineau","t":"Contes choisis sur l'économie politique"},{"y":1881,"a":"Jules Lermina","t":"La haute canaille"},{"y":1881,"a":"Jules Lermina","t":"Les chasseurs de femmes"},{"y":1881,"a":"Jules Verne","t":"La Jangada, huit cents lieues"},{"y":1881,"a":"Jules Verne","t":"Les anglais au Pôle Nord"},{"y":1881,"a":"Jules Verne","t":"Un capitaine de quinze ans"},{"y":1881,"a":"Lucien Biart","t":"Le secret de José"},{"y":1881,"a":"Lucien Biart","t":"Les Voyages involontaires. Monsieur Pinson"},{"y":1881,"a":"Léon Gozlan","t":"Histoire de cent trente femmes"},{"y":1881,"a":"Madame de Stolz","t":"Les deux reines"},{"y":1881,"a":"P.-J. Stahl","t":"Lécole buissonnière et ses su"},{"y":1881,"a":"Paul Féval","t":"La cavalière"},{"y":1881,"a":"Paul Féval","t":"La chasse au roi"},{"y":1881,"a":"Paul Féval","t":"Roger Bontemps"},{"y":1881,"a":"Philibert Audebrand","t":"Voyage et aventures autour du"},{"y":1881,"a":"Pierre-Ale Ponson-du-","t":"Les cavaliers de la nuit"},{"y":1881,"a":"Victor Tissot","t":"Aventures de trois fugitifs"},{"y":1881,"a":"Xavier-de Montépin","t":"La Baladine"},{"y":1881,"a":"Xavier-de Montépin","t":"Le bigame"},{"y":1881,"a":"Xavier-de Montépin","t":"Mamzelle Mélie"},{"y":1881,"a":"Édouard Cavailhon","t":"Les sportsmen pendant la guerre"},{"y":1881,"a":"Édouard Didier","t":"La bague dopale"},{"y":1881,"a":"Élie Berthet","t":"Le charlatan"},{"y":1882,"a":"Alexis Bouvier","t":"La princesse saltimbanque"},{"y":1882,"a":"Anonyme","t":"Aventures de Gulliver chez les"},{"y":1882,"a":"Anonyme","t":"Les Mille et une nuits, contes"},{"y":1882,"a":"Antoinette-Joséphine-Françoise-Anne Drohojowska","t":"A.-S. de Doncourt. Les Lions de mer, d'après Fenimore Cooper"},{"y":1882,"a":"Bénédict-H Révoil","t":"Le pays des chimères"},{"y":1882,"a":"Bénédict-H Révoil","t":"Une caravane démigrants"},{"y":1882,"a":"Camille Bonheur","t":"Le roi du crime Luro, Véloce et Cie"},{"y":1882,"a":"Capitaine Marryat","t":"La prairie perdue, ou Le premier pionnier de la Rivière-Rouge"},{"y":1882,"a":"Charles Deslys","t":"L'honneur de la marquise"},{"y":1882,"a":"Charles Joliet","t":"Le crime du pont de Chatou"},{"y":1882,"a":"Charles Wallut","t":"Sur les rives de l'Amazone"},{"y":1882,"a":"Charles-d Héricault","t":"La fille de Notre Dame"},{"y":1882,"a":"E. Du Chatenet","t":"La succession d'Ichabod Creikfoorth"},{"y":1882,"a":"Edgar Monteil","t":"Rochefière"},{"y":1882,"a":"Eugène Parès","t":"Laventure de Serge Rouvanoff"},{"y":1882,"a":"Eugène Parès","t":"Voyage É  travers lAmérique du"},{"y":1882,"a":"Fortuné Du Boisgobey","t":"Le sac de cuir"},{"y":1882,"a":"Gabriel de Beugny d'Hagerue","t":"La vallée maudite"},{"y":1882,"a":"Gabriel de La Landelle","t":"Les femmes É  bord"},{"y":1882,"a":"Georges Fath","t":"Les cataractes de l'Obi"},{"y":1882,"a":"Gustave Aimard","t":"Cornelio d'Armor"},{"y":1882,"a":"Gustavo Strafforello","t":"Le chercheur de trésors"},{"y":1882,"a":"Henri Rivière","t":"La jeunesse dun désespéré"},{"y":1882,"a":"J. de Saint-Briac","t":"Jobic le corsaire"},{"y":1882,"a":"Johann Rudolf Wyss","t":"Le Robinson suisse"},{"y":1882,"a":"Judith Gautier","t":"Isoline"},{"y":1882,"a":"Judith Gautier","t":"Isoline et la fleur serpent"},{"y":1882,"a":"Jules Boulabert","t":"Les crimes du capital, ou Les intrigues de Paris"},{"y":1882,"a":"Jules Verne","t":"Le rayon-vert"},{"y":1882,"a":"Jules Verne","t":"Lécole des Robinsons"},{"y":1882,"a":"Julien Vinson","t":"Voyage extravagant, mais véridique d'Alger au Cap, exécuté par huit personnages de fantaisie"},{"y":1882,"a":"Le Grand-Jacq","t":"La diligence de Lyon"},{"y":1882,"a":"Louis Bailleul","t":"Les Grimpeurs de montagnes"},{"y":1882,"a":"Louis Boussenard","t":"Les Robinsons de la Guyane"},{"y":1882,"a":"Lucien Biart","t":"Lucia Avila"},{"y":1882,"a":"Léon Cladel","t":"Lamour romantique"},{"y":1882,"a":"Paul Féval","t":"Veillées de la famille"},{"y":1882,"a":"Pierre Durandal","t":"Le supplicié vivant"},{"y":1882,"a":"Thomas Mayne Reid","t":"La chasse au Léviathan"},{"y":1882,"a":"Thomas Mayne Reid","t":"Le chef au bracelet dor"},{"y":1882,"a":"Thomas Mayne Reid","t":"Les chasseurs de bisons"},{"y":1882,"a":"William Darville","t":"Chasses aux tigres dans lInde"},{"y":1882,"a":"William Darville","t":"Les nuits de Delhi"},{"y":1882,"a":"William-He Kingston","t":"Une croisière autour du monde"},{"y":1882,"a":"Émile Desbeaux","t":"Les Trois petits mousquetaires"},{"y":1883,"a":"Aimé Giron","t":"Les cinq sous d'Isaac Laquedem, le Juif errant"},{"y":1883,"a":"Albert Laporte","t":"Récits de vieux marins"},{"y":1883,"a":"Alexandre Dumas","t":"Les trois mousquetaires"},{"y":1883,"a":"Alexis Bouvier","t":"Les drames de la forêt"},{"y":1883,"a":"Anonyme","t":"Carmagnol"},{"y":1883,"a":"Anonyme","t":"Lenfer É  deux"},{"y":1883,"a":"Anonyme","t":"Contes des fées pour les enfan"},{"y":1883,"a":"Antoinette-Joséphine-Françoise-Anne Drohojowska","t":"Georges Bertrand, ou Dix ans à la Nouvelle-Zélande"},{"y":1883,"a":"Auguste Villiers","t":"Le fils de l'assassin"},{"y":1883,"a":"Charles Buet","t":"Le roi Charlot"},{"y":1883,"a":"Cte Tourzo","t":"Dans les Karpathes. La mort de Charles de Durazzo"},{"y":1883,"a":"Edmond About","t":"Le roi des montagnes"},{"y":1883,"a":"Ernest d' Hervilly","t":"La dame d'Entremont"},{"y":1883,"a":"Ferdinand Hervé-Bazi","t":"Rouget, ou le Braconnier dAnj"},{"y":1883,"a":"Francesco Soave","t":"Les bijoux volés"},{"y":1883,"a":"Gabriel Ferry","t":"Le crime du bois des Hogues"},{"y":1883,"a":"Gabriel de La Landelle","t":"Aventures et embuscades"},{"y":1883,"a":"George Sand","t":"L'homme de neige"},{"y":1883,"a":"Gustave Aimard","t":"Le Rastréador"},{"y":1883,"a":"Gustave Aimard","t":"Les bandits de l'Arizona"},{"y":1883,"a":"Henri Augu","t":"Les amours au sérail"},{"y":1883,"a":"Horace Ayraud-Degeorge","t":"Aimée du Roi"},{"y":1883,"a":"Jean Winter","t":"Le Bâtard impérial"},{"y":1883,"a":"John Sherer","t":"Les chercheurs d'or"},{"y":1883,"a":"Jules Lermina","t":"Les loups de Paris"},{"y":1883,"a":"Jules Lermina","t":"Vive la République !"},{"y":1883,"a":"Jules Verne","t":"Kéraban le têtu"},{"y":1883,"a":"Jules-de Grandpré","t":"Cartouche"},{"y":1883,"a":"Louis Boussenard","t":"Aventures d'un gamin de Paris à travers l'Océanie"},{"y":1883,"a":"Louis Boussenard","t":"Le sultan de Bornéo"},{"y":1883,"a":"Louis Boussenard","t":"Les pirates des champs dor"},{"y":1883,"a":"Louis Létang","t":"La belle hôtesse"},{"y":1883,"a":"Louis Noir","t":"Le secret du dompteur"},{"y":1883,"a":"Louis Rousselet","t":"Le Tambour du Royal-Auvergne"},{"y":1883,"a":"Lucien Biart","t":"Entre deux océans"},{"y":1883,"a":"Lucien Biart","t":"Entre deux océans, voyages et"},{"y":1883,"a":"Lucien Biart","t":"Monsieur Pinson"},{"y":1883,"a":"Octave Féré","t":"Les Mystères du Louvre"},{"y":1883,"a":"Paul Féval","t":"La fille du Juif errant"},{"y":1883,"a":"Paul Féval","t":"Le loup blanc"},{"y":1883,"a":"Paul Féval","t":"Oeuvres de Paul Féval soigneus"},{"y":1883,"a":"Pierre Zaccone","t":"La belle Diane"},{"y":1883,"a":"Pierre Zaccone","t":"Une haine au bagne"},{"y":1883,"a":"Raoul de Navery","t":"Les mystères de Jumièges"},{"y":1883,"a":"Thomas Mayne Reid","t":"Les Chasseurs de chevelures, par le capitaine Mayne-Reid. Traduction revue"},{"y":1883,"a":"Thomas Mayne Reid","t":"Les Jeunes voyageurs, par le c"},{"y":1883,"a":"Thomas Mayne Reid","t":"Les tirailleurs au Mexique"},{"y":1883,"a":"Thomas Mayne Reid","t":"Les Épaves de lOcéan, par le"},{"y":1883,"a":"Thomas Mayne Reid","t":"Océola, le grand chef des Sémi"},{"y":1883,"a":"Victor Joly","t":"Crrr de bleu ! par Victor Joly"},{"y":1883,"a":"Xavier-de Montépin","t":"Les filles de bronze"},{"y":1883,"a":"Édouard Montagne","t":"Le Bâtard de Ravaillac"},{"y":1883,"a":"Émile Desbeaux","t":"Les découvertes de monsieur Je"},{"y":1883,"a":"Émilie Carpentier","t":"Les Ignorances de Madeleine"},{"y":1884,"a":"Adolphe Racot","t":"Adolphe Racot et Georges Pradel. Le Diamant rouge"},{"y":1884,"a":"Alexandre de Lamothe","t":"Histoire d'un denier d'or"},{"y":1884,"a":"Alfred Sirven","t":"L'enfant d'une vierge"},{"y":1884,"a":"Anatole Posson","t":"Un doge conspirateur (suite du Renégat de Venise)"},{"y":1884,"a":"André Laurie","t":"Lhéritier de Robinson"},{"y":1884,"a":"Anonyme","t":"Jeannot. Conte inédit"},{"y":1884,"a":"Aristide-d Gondrecour","t":"Le dernier des Kerven"},{"y":1884,"a":"Armand Lapointe","t":"Feu Robert-Bey"},{"y":1884,"a":"Bénédict-H Révoil","t":"Les drames de la mer"},{"y":1884,"a":"Bénédict-H Révoil","t":"Les peaux rouges de lAmérique"},{"y":1884,"a":"Bénédict-H Révoil","t":"Souvenirs dun voyage autour d"},{"y":1884,"a":"Camille Debans","t":"Les malheurs de John Bull"},{"y":1884,"a":"Camille Étiévant","t":"La débâcle"},{"y":1884,"a":"Constant Guéroult","t":"Laffaire de la rue du Temple"},{"y":1884,"a":"Didier de Chousy","t":"Ignis (par le Cte Didier de Chousy)"},{"y":1884,"a":"E. Calvet","t":"Dans mille ans"},{"y":1884,"a":"Edmond About","t":"Le roi des montagnes"},{"y":1884,"a":"Edouard Sylvin","t":"La folle de Ville-d'Avray"},{"y":1884,"a":"Emmanuel Gonzalès","t":"Esaü le lépreux"},{"y":1884,"a":"Eugène Parès","t":"La fille du dragon rouge"},{"y":1884,"a":"Eugène Vachette","t":"Le saucisson à pattes"},{"y":1884,"a":"Gabriel Ferry","t":"Le coureur des bois ou Les che"},{"y":1884,"a":"Gabriel de La Landelle","t":"Histoires maritimes"},{"y":1884,"a":"Gabriel de La Landelle","t":"Le dernier des flibustiers"},{"y":1884,"a":"Gustave Aimard","t":"La guerilla fantôme"},{"y":1884,"a":"Gustave Aimard","t":"L'ami des blancs"},{"y":1884,"a":"Gustave Aimard","t":"Le batteur de sentiers"},{"y":1884,"a":"Gustave Aimard","t":"Les Gambucinos"},{"y":1884,"a":"Gustave Aimard","t":"Loeuvre infernale"},{"y":1884,"a":"Gustave Ambo","t":"Un voyage de noces"},{"y":1884,"a":"Hector France","t":"Le Mystère dun vieux château"},{"y":1884,"a":"James-Feni Cooper","t":"Le dernier des Mohicans"},{"y":1884,"a":"James-Feni Cooper","t":"Le pilote"},{"y":1884,"a":"Jean-Baptiste Rosario Gonzalve de Nervo","t":"La duchesse de Puerto-Real"},{"y":1884,"a":"Jules Janin","t":"Contes, nouvelles et récits"},{"y":1884,"a":"Jules Verne","t":"L'Archipel en feu"},{"y":1884,"a":"Jules Verne","t":"Les enfants du capitaine Grant"},{"y":1884,"a":"Jules de Gastyne","t":"La grotte du milliard"},{"y":1884,"a":"Louis Boussenard","t":"Aventures périlleuses de trois français au pays des diamants"},{"y":1884,"a":"Louis Jacolliot","t":"L'Afrique mystérieuse"},{"y":1884,"a":"Louis Liesta d' Ambaloges","t":"Assunta"},{"y":1884,"a":"Louis Noir","t":"Les Millions du trappeur, grand roman d'aventures"},{"y":1884,"a":"Louis Rousselet","t":"La peau du tigre"},{"y":1884,"a":"Lucien Biart","t":"Le pensativo"},{"y":1884,"a":"Lucien Biart","t":"Le roi des prairies, voyages e"},{"y":1884,"a":"Léon Hennique","t":"L'accident de Monsieur Hébert"},{"y":1884,"a":"Léon Leconte","t":"La Métamorphose de Silvano, co"},{"y":1884,"a":"Marc-de Montifaud","t":"Les folles journées"},{"y":1884,"a":"Maurice Jogand","t":"La Bréban, ou Laffaire du Cou"},{"y":1884,"a":"Mme Doudet","t":"Les Mille et une nuits raconté"},{"y":1884,"a":"Pajol-Alard","t":"Les contrebandiers d'opium"},{"y":1884,"a":"Paul Mahalin","t":"La Belle limonadière"},{"y":1884,"a":"Paul Mahalin","t":"La reine des gueux"},{"y":1884,"a":"Paul Mahalin","t":"Le fils de Porthos"},{"y":1884,"a":"Paul Nagour","t":"Contes macabres"},{"y":1884,"a":"Paul de Kock","t":"Le Démon de lalcôve"},{"y":1884,"a":"Paul de Kock","t":"Les treize nuits de Jane"},{"y":1884,"a":"Pauline Guizot","t":"Les enfants"},{"y":1884,"a":"Pierre-Ale Ponson-du-","t":"La jeunesse du roi Henri"},{"y":1884,"a":"Thomas Mayne Reid","t":"Bataille avec des ours"},{"y":1884,"a":"Thomas Mayne Reid","t":"LHeureuse famille, par le cap"},{"y":1884,"a":"Thomas Mayne Reid","t":"La montagne perdue"},{"y":1884,"a":"Thomas Mayne Reid","t":"Les chasseurs de plantes"},{"y":1884,"a":"Thomas Mayne Reid","t":"Peaux rouges et visages pâles"},{"y":1884,"a":"Thomas Mayne Reid","t":"Voyage en Amérique"},{"y":1884,"a":"Théophile Gautier","t":"Le capitaine Fracasse"},{"y":1884,"a":"William Darville","t":"Larmurier de Québec, ou Les d"},{"y":1884,"a":"Xavier-de Montépin","t":"Le fiacre nÂ° 13"},{"y":1884,"a":"Xavier-de Montépin","t":"Lhomme aux figures de cire"},{"y":1884,"a":"Émile Desbeaux","t":"Les Découvertes de monsieur Je"},{"y":1884,"a":"Émile Richebourg","t":"La petite Mionne"},{"y":1884,"a":"Émilie Carpentier","t":"Sauvons-le !"},{"y":1885,"a":"Adrienne Piazzi","t":"Pharos"},{"y":1885,"a":"Alexandre de Lamothe","t":"La fiancée du Vautour Blanc"},{"y":1885,"a":"Alfred Sirven","t":"Étiennette"},{"y":1885,"a":"Anaïs Ségalas","t":"Récits des Antilles"},{"y":1885,"a":"André Laurie","t":"Jules Verne et André Laurie. L"},{"y":1885,"a":"Anonyme","t":"Le trésor de Monte Cristo"},{"y":1885,"a":"Anonyme","t":"Les sept corbeaux"},{"y":1885,"a":"Auguste Lepage","t":"Le roman d'un héros"},{"y":1885,"a":"Bénédict-H Révoil","t":"Voyage au pays des Kangarous"},{"y":1885,"a":"Constant Améro","t":"Le tour de France dun petit P"},{"y":1885,"a":"Ernest Capendu","t":"Ango le Dieppois"},{"y":1885,"a":"Eugène Sue","t":"Les mystères de Paris"},{"y":1885,"a":"F. Séndaté","t":"La Mort du Samuraï"},{"y":1885,"a":"Fortuné Du Boisgobey","t":"Le crime de lOpéra"},{"y":1885,"a":"Gustave Aimard","t":"Les bandits de lArizona"},{"y":1885,"a":"Henry Cauvain","t":"Le grand vaincu"},{"y":1885,"a":"J.-B. Frédéric Ortoli","t":"Les contes du capitaine"},{"y":1885,"a":"James Fenimore Cooper","t":"La prairie"},{"y":1885,"a":"James Fenimore Cooper","t":"Les pionniers"},{"y":1885,"a":"Joseph Bournichon","t":"Sitting Bull, le héros du dése"},{"y":1885,"a":"Jules Lermina","t":"Les hystériques de Paris"},{"y":1885,"a":"Jules Verne","t":"Mathias Sandorf"},{"y":1885,"a":"Jules Verne","t":"Mathias Sandorf"},{"y":1885,"a":"Louis Morin","t":"Le cabaret du Puits-sans-vin"},{"y":1885,"a":"Louis Noir","t":"Le roi des chemins"},{"y":1885,"a":"Louise Dussaud-Ro","t":"La promesse dUrsule"},{"y":1885,"a":"Lucien Biart","t":"Le fleuve d'or"},{"y":1885,"a":"Paul Mahalin","t":"La filleule de Lagardère"},{"y":1885,"a":"Paul Mahalin","t":"Lhôtellerie sanglante"},{"y":1885,"a":"Robert Louis Stevenson","t":"LÉŽle au trésor"},{"y":1885,"a":"Thomas Mayne Reid","t":"Les forêts vierges"},{"y":1885,"a":"Victor Hugo","t":"Han dIslande"},{"y":1885,"a":"Xavier Marmier","t":"A la ville et à la campagne, nouvelles traduites de l'anglais, du danois, du suédois et de l'alle…"},{"y":1885,"a":"Xavier-de Montépin","t":"Les mystères du Palais royal"},{"y":1885,"a":"Xavier-de Montépin","t":"Odille"},{"y":1885,"a":"Édouard de Lalaing","t":"Souvenirs d'une clef"},{"y":1885,"a":"Émile Gaboriau","t":"La dégringolade"},{"y":1886,"a":"A. Matthey","t":"La fête de Saint Rémy"},{"y":1886,"a":"Alexandre Vivier","t":"Un vaillant"},{"y":1886,"a":"Bénédict-H Révoil","t":"Trois aventures"},{"y":1886,"a":"Carla Maria","t":"Un royal aventurier dans l'Asie centrale"},{"y":1886,"a":"Carlo Du Monge","t":"La guerre"},{"y":1886,"a":"Charles Diguet","t":"Mémoires dun lièvre"},{"y":1886,"a":"Ernest d' Hervilly","t":"Le chat du Neptune"},{"y":1886,"a":"Eugène Carré","t":"La ceinture de chasteté"},{"y":1886,"a":"Frantz Jourdain","t":"Jean-Jean"},{"y":1886,"a":"Frédéric Soulié","t":"Le lion amoureux"},{"y":1886,"a":"Gabriel de La Landelle","t":"Le roi des rapaces"},{"y":1886,"a":"Gabriel de La Landelle","t":"Sans Peur le corsaire"},{"y":1886,"a":"J.-B.-Fréd Ortoli","t":"Histoire du célèbre Jean le Di"},{"y":1886,"a":"J.-B.-Fréd Ortoli","t":"La princesse enchantée"},{"y":1886,"a":"J.-B.-Fréd Ortoli","t":"Le Baudet roi des lions. Can !"},{"y":1886,"a":"J.-B.-Fréd Ortoli","t":"Le secret du lion"},{"y":1886,"a":"James Fenimore Cooper","t":"L'espion"},{"y":1886,"a":"Jules de Gastyne","t":"L'abandonné"},{"y":1886,"a":"Louis Boussenard","t":"Aventures dun gamin de Paris"},{"y":1886,"a":"Louis Noir","t":"Le coupeur de têtes"},{"y":1886,"a":"Oscar Wild","t":"En Australie"},{"y":1886,"a":"Paul Largillière","t":"En vacances à la campagne"},{"y":1886,"a":"Stéphanie-Félicité Du Crest comtesse de Genlis","t":"Contes moraux de Mme de Genlis"},{"y":1886,"a":"Xavier-de Montépin","t":"La voyante"},{"y":1886,"a":"Édouard Montagne","t":"Les Affamés de Londres"},{"y":1887,"a":"Adolf Schirmer","t":"Le ménétrier de la République"},{"y":1887,"a":"Alexandre Dumas","t":"Les trois mousquetaires"},{"y":1887,"a":"Auguste Maquet","t":"La belle Gabrielle"},{"y":1887,"a":"Camille Flammarion","t":"Lumen"},{"y":1887,"a":"Carla Maria","t":"Parsis et brahmine"},{"y":1887,"a":"Charles Deslys","t":"Lhéritage de Charlemagne"},{"y":1887,"a":"Edith-C. Kenyon","t":"LHéroïsme de Jack, histoire d"},{"y":1887,"a":"Fernand Hue","t":"Les contes de la plage"},{"y":1887,"a":"H. de Charlieu","t":"La mission du capitaine"},{"y":1887,"a":"Hugues d' Artois","t":"France et Canada"},{"y":1887,"a":"James Fenimore Cooper","t":"Bas de Cuir"},{"y":1887,"a":"Jean-Louis Dubut de Laforest","t":"La bonne É  tout faire"},{"y":1887,"a":"Judith Gautier","t":"Le lion de la victoire"},{"y":1887,"a":"Jules Verne","t":"Nord contre Sud"},{"y":1887,"a":"Józef Lubomirski","t":"Fonctionnaires et boyards"},{"y":1887,"a":"Louis Jacolliot","t":"Les mangeurs de feu"},{"y":1887,"a":"Louis Noir","t":"L'auberge maudite"},{"y":1887,"a":"Louis Noir","t":"Le grenadier Sans Quartier"},{"y":1887,"a":"Léonce Petit","t":"Les comédiens malgré eux"},{"y":1887,"a":"Paul Celières","t":"Une exilée"},{"y":1887,"a":"Pierre Du Chateau","t":"Le roman de Christian"},{"y":1887,"a":"Thomas-May Reid","t":"Les chasseurs de girafes"},{"y":1887,"a":"Théodore Labourieu","t":"Voyage autour du monde du matelot Biribi"},{"y":1887,"a":"V.-H. Martin","t":"Le chemin de la Vera-Cruz"},{"y":1887,"a":"William-He Kingston","t":"Une croisière autour du monde"},{"y":1887,"a":"Étienne Marcel","t":"Dymitr le cosaque"},{"y":1888,"a":"Alfred de Villeneuve","t":"La légende merveilleuse"},{"y":1888,"a":"Alphonse Daudet","t":"Jourdan Coupe tête"},{"y":1888,"a":"Antoinette-Joséphine-Françoise-Anne Drohojowska","t":"Le serment de madame Dunoyer"},{"y":1888,"a":"E. Delauney","t":"Le dernier des pirates"},{"y":1888,"a":"Edgar Monteil","t":"François François"},{"y":1888,"a":"Edgar Monteil","t":"Jean-le-Conquérant"},{"y":1888,"a":"Ernest Van Bruyssel","t":"Scènes de la vie des champs et"},{"y":1888,"a":"Eugène Sue","t":"Les mystères du peuple"},{"y":1888,"a":"Frédéric Soulié","t":"Le lion amoureux"},{"y":1888,"a":"Gabriel Ferry","t":"Costal l'Indien, ou Le dragon de la reine"},{"y":1888,"a":"Gustave Aimard","t":"Les Peaux-rouges de Paris"},{"y":1888,"a":"Henry Rider Haggard","t":"Découverte des mines du roi Sa"},{"y":1888,"a":"James Fenimore Cooper","t":"Le cratère"},{"y":1888,"a":"James Fenimore Cooper","t":"Le lac Ontario"},{"y":1888,"a":"Jules Lermina","t":"Jeanne dArc"},{"y":1888,"a":"Jules Verne","t":"Deux ans de vacances"},{"y":1888,"a":"Jules Verne","t":"Le chemin de France"},{"y":1888,"a":"Louis Jacolliot","t":"Le coureur des jungles"},{"y":1888,"a":"Ludovic de Boncourt","t":"Le coffret mystérieux, ou Les crimes de la famille maudite"},{"y":1888,"a":"Léon Beauvallet","t":"Milord l'Arsouille"},{"y":1888,"a":"Léon Cahun","t":"La bannière bleue"},{"y":1888,"a":"Pierre Alexis Ponson du Terrail","t":"La juive du Château-Trompette"},{"y":1888,"a":"Pierre Alexis Ponson du Terrail","t":"Le forgeron de la Cour Dieu"},{"y":1888,"a":"Pierre Maël","t":"Le torpilleur 29"},{"y":1888,"a":"Simon Boubée","t":"Main de Cire"},{"y":1888,"a":"Thomas Mayne Reid","t":"Bruin ou Les chasseurs d'ours"},{"y":1888,"a":"Thomas Mayne Reid","t":"Le cheval sauvage"},{"y":1888,"a":"Victor Hugo","t":"Bug Jargal"},{"y":1888,"a":"Victor Patrice","t":"Au Pôle en ballon, voyage extr"},{"y":1888,"a":"Walter Scott","t":"Quentin Durward"},{"y":1888,"a":"Émilie Carpentier","t":"Pierre le Tors"},{"y":1889,"a":"Abel Picard","t":"Lhéritage du Boër"},{"y":1889,"a":"André Laurie","t":"De New York à Brest en sept heures"},{"y":1889,"a":"Armand Lapointe","t":"Le Don Quichotte de la mer"},{"y":1889,"a":"Bertol-Graivil","t":"Les deux criminels"},{"y":1889,"a":"Charles-Jean-Baptiste Schambion","t":"Mademoiselle Myrtille, chasseur au bataillon d'Afrique"},{"y":1889,"a":"Fernande-d Nocé","t":"Les pirates du Pacifique"},{"y":1889,"a":"G. Gaulard","t":"Diane, Prestaud, Rustaud et Bo"},{"y":1889,"a":"Gaston Bonnefont","t":"Au pays des fakirs"},{"y":1889,"a":"Gaston-de Chaumont","t":"Trois ans dans les pampas dAm"},{"y":1889,"a":"George Alfred Henty","t":"Les émigrants"},{"y":1889,"a":"Georges Brémond","t":"Muguette lindienne, ou Les am"},{"y":1889,"a":"Gustave Aimard","t":"Le grand chef des Aucas"},{"y":1889,"a":"Gustave Aimard","t":"Le roi des placères d'or"},{"y":1889,"a":"Henri Tessier","t":"Le roi des Thugs, ou Les étrangleurs de l'Inde"},{"y":1889,"a":"Jacques Porchat","t":"Les deux auberges"},{"y":1889,"a":"Jean Dargène","t":"Le feu É  Formose"},{"y":1889,"a":"Jules Verne","t":"Famille-sans-nom"},{"y":1889,"a":"Louis Boussenard","t":"Aux antipodes"},{"y":1889,"a":"Marie-Alix de Valtine","t":"Belle et bonne"},{"y":1889,"a":"Marthe Bertin","t":"Qui est-elle ?"},{"y":1889,"a":"Paul Perret","t":"Mademoiselle de Bardelys"},{"y":1889,"a":"Théophile Gautier","t":"Partie carrée"},{"y":1890,"a":"Anonyme","t":"Le roi des montagnes"},{"y":1890,"a":"Anonyme","t":"Nouvelles et souvenirs"},{"y":1890,"a":"Anonyme","t":"Le chercheur de pistes"},{"y":1890,"a":"Anonyme","t":"Blanche de Palussac"},{"y":1890,"a":"Anonyme","t":"Les quatre sergents de La Roch"},{"y":1890,"a":"Anonyme","t":"Maltaverne"},{"y":1890,"a":"Anonyme","t":"Les pilotes dAngo"},{"y":1890,"a":"Anonyme","t":"Les rois de mer"},{"y":1890,"a":"Anonyme","t":"Une fille de marbre"},{"y":1890,"a":"Anonyme","t":"Jacques Coeur"},{"y":1890,"a":"Anonyme","t":"Les aventuriers de lAmazone"},{"y":1890,"a":"Anonyme","t":"Les prouesses de Martin Robert"},{"y":1890,"a":"Anonyme","t":"Falempin ou Lespion aérien"},{"y":1890,"a":"Anonyme","t":"Contes merveilleux"},{"y":1890,"a":"Anonyme","t":"Les émigrants"},{"y":1890,"a":"Anonyme","t":"Les ravageurs de la mer"},{"y":1890,"a":"Anonyme","t":"La maison du barbier"},{"y":1890,"a":"Anonyme","t":"Les camisards"},{"y":1890,"a":"Anonyme","t":"Voyage du novice Jean Paul É  t"},{"y":1890,"a":"Anonyme","t":"DArtagnan"},{"y":1890,"a":"Anonyme","t":"La Forêt enchantée, ou Tranqui"},{"y":1890,"a":"Anonyme","t":"La grandmère"},{"y":1890,"a":"Anonyme","t":"Gette"},{"y":1890,"a":"Ernest-d Hervilly","t":"Aventures du prince Frangipane"},{"y":1890,"a":"F. Melcy","t":"Les Robinsons dun jour"},{"y":1890,"a":"Henry-Ride Haggard","t":"Découverte des mines du roi Sa"},{"y":1890,"a":"Paul Lacroix","t":"Le braconnier"},{"y":1890,"a":"Pierre Maël","t":"Le torpilleur 29"},{"y":1890,"a":"Washington Irving","t":"Le souterrain de lAlhambra"},{"y":1890,"a":"William Darville","t":"Larmurier de Québec, ou Les d"},{"y":1891,"a":"Alfred Giron","t":"De Cancale É  Terre Neuve"},{"y":1891,"a":"Alfred-de Sauvenière","t":"Le royaume de Saba"},{"y":1891,"a":"Anonyme","t":"La grande flibuste"},{"y":1891,"a":"Anonyme","t":"La loi de Lynch"},{"y":1891,"a":"Anonyme","t":"Les pirates des prairies"},{"y":1891,"a":"Anonyme","t":"Les rois de lOcéan"},{"y":1891,"a":"Anonyme","t":"Les aventures de Piképikécomég"},{"y":1891,"a":"Anonyme","t":"La maîtresse de Mazarin"},{"y":1891,"a":"Anonyme","t":"Aventures extraordinaires dun"},{"y":1891,"a":"Anonyme","t":"Le défilé denfer"},{"y":1891,"a":"Anonyme","t":"Hassan le janissaire"},{"y":1891,"a":"Anonyme","t":"Les contes de ma campagne"},{"y":1891,"a":"Anonyme","t":"Dacolard et Lubin, suite du Pa"},{"y":1891,"a":"Anonyme","t":"Lami François"},{"y":1891,"a":"Anonyme","t":"Colette et Renée"},{"y":1891,"a":"Anonyme","t":"Costal lIndien"},{"y":1891,"a":"Anonyme","t":"Les vacances de Paul"},{"y":1891,"a":"Anonyme","t":"Autour du monde en pousse pous"},{"y":1891,"a":"Anonyme","t":"Reine, roman historique"},{"y":1891,"a":"Anonyme","t":"Les Pirates de la Mer Rouge, s"},{"y":1891,"a":"Anonyme","t":"Le Cabaret du Puits sans vin"},{"y":1891,"a":"Anonyme","t":"Volontaires et guerilleros au"},{"y":1891,"a":"Anonyme","t":"Péveril du Pic"},{"y":1891,"a":"Anonyme","t":"LIle aux mystères"},{"y":1891,"a":"Anonyme","t":"Le Boute en train illustré"},{"y":1891,"a":"Fortuné-Lo Méaulle","t":"Petite Naga"},{"y":1891,"a":"Louise-Mar Chéron-de-","t":"Les Enfants du capitaine"},{"y":1892,"a":"Alfred Assollant","t":"La chasse aux lions"},{"y":1892,"a":"Aristide Bruant","t":"Les bas-fonds de Paris"},{"y":1892,"a":"Auguste Maquet","t":"Les vertes-feuilles"},{"y":1892,"a":"Eudoxie Dupuis","t":"Les douze métiers de Pierrot"},{"y":1892,"a":"Fernand Hue","t":"500,000 dollars de récompense"},{"y":1892,"a":"Gabriel Ferry","t":"Costal lIndien"},{"y":1892,"a":"Gabriel-de La-Landell","t":"Histoires maritimes"},{"y":1892,"a":"Georges Spitzmülle","t":"Les mystères de Belfort"},{"y":1892,"a":"Henri Demesse","t":"La petite orpheline"},{"y":1892,"a":"Hugues Le Roux","t":"Les gens daujourdhui"},{"y":1892,"a":"Jacques Lermont","t":"Les cinq nièces de l'oncle Barbe-Bleue"},{"y":1892,"a":"Jules Dorsay","t":"Tétunébo, le roi nègre"},{"y":1892,"a":"Jules Verne","t":"Claudius Bombarnac"},{"y":1892,"a":"Karl May","t":"Le cas de Georges dArrell"},{"y":1892,"a":"Louis Boussenard","t":"2,000 lieues à travers l'Amérique du sud"},{"y":1892,"a":"Louis Boussenard","t":"Aventures dun gamin de Paris"},{"y":1892,"a":"Louis Boussenard","t":"Les français au Pôle nord"},{"y":1892,"a":"Louis Boussenard","t":"[Le tour du monde dun gamin d"},{"y":1892,"a":"Lucien Biart","t":"Les voyages involontaires"},{"y":1892,"a":"Paul Meyan","t":"Plus haut ! plus grand ! ! Le Chicago"},{"y":1892,"a":"Pierre Delcourt","t":"Les compagnons de Ravachol"},{"y":1892,"a":"Pierre d' Arlay","t":"Choses d'Afrique"},{"y":1892,"a":"Raoul de Navery","t":"Patira"},{"y":1892,"a":"S.-de Boüard","t":"Frère Ange"},{"y":1892,"a":"Émile Grass","t":"Marguerite"},{"y":1893,"a":"Anonyme","t":"Spectacles enfantins"},{"y":1893,"a":"Camille Berbudeau","t":"L'espion de Boyardville"},{"y":1893,"a":"Charles Buet","t":"Castelvautour"},{"y":1893,"a":"Charles Buet","t":"Guy Main Rouge"},{"y":1893,"a":"Edmond Deschaumes","t":"Le pays des nègres blancs"},{"y":1893,"a":"Ernest Capendu","t":"Lhôtel de Niorres"},{"y":1893,"a":"Gustave Aimard","t":"La forêt vierge"},{"y":1893,"a":"Hector France","t":"La vierge russe"},{"y":1893,"a":"Henry Morton Stanley","t":"La Terre de servitude"},{"y":1893,"a":"Jules Verne","t":"Autour de la lune"},{"y":1893,"a":"Jules Verne","t":"Cochery"},{"y":1893,"a":"Louis Boussenard","t":"Les Robinsons de la Guyane"},{"y":1893,"a":"Louis Jacolliot","t":"Perdus sur l'océan"},{"y":1893,"a":"Louise Hameau","t":"Yélah"},{"y":1893,"a":"Mario Donal","t":"Olivette"},{"y":1893,"a":"Pouillat d'Island","t":"Un roman à Vitry-le-François en 1809 et 1810"},{"y":1893,"a":"Sabine Mancel","t":"La Crémière de St Gervais. Sui"},{"y":1893,"a":"Édouard-Auguste Spoll","t":"Le secret des Villiers"},{"y":1893,"a":"Émilie Carpentier","t":"Jeunes têtes et grands coeurs"},{"y":1894,"a":"Alexandre Dumas","t":"Les trois mousquetaires"},{"y":1894,"a":"Alfred Assollant","t":"Montluc le Rouge"},{"y":1894,"a":"Alfred Quesnay de Beaurepaire","t":"L'âne des Korrigans"},{"y":1894,"a":"Ernest d' Hervilly","t":"En bouteille à travers l'Atlantique"},{"y":1894,"a":"G. Demage","t":"A travers le Sahara, aventures merveilleuses de Marius Mercurin"},{"y":1894,"a":"Gustave Aimard","t":"La belle rivière"},{"y":1894,"a":"Henri Chabrillat","t":"Les cinq sous de Lavarède"},{"y":1894,"a":"Henri de Noussanne","t":"Jasmin Robba"},{"y":1894,"a":"J.-H. Rosny-aîné","t":"Tabubu"},{"y":1894,"a":"Jacques Lemaire","t":"Le Tambour-major Flambardin"},{"y":1894,"a":"Jacques Lermont","t":"Mon grand frère"},{"y":1894,"a":"Jules Verne","t":"Mirifiques aventures de Maître Antifer"},{"y":1894,"a":"Louis Boussenard","t":"Le tour du monde dun gamin de"},{"y":1894,"a":"Louis Morvan","t":"Jehan de Fougereuse"},{"y":1894,"a":"Pierre-Ale Ponson-du-","t":"La jeunesse du roi Henri"},{"y":1894,"a":"Victor Hugo","t":"Les travailleurs de la mer"},{"y":1894,"a":"Émile Deslandes","t":"Coeurs de marins"},{"y":1895,"a":"Aimé Giron","t":"La Famille de La Marjolaine"},{"y":1895,"a":"Alfred Hannedouche","t":"Plume d'aigle"},{"y":1895,"a":"Arthur Dourliac","t":"Les apprentis de l'armurier"},{"y":1895,"a":"Constant Améro","t":"Blanche Neige"},{"y":1895,"a":"Eudoxie Dupuis","t":"La Caverne blanche, adaptation"},{"y":1895,"a":"Fernand Hue","t":"Les bouchers bleus"},{"y":1895,"a":"Fernand Hue","t":"Les cavaliers de Lakhdar"},{"y":1895,"a":"Henry Guy","t":"Le roman d'un petit marin"},{"y":1895,"a":"IouliÄ­a-Mi ZagoulÄ­aev","t":"Les Conteurs russes modernes"},{"y":1895,"a":"Johann Rudolf Wyss","t":"Le Robinson suisse. 7e édition"},{"y":1895,"a":"Jules Gros","t":"Un volcan dans les glaces, aventures d'une expédition scientifique au pôle Nord"},{"y":1895,"a":"Jules Lermina","t":"Lénigme"},{"y":1895,"a":"Jules de Glouvet","t":"France 1418-1429"},{"y":1895,"a":"Louis de Caters","t":"Le lion de Camors"},{"y":1895,"a":"Lucien Thomin","t":"La route de la Sibérie"},{"y":1895,"a":"Lucien Thomin","t":"Le carnet sanglant"},{"y":1895,"a":"Maurice Maindron","t":"Le tournoi de Vauplassans"},{"y":1895,"a":"Paul Féval","t":"Les couteaux dor"},{"y":1895,"a":"Pierre Maël","t":"Les derniers hommes rouges"},{"y":1895,"a":"Pierre Maël","t":"Robinson et Robinsonne"},{"y":1895,"a":"René Émery","t":"En plein amour"},{"y":1895,"a":"Roger d' Hombre","t":"Aventures d'un gamin de Paris et d'un pharmacien de Londres"},{"y":1895,"a":"Xavier-de Montépin","t":"La demoiselle du château"},{"y":1896,"a":"Adolphe d' Ennery","t":"Seule !"},{"y":1896,"a":"Ch. de La Paquerie","t":"Les naufragés du Jason"},{"y":1896,"a":"David Ker","t":"Cosaque et czar"},{"y":1896,"a":"Ernest Daudet","t":"Les Fiançailles tragiques, par"},{"y":1896,"a":"Eudoxie Dupuis","t":"Le page de Napoléon"},{"y":1896,"a":"F. Bernardot","t":"Kiriquette"},{"y":1896,"a":"Gabriel Ferry","t":"Le coureur des bois, ou Les ch"},{"y":1896,"a":"Gabriel Ferry","t":"Les Aventuriers du Val d'Or"},{"y":1896,"a":"Georges Price","t":"Les trois disparus du Sirius"},{"y":1896,"a":"Georges-d Esparbès","t":"La guerre en dentelles"},{"y":1896,"a":"Henry de Brisay","t":"Jean la Poudre"},{"y":1896,"a":"Henry de Brisay","t":"Trémor aux mains rouges"},{"y":1896,"a":"J.-H. Rosny","t":"Les Xipéhuz"},{"y":1896,"a":"Jacques Lemaire","t":"Les marins de la garde"},{"y":1896,"a":"James Fenimore Cooper","t":"Le cratère, ou Le Robinson amé"},{"y":1896,"a":"Jules Gros","t":"Aventures de nos explorateurs à travers le monde"},{"y":1896,"a":"Jules Gros","t":"Les derniers Peaux Rouges"},{"y":1896,"a":"Jules Verne","t":"Clovis Dardentor"},{"y":1896,"a":"Jules Verne","t":"Face au drapeau"},{"y":1896,"a":"Michel Morphy","t":"La dame blanche"},{"y":1896,"a":"Paul Féval","t":"La maison de Pilate"},{"y":1896,"a":"Sophie-de Ségur","t":"Le mauvais génie"},{"y":1897,"a":"André Laurie","t":"Gérard et Colette"},{"y":1897,"a":"Anne Mouans","t":"Frisonne l'engourdie"},{"y":1897,"a":"Charles Perrault","t":"Cendrillon, ou La petite panto"},{"y":1897,"a":"Ernest Daudet","t":"Les douze danseuses du château de Lamôle"},{"y":1897,"a":"Frédéric Dillaye","t":"Mademoiselle de Fierlys"},{"y":1897,"a":"Gaston Dujarric","t":"Le roman d'un capitaine de navire"},{"y":1897,"a":"Henry de Brisay","t":"A labordage"},{"y":1897,"a":"Henry de Brisay","t":"Les Contes de l'épée"},{"y":1897,"a":"Jules Mary","t":"Sabre au clair !"},{"y":1897,"a":"Jules Verne","t":"Le sphinx des glaces"},{"y":1897,"a":"Karl May","t":"La caravane de la mort"},{"y":1897,"a":"Maurice Barr","t":"Bluette et Coquelicot"},{"y":1897,"a":"Paul Verdun","t":"Pour la Patrie !"},{"y":1897,"a":"Paul d' Ivoi","t":"Voyages excentriques. Jean Fanfare"},{"y":1897,"a":"Pierre Maël","t":"Au Pays du mystère"},{"y":1897,"a":"S.-de Boüard","t":"Frère Ange"},{"y":1897,"a":"Thomas Mayne Reid","t":"Les chasseurs de girafes"},{"y":1897,"a":"Thomas Mayne Reid","t":"Parti en mer"},{"y":1898,"a":"Alfred Assollant","t":"Aventures merveilleuses mais authentiques du capitaine Corcoran"},{"y":1898,"a":"Danielle-d Arthèz","t":"Le Roman de larmurier"},{"y":1898,"a":"Désiré Charnay","t":"A travers les forêts vierges"},{"y":1898,"a":"E Grand","t":"Théâtre du Châtelet. La maison"},{"y":1898,"a":"Edmond Gros","t":"Aventures véridiques de Cadi b"},{"y":1898,"a":"Ernest Capendu","t":"Marcof le Malouin"},{"y":1898,"a":"Ernest d' Hervilly","t":"A Cocagne ! aventures de MM. Gabriel et Fricotin"},{"y":1898,"a":"Eudoxie Dupuis","t":"Les voyages de Gulliver"},{"y":1898,"a":"Georges Price","t":"Les chasseurs d'épaves"},{"y":1898,"a":"Gustave Guitton","t":"LImpossible"},{"y":1898,"a":"Guy-de Maupassant","t":"Mlle Fifi"},{"y":1898,"a":"Jules Claretie","t":"Un chapitre inédit de Don Quic"},{"y":1898,"a":"Jules Verne","t":"Le superbe Orénoque"},{"y":1898,"a":"Paul Bilhaud","t":"Histoire du bon Cric et du méc"},{"y":1898,"a":"Élie Berthet","t":"L'enfant des bois"},{"y":1898,"a":"Émile Richebourg","t":"Les millions de M. Joramie"},{"y":1899,"a":"A.-de Martigné","t":"La duchesse Claude"},{"y":1899,"a":"Alfred Des-Essart","t":"Lâme du violon"},{"y":1899,"a":"Anonyme","t":"Officier de fortune !"},{"y":1899,"a":"Charles Mérouvel","t":"Mortel amour"},{"y":1899,"a":"Daniel Laumonier","t":"Anne-Marie la Providence"},{"y":1899,"a":"Edmond Lepelletier","t":"Les grands succès dramatiques"},{"y":1899,"a":"Gabriel Ferry","t":"Les dernières aventures de Bois-Rosé"},{"y":1899,"a":"George-Alf Henty","t":"Les jeunes francs tireurs"},{"y":1899,"a":"Gustave Toudouze","t":"Le Démon des sables (1798), ou"},{"y":1899,"a":"Henri Demesse","t":"La Tour de Nesle"},{"y":1899,"a":"Henry Leturque","t":"Le Grand-Serpent"},{"y":1899,"a":"Henry de Gorsse","t":"Les plumes du paon"},{"y":1899,"a":"Jean Guétary","t":"Les Compagnons de lalliance"},{"y":1899,"a":"Jules Verne","t":"Autour de la lune"},{"y":1899,"a":"Jules Verne","t":"César Cascabel"},{"y":1899,"a":"Jules Verne","t":"Kéraban le têtu"},{"y":1899,"a":"Jules Verne","t":"Le désert de glace"},{"y":1899,"a":"Jules Verne","t":"Le testament dun excentrique"},{"y":1899,"a":"Jules Verne","t":"LÉtoile du Sud"},{"y":1899,"a":"Louis Brunet","t":"Fille de France"},{"y":1899,"a":"Louis Noir","t":"La Vénus cuivrée"},{"y":1899,"a":"Louis Rousselet","t":"La peau du tigre"},{"y":1899,"a":"Marie Guerrier de Haupt","t":"Français dAlsace"},{"y":1899,"a":"Maurice Maindron","t":"Le tournoi de Vauplassans"},{"y":1899,"a":"Octave Uzanne","t":"La panacée du capitaine Hauter"},{"y":1899,"a":"Paul Féval","t":"Le faux frère"},{"y":1899,"a":"Raoul de Navery","t":"Les drames de l'histoire"},{"y":1899,"a":"Thomas Mayne Reid","t":"La soeur perdue"},{"y":1899,"a":"Vincent Huet","t":"Les cavernes de Hall-el-Houed"},{"y":1900,"a":"Albert Robida","t":"Le capitaine Bellormeau"},{"y":1900,"a":"Alphonse Daudet","t":"Premier voyage, premier menson"},{"y":1900,"a":"Anonyme","t":"La Saison É  Baia"},{"y":1900,"a":"Charles Deslys","t":"Courage et dévouement"},{"y":1900,"a":"Cécile-Marie Trouessart","t":"Les enfants de Louise"},{"y":1900,"a":"Fortuné Du Boisgobey","t":"Un cadet de Normandie au XVIIe siècle"},{"y":1900,"a":"Georges Price","t":"Les Chasseurs d'épaves"},{"y":1900,"a":"Gonzague Privat","t":"Léquipage de la Rosette, épis"},{"y":1900,"a":"Gustave Toudouze","t":"Le mystère de la Chauve souris"},{"y":1900,"a":"Jules Claretie","t":"Les Muscadins"},{"y":1900,"a":"Jules Verne","t":"Seconde patrie"},{"y":1900,"a":"Jules Verne","t":"Vingt mille lieues sous les me"},{"y":1900,"a":"Maurice Bouchor","t":"Pervenche"},{"y":1900,"a":"Paul d' Ivoi","t":"Voyages excentriques. Le docteur Mystère"},{"y":1900,"a":"Paul-de Sémant","t":"Le Lac dor du docteur Sarbaca"},{"y":1900,"a":"Pierre Loti","t":"Le mariage de Loti"},{"y":1900,"a":"Pierre Maël","t":"Terre de fauves"},{"y":1900,"a":"Pierre Maël","t":"Une française au pôle Nord"},{"y":1900,"a":"Thomas Mayne Reid","t":"Les exilés dans la forêt"},{"y":1900,"a":"Victor Tissot","t":"Les trois fugitifs"},{"y":1900,"a":"Émile-Cyprien Driant","t":"Filleuls de Napoléon"},{"y":1901,"a":"Achille Mélandri","t":"Jack Simpleton"},{"y":1901,"a":"Achille Mélandri","t":"Un bal masqué"},{"y":1901,"a":"Alfred Assollant","t":"Histoire fantastique du célèbr"},{"y":1901,"a":"Charles Guénot","t":"Les victimes de Néron"},{"y":1901,"a":"Edmond Deschaumes","t":"L'auteur mondain"},{"y":1901,"a":"Eugène Parès","t":"Une famille française É  Madaga"},{"y":1901,"a":"Eugène Foreau","t":"Le Fils de l'Autrichienne"},{"y":1901,"a":"Gabriel Ferry","t":"Les prouesses de Martin Robert"},{"y":1901,"a":"Georges Saint-Yves","t":"Les Libres Burghers"},{"y":1901,"a":"Jonathan Swift","t":"Voyage de Gulliver à Lilliput"},{"y":1901,"a":"Joseph Maranze","t":"Le tour du monde en famille"},{"y":1901,"a":"Jules Chancel","t":"Cocorico"},{"y":1901,"a":"Jules Verne","t":"Le Village aérien"},{"y":1901,"a":"Jules Verne","t":"Seconde patrie"},{"y":1901,"a":"Léon Riotor","t":"Mariani lAnge"},{"y":1901,"a":"Léo Dex","t":"Au pays des Touaregs"},{"y":1901,"a":"Léon Ville","t":"Aventures d'un numismate"},{"y":1901,"a":"Nicol Meyra","t":"Le Fakir"},{"y":1901,"a":"Paul d' Ivoi","t":"Cigale en Chine"},{"y":1901,"a":"Paul d' Ivoi","t":"La mort de lAigle, 1814"},{"y":1901,"a":"Pierre Maël","t":"La filleule de Du Guesclin"},{"y":1901,"a":"Robert Louis Stevenson","t":"La flèche noire"},{"y":1901,"a":"Théodore Cahu","t":"Les naufragés du ciel"},{"y":1901,"a":"Victor Chauvet","t":"Les deux soeurs"},{"y":1901,"a":"William Busnach","t":"Le crime du bois de Verrières, instruction judiciaire"},{"y":1901,"a":"Émile-Cyprien Driant","t":"Jean Tapin"},{"y":1901,"a":"Émile-Cyprien Driant","t":"Petit marsouin"},{"y":1902,"a":"A. Falco","t":"A attrapeur"},{"y":1902,"a":"Adrien Guignery","t":"Royales amours"},{"y":1902,"a":"Anonyme","t":"Le miroir de lamour"},{"y":1902,"a":"Capitaine Marryat","t":"Le vaisseau fantôme"},{"y":1902,"a":"Emilio Salgari","t":"Le corsaire noir"},{"y":1902,"a":"Emilio Salgari","t":"Les pirates de la Malaisie"},{"y":1902,"a":"Gérard de Beauregard","t":"Le rubis de Lapérouse"},{"y":1902,"a":"Hippolyte Sauvage","t":"Le Château Ganne, de Periers e"},{"y":1902,"a":"Jules Verne","t":"Aventures de trois Russes et d"},{"y":1902,"a":"Jules Verne","t":"De la terre à la lune"},{"y":1902,"a":"Jules Verne","t":"La maison É  vapeur"},{"y":1902,"a":"Jules Verne","t":"Le Chancellor"},{"y":1902,"a":"Jules Verne","t":"Les histoires de Jean Marie Ca"},{"y":1902,"a":"Jules Verne","t":"Les tribulations dun Chinois"},{"y":1902,"a":"Jules Verne","t":"Mirifiques aventures de Maître"},{"y":1902,"a":"Juliette Talbot","t":"Périlleuse aventure"},{"y":1902,"a":"Léo Dex","t":"Un héros de treize ans"},{"y":1902,"a":"Marie Améro","t":"Grain de Sel et Poule deau"},{"y":1902,"a":"Marie d' Agon de La Contrie","t":"Le Mousse des Terre-Neuvas"},{"y":1902,"a":"Michel Mathey","t":"La traite des blancs"},{"y":1902,"a":"Paul d' Ivoi","t":"Les cinq sous de Lavarède"},{"y":1902,"a":"Paul d' Ivoi","t":"Millionnaire malgré lui (le pr"},{"y":1902,"a":"Pierre Maël","t":"Pierre Maël (C. Causse et C. V"},{"y":1902,"a":"Pierre Maël","t":"Robinson et Robinsonne"},{"y":1902,"a":"Simon Boubée","t":"Le petit Boscot"},{"y":1903,"a":"Auguste Maîtrejean","t":"Huit mois au Congo"},{"y":1903,"a":"Eudoxie Dupuis","t":"Le nain É  la citrouille"},{"y":1903,"a":"Eugène Parès","t":"Au pays du pétrole"},{"y":1903,"a":"G. Demage","t":"A travers le Sahara"},{"y":1903,"a":"Georges Delaw","t":"Contes de nourrice et histoire"},{"y":1903,"a":"Henry Gauthier-Villars","t":"Le petit roi de la forêt"},{"y":1903,"a":"Jules Lermina","t":"Le fils de Monte Cristo"},{"y":1903,"a":"Jules Verne","t":"Bourses de voyage"},{"y":1903,"a":"Jules Verne","t":"Le Chancellor"},{"y":1903,"a":"Jules Verne","t":"Le tour du monde en quatre vin"},{"y":1903,"a":"Jules Verne","t":"Les Frères Kip"},{"y":1903,"a":"Jules Verne","t":"Les frères Kip"},{"y":1903,"a":"Jules Verne","t":"Mistress Branican"},{"y":1903,"a":"Jules Verne","t":"Nord contre Sud"},{"y":1903,"a":"Jules Verne","t":"Un capitaine de quinze ans"},{"y":1903,"a":"Jules Verne","t":"Voyages et aventures du Capita"},{"y":1903,"a":"P.-J. Stahl","t":"Histoire de la famille Chester"},{"y":1903,"a":"Paul Combes","t":"Les mines d'or du Bas-Meudon"},{"y":1903,"a":"Rudyard Kipling","t":"Histoires comme ça pour les petits"},{"y":1903,"a":"Émile-Cyprien Driant","t":"Capitaine Danrit"},{"y":1904,"a":"Alexandre Dumas","t":"Les quarante-cinq"},{"y":1904,"a":"André Laurie","t":"Le Géant de lazur"},{"y":1904,"a":"Camille Piton","t":"Jeannette la française"},{"y":1904,"a":"Gustave Toudouze","t":"La Gondole fantôme (1797), ouvrage illustré de 52 gravures dessinées par Vogel"},{"y":1904,"a":"Joseph Jacquin","t":"La jeunesse de Cyrano de Bergerac"},{"y":1904,"a":"Jules Verne","t":"Robur le conquérant"},{"y":1904,"a":"Jules Verne","t":"Un drame en Livonie"},{"y":1904,"a":"Louis Boussenard","t":"Sans-le-Sou"},{"y":1904,"a":"Léo Dex","t":"A travers le Transvaal"},{"y":1904,"a":"Léo Dex","t":"Un héros de quinze ans"},{"y":1904,"a":"Léo Dex","t":"Vers le Tchad"},{"y":1904,"a":"Léo Taxil","t":"Marchands de chair humaine"},{"y":1904,"a":"Léon Cahun","t":"Les aventures du capitaine Magon, ou Une exploration phénicienne mille ans avant l'ère chrétienne"},{"y":1904,"a":"Paul d' Ivoi","t":"Les cinquante"},{"y":1904,"a":"Pierre Maël","t":"Robinson et Robinsonne"},{"y":1904,"a":"Sophie-de Ségur","t":"Les bons enfants"},{"y":1904,"a":"Walter Scott","t":"Quentin Durward"},{"y":1904,"a":"Émile-Cypr Driant","t":"Petit marsouin"},{"y":1905,"a":"E. Istivie","t":"Vers la liberté !"},{"y":1905,"a":"Fernand Beissier","t":"La cigale dor"},{"y":1905,"a":"George-Alf Henty","t":"Les jeunes francs tireurs"},{"y":1905,"a":"Gustave Toudouze","t":"Enfant perdu, 1814"},{"y":1905,"a":"Gustave Toudouze","t":"Le démon des sables (1798)"},{"y":1905,"a":"Jules Verne","t":"César Cascabel"},{"y":1905,"a":"Jules Verne","t":"Hector Servadac"},{"y":1905,"a":"Jules Verne","t":"La Jangada"},{"y":1905,"a":"Jules Verne","t":"Le Phare du bout du monde, par"},{"y":1905,"a":"Jules Verne","t":"Les enfants du Capitaine Grant"},{"y":1905,"a":"Jules Verne","t":"Linvasion de la mer"},{"y":1905,"a":"Jules Verne","t":"Michel Strogoff"},{"y":1905,"a":"Jules Verne","t":"Un drame en Livonie"},{"y":1905,"a":"Louis Noir","t":"Trésor caché"},{"y":1905,"a":"Odysse Barot","t":"Susie"},{"y":1905,"a":"Paul Féval","t":"Le Bossu, ou le Petit Parisien"},{"y":1905,"a":"Paul d' Ivoi","t":"Voyages excentriques. Le Serment de Daalia"},{"y":1905,"a":"Philibert Audebrand","t":"Un petit fils de Robinson"},{"y":1906,"a":"Emilio Salgari","t":"Au Pôle sud É  bicyclette. Trad"},{"y":1906,"a":"Eugène Sue","t":"Le juif errant"},{"y":1906,"a":"H. de Charlieu","t":"Le Chevalier de Puyjalou, ouvrage orné de 44 vignettes par A. Paris"},{"y":1906,"a":"Jules Quesnay de Beaurepaire","t":"La conspiration de demain"},{"y":1906,"a":"Jules Verne","t":"De la terre É  la lune, trajet"},{"y":1906,"a":"Jules Verne","t":"Le volcan dor"},{"y":1906,"a":"Jules Verne","t":"Mistress Branican"},{"y":1906,"a":"Louis Rousselet","t":"Le Serviteur du Lion de la mer. Ouvrage illustré de 77 gravures d'après les dessins de Job"},{"y":1906,"a":"R. de Saint-Maur","t":"Le fiancé de Catherine"},{"y":1907,"a":"Daniel Laumonier","t":"Collier-d'or"},{"y":1907,"a":"Emilio Salgari","t":"Les deux tigres"},{"y":1907,"a":"Gabriel Ferry","t":"Les aventuriers du Val d'or"},{"y":1907,"a":"Georges Price","t":"Les trois disparus du Sirius"},{"y":1907,"a":"Henri Méhier-de-","t":"De la montagne au désert"},{"y":1907,"a":"James Fenimore Cooper","t":"La fille du porte-chaînes"},{"y":1907,"a":"Jonathan Swift","t":"Voyages de Gulliver"},{"y":1907,"a":"Jules Verne","t":"L'agence Thompson and Co"},{"y":1907,"a":"Jules Verne","t":"Le Pays des fourrures"},{"y":1907,"a":"Jules Verne","t":"[Les Indes noires"},{"y":1907,"a":"Leopold von Sacher-Masoch","t":"La czarine noire et autres con"},{"y":1907,"a":"Leopold von Sacher-Masoch","t":"La pantoufle de Sapho et autres contes"},{"y":1907,"a":"Paul Féval","t":"Les Cinq"},{"y":1907,"a":"Paul Yalb","t":"Kircha le Zaporog"},{"y":1907,"a":"Paul d' Ivoi","t":"Le maître du drapeau bleu"},{"y":1907,"a":"Paul-de Sémant","t":"Gaëtan Faradel"},{"y":1907,"a":"Paul-de Sémant","t":"Gaëtan Faradel, explorateur ma"},{"y":1907,"a":"Paul-de Sémant","t":"Le Dernier raid de Nelly Sande"},{"y":1907,"a":"Pierre Luguet","t":"La Flèche rouge, grand roman d"},{"y":1907,"a":"Pierre Maël","t":"Le forban noir"},{"y":1907,"a":"Pierre Maël","t":"Un mousse de Surcouf"},{"y":1907,"a":"Prosper Mérimée","t":"Diane de Turgis"},{"y":1907,"a":"René Guyon","t":"A travers la forêt vierge"},{"y":1907,"a":"Thomas Mayne Reid","t":"Le cheval blanc"},{"y":1907,"a":"Thomas Mayne Reid","t":"À la mer ! par le capitaine Ma"},{"y":1908,"a":"H. de Charlieu","t":"Rita la gitane"},{"y":1908,"a":"Henri Germain","t":"La Belle Louison"},{"y":1908,"a":"James Fenimore Cooper","t":"Croisière mouvementée"},{"y":1908,"a":"Jules Verne","t":"La chasse au météore"},{"y":1908,"a":"Madame d' Hauteville","t":"Les aventures d'une poupée, ou Histoire de Merveilleuse"},{"y":1908,"a":"Émile-Cyprien Driant","t":"Guerre maritime et sous-marine"},{"y":1909,"a":"Alfred Assollant","t":"Aventures merveilleuses mais a"},{"y":1909,"a":"Anonyme","t":"Le roman du Renard"},{"y":1909,"a":"Gabriel Ferry","t":"La famille de Jehanne Darc"},{"y":1909,"a":"Henry de Graffigny","t":"Le tour du monde en auto"},{"y":1909,"a":"Jules Girardin","t":"La famille Gaudry"},{"y":1909,"a":"Jules Verne","t":"Deux ans de vacances"},{"y":1909,"a":"Jules Verne","t":"Hector Servadac, voyages et aventures à travers le monde solaire"},{"y":1909,"a":"Jules Verne","t":"LArchipel en feu"},{"y":1909,"a":"Jules Verne","t":"Les Naufragés du Jonathan. Ill"},{"y":1909,"a":"Mark Twain","t":"Le prince et le pauvre"},{"y":1909,"a":"Paul Fournier","t":"Le roman de Paris"},{"y":1909,"a":"Pierre Durandal","t":"Le vengeur de Montcalm"},{"y":1909,"a":"Pierre Maël","t":"Au pays du mystère"},{"y":1909,"a":"Raoul Colonna-de","t":"Vengeances corses"},{"y":1909,"a":"Rudyard Kipling","t":"Capitaines courageux, une histoire du banc de Terre-Neuve"},{"y":1909,"a":"Yves Gallot","t":"Souvenirs du célèbre marcheur Gallot, le roi des marcheurs"},{"y":1909,"a":"Émile-Cyprien Driant","t":"La révolution de demain"},{"y":1910,"a":"Jenny Lensia","t":"Une fortune aux bords du Gange"},{"y":1910,"a":"Judith Gautier","t":"La conquête du paradis"},{"y":1910,"a":"Jules Verne","t":"Les tribulations dun Chinois"},{"y":1910,"a":"Louis Rousselet","t":"Le charmeur de serpents"},{"y":1910,"a":"Paul d' Ivoi","t":"Millionnaire malgré lui"},{"y":1910,"a":"Rodolphe Bringer","t":"Blaise et Babette, ou les Fiancés de la rue Quincampoix"},{"y":1910,"a":"Thomas Mayne Reid","t":"Le chasseur de plantes"},{"y":1911,"a":"Alphonse Daudet","t":"Histoire d'un enfant"},{"y":1911,"a":"Gustave Fernand Hue","t":"Les chasseurs du roi"},{"y":1911,"a":"Henri Germain","t":"Le Calvaire d'Yvonne, roman"},{"y":1911,"a":"Jacques Hyliane","t":"Lolotte en liberté"},{"y":1911,"a":"Jules Verne","t":"Claudius Bombarnac"},{"y":1911,"a":"Léon Berthaut","t":"Le record du tour du monde"},{"y":1911,"a":"M. Génin","t":"La Famille Martin, histoire de"},{"y":1911,"a":"Paul d' Ivoi","t":"Laéroplane fantôme"},{"y":1911,"a":"Paul-de Sémant","t":"Merveilleuses aventures de Dac"},{"y":1911,"a":"Roger Duguet","t":"Le capitaine Rex"},{"y":1911,"a":"Valréas","t":"Un drame au Maroc"},{"y":1912,"a":"Henry de Graffigny","t":"Un sauvage É  Paris"},{"y":1912,"a":"Lucien Darville","t":"Sans boussole"},{"y":1912,"a":"Marc Janin","t":"Les aviateurs des Andes"},{"y":1912,"a":"Paul d' Ivoi","t":"Les voleurs de foudre"},{"y":1912,"a":"Walter Christmas","t":"Camarades de bord, traduction du Dr J. de Christmas du roman danois 'Peder Most'"},{"y":1913,"a":"Achille Mélandri","t":"Le capitaine Bigarreau"},{"y":1913,"a":"Arthur-de Gobineau","t":"Nouvelles asiatiques"},{"y":1913,"a":"Gustave Guitton","t":"La captive des flots"},{"y":1913,"a":"Gérard-de Beauregard","t":"Le rubis de Lapérouse"},{"y":1913,"a":"J. Larallège","t":"Lucien Moulin"},{"y":1913,"a":"Louis Bailleul","t":"Mocandah ou Le jeune chef indien"},{"y":1913,"a":"Mark Twain","t":"Les aventures de Tom Sawyer"},{"y":1913,"a":"Thomas Mayne Reid","t":"À la mer !"},{"y":1913,"a":"Émile-Cyprien Driant","t":"La guerre au XXe siècle"},{"y":1914,"a":"Marc Janin","t":"Un grognard de douze ans"},{"y":1914,"a":"Pierre Maël","t":"La filleule de Du Guesclin"},{"y":1914,"a":"Raymond Roussel","t":"Locus Solus"},{"y":1915,"a":"Berthe Turrillot","t":"Patrie, reine des fées"},{"y":1915,"a":"Pierre Maël","t":"La Roche qui tue"},{"y":1915,"a":"Rudyard Kipling","t":"Simples contes des collines"},{"y":1916,"a":"Charles Dodeman","t":"La bombe silencieuse"},{"y":1916,"a":"Charles Vayre","t":"Frère despion (Cocorico), gra"},{"y":1917,"a":"Jacques Dreux","t":"Le coeur brisé"},{"y":1917,"a":"Joseph Jacquin","t":"Le boy-scout de la revanche"},{"y":1917,"a":"José Moselli","t":"John Strobbins, le détective-cambrioleur"},{"y":1918,"a":"Georges Trémisot","t":"Le bon roi Dagobert"},{"y":1918,"a":"Jules Lermina","t":"Aventures de Cyrano de Bergerac"},{"y":1918,"a":"Marc Janin","t":"L'Empire de la Sierra"},{"y":1918,"a":"Michel Zévaco","t":"La reine Isabeau"},{"y":1918,"a":"Michel Zévaco","t":"Le pont de Montereau"},{"y":1919,"a":"Antoinette Nett","t":"Klack, cigogne dAlsace"},{"y":1919,"a":"Jules Verne","t":"De la Terre É  la Lune"},{"y":1919,"a":"Jules Verne","t":"Voyage au centre de la terre"},{"y":1919,"a":"Émile-Roger Wagner","t":"La revanche de la Kultur"},{"y":1920,"a":"Georges Price","t":"La mine d'or infernale"},{"y":1920,"a":"Jules Verne","t":"Larchipel en feu"},{"y":1920,"a":"Jules Verne","t":"Le pilote du Danube"},{"y":1920,"a":"Paul Féval","t":"Lhomme de fer"},{"y":1921,"a":"Georges Spitzmülle","t":"Le capitaine Bel Coeur"},{"y":1921,"a":"Jules Tellier","t":"Les deux paradis dAbd Er Rham"},{"y":1921,"a":"Louis Chadourne","t":"Terre de Chanaan"},{"y":1921,"a":"Maurice Maindron","t":"Ce bon M. de Véragues"},{"y":1922,"a":"Alfred Assollant","t":"Montluc Le Rouge"},{"y":1922,"a":"Jean Galmot","t":"Un mort vivait parmi nous"},{"y":1922,"a":"Paul Féval","t":"Frère Tranquille"},{"y":1922,"a":"Paul Féval","t":"Le bossu"},{"y":1923,"a":"Jack London","t":"Croc-Blanc"},{"y":1923,"a":"Joseph Kessel","t":"Léquipage"},{"y":1923,"a":"Louis Chadourne","t":"Le pot au noir"},{"y":1924,"a":"E. M. Laumann","t":"Létrange matière"},{"y":1924,"a":"José Moselli","t":"Assiégés par les convicts"},{"y":1924,"a":"José Moselli","t":"LAuberge du Nandou"},{"y":1924,"a":"José Moselli","t":"Les Diamants de l'Idole"},{"y":1924,"a":"Léon Berthaut","t":"Le chasseur de pirates"},{"y":1924,"a":"Paul Féval","t":"Le capitaine Simon"},{"y":1924,"a":"Victor Cherbuliez","t":"Le comte Kostia"},{"y":1925,"a":"E. M. Laumann","t":"L'Inde mystérieuse"},{"y":1925,"a":"Edmond About","t":"Le roi des montagnes"},{"y":1925,"a":"Emilio Salgari","t":"Le tigre de Montpracem"},{"y":1925,"a":"George Groslier","t":"La route du plus fort"},{"y":1925,"a":"Henry-de Brisay","t":"Trémor aux mains rouges"},{"y":1925,"a":"James-Feni Cooper","t":"Le dernier des Mohicans"},{"y":1925,"a":"Joseph Luthy","t":"Par les forêts et les savanes, roman inédit"},{"y":1925,"a":"José Moselli","t":"Le Cadet de Crèvecoeur"},{"y":1925,"a":"José Moselli","t":"Les Mystères de la mer de Cora"},{"y":1925,"a":"Michel Zévaco","t":"Le pont des soupirs"},{"y":1925,"a":"Paul Adam","t":"Le grand choc"},{"y":1925,"a":"Paul Féval","t":"La bague de chanvre"},{"y":1925,"a":"Paul Féval","t":"Le poisson dor"},{"y":1925,"a":"Paul Féval","t":"Léborgnade"},{"y":1925,"a":"Paul Féval","t":"Roger Bontemps"},{"y":1925,"a":"Paul Féval","t":"Rollan Pied de fer"},{"y":1926,"a":"Captain Hidden","t":"Rio Mix"},{"y":1926,"a":"E. M. Laumann","t":"Fils de Cartouche ! roman de drame et d'amour"},{"y":1926,"a":"J. Blenot","t":"Le Pirate du Pacifique, roman inédit"},{"y":1926,"a":"Michel Zévaco","t":"Buridan"},{"y":1926,"a":"Michel Zévaco","t":"Fiorinda la Belle"},{"y":1926,"a":"Paul Féval","t":"A la plus belle"},{"y":1926,"a":"Paul Féval","t":"La chasse au roi"},{"y":1926,"a":"Paul Féval","t":"La reine des épées"},{"y":1926,"a":"Paul Féval","t":"Le dernier chevalier"},{"y":1927,"a":"Anonyme","t":"Le nain bleu"},{"y":1927,"a":"Louis Boussenard","t":"Les étrangleurs du Bengale"},{"y":1927,"a":"Léon Sazie","t":"La Reine des ranchs"},{"y":1927,"a":"Mario Donal","t":"Le martyre d'un patriote"},{"y":1927,"a":"Paul Féval","t":"Diane et Cyprienne"},{"y":1927,"a":"Zénaïde Fleuriot","t":"Monsieur Nostradamus"},{"y":1928,"a":"Albert Londres","t":"L'homme qui s'évada"},{"y":1928,"a":"Alexandre Dumas","t":"La Bouillie de la comtesse Ber"},{"y":1928,"a":"Arnould Galopin","t":"Les aventures dun apprenti pa"},{"y":1928,"a":"Emilio Salgari","t":"Le faux brahmane"},{"y":1928,"a":"James Fenimore Cooper","t":"La Prairie, roman d'aventures"},{"y":1928,"a":"Paul Vincent","t":"Le fantôme vert"},{"y":1929,"a":"Walter Scott","t":"Quentin Durward"},{"y":1930,"a":"A.-H.-de Longpré","t":"Les esclaves du pacha dAïdin"},{"y":1930,"a":"Edmond Rousseau","t":"Histoire du Canada popularisée. La Monongahéla"},{"y":1930,"a":"James Oliver Curwood","t":"Le piège dor"},{"y":1930,"a":"Tristan Derème","t":"Patachou, petit garçon"},{"y":1930,"a":"Yvonne Laeufer","t":"Oeil pour oeil (contes arabes)"},{"y":1931,"a":"Benjamin Rabier","t":"Coco, chimpanzé"},{"y":1931,"a":"Benjamin Rabier","t":"Tintin, petit poussin"},{"y":1931,"a":"Henry de La Vaulx","t":"Le tour du monde de deux gosses"},{"y":1932,"a":"Benjamin Rabier","t":"Le grand pélican blanc"},{"y":1932,"a":"Louis Boussenard","t":"Aventures dun gamin de Paris"},{"y":1932,"a":"Paul d' Ivoi","t":"Le capitaine Nilia"},{"y":1933,"a":"André Hellé","t":"La croisière des enfants"},{"y":1933,"a":"Benjamin Rabier","t":"Gédéon traverse lAtlantique"},{"y":1933,"a":"Emilio Salgari","t":"Au milieu des coupeurs de têtes. Adapté de l'italien par Jean Clairsange"},{"y":1933,"a":"Emilio Salgari","t":"Les Flibustiers de la Malaisie"},{"y":1933,"a":"Gustave Le Rouge","t":"Les Ecumeurs de la Pampa"},{"y":1933,"a":"Henry de Graffigny","t":"Electropolis"},{"y":1933,"a":"Louis Granval","t":"Les exploits de Duguay-Trouin"},{"y":1933,"a":"Léon Lambry","t":"La peur du tigre"},{"y":1933,"a":"Pierre Maël","t":"Un mousse de Surcouf"},{"y":1933,"a":"Walter Scott","t":"Le Pirate. Traduction Defaucon"},{"y":1934,"a":"Léon Lambry","t":"Le voilier maudit"},{"y":1934,"a":"Léon Lambry","t":"Les naufragés du Sakhaline"},{"y":1934,"a":"Paul d' Ivoi","t":"Cigale en Chine"},{"y":1934,"a":"Paul d' Ivoi","t":"Le docteur Mystère"},{"y":1934,"a":"Paul d' Ivoi","t":"Le serment de Daalia"},{"y":1934,"a":"Paul d' Ivoi","t":"Massiliague de Marseille"},{"y":1934,"a":"Thomas Mayne Reid","t":"Vers l'Alaska en canoë"},{"y":1934,"a":"Tristan Bernard","t":"Visites nocturnes"},{"y":1935,"a":"Anonyme","t":"Contes et images"},{"y":1935,"a":"Paul d' Ivoi","t":"La Diane de larchipel"},{"y":1935,"a":"Paul d' Ivoi","t":"La capitaine Nilia"},{"y":1935,"a":"Paul d' Ivoi","t":"Le maître du drapeau bleu"},{"y":1935,"a":"Paul d' Ivoi","t":"Le radium qui tue"},{"y":1935,"a":"Paul d' Ivoi","t":"Le sergent Simplet"},{"y":1935,"a":"Paul d' Ivoi","t":"Le voleur de pensée"},{"y":1935,"a":"Paul d' Ivoi","t":"Les semeurs de glace"},{"y":1937,"a":"Charles Silvestre","t":"Le vent du gouffre"},{"y":1937,"a":"Claude Renaudy","t":"Lîle blanche"},{"y":1937,"a":"Karl May","t":"Le trésor des incas"},{"y":1937,"a":"Léon Lambry","t":"Un naufrage en Patagonie"},{"y":1937,"a":"Michel Dorlys","t":"Quand on a des ailes"},{"y":1938,"a":"Georges Steff","t":"L'opale au charme mortel"},{"y":1938,"a":"Georges-de Labruyère","t":"Lhomme voilé"},{"y":1938,"a":"Léon Lambry","t":"Les démons dAnnam"},{"y":1938,"a":"Pierre Mille","t":"Féli et Mbala léléphant. Ill"},{"y":1938,"a":"Thomas Mayne Reid","t":"Anahuac, terre des aventures"},{"y":1938,"a":"Édouard Laboulaye","t":"La toison dor"},{"y":1939,"a":"Jules Verne","t":"Le superbe Orénoque"},{"y":1939,"a":"Léon Lambry","t":"Le pays où lon ne va pas"},{"y":1939,"a":"Michel Dorlys","t":"Forêt perfide et mer douce"},{"y":1941,"a":"Gustave Gailhard","t":"L'Auberge des trois pendus"},{"y":1941,"a":"Rudyard Kipling","t":"Histoires comme ça"},{"y":1944,"a":"Alexandre Dumas","t":"Alexandre Dumas. Les Trois mousquetaires"},{"y":1946,"a":"Pierre-Ale Ponson-du-","t":"Le diamant du commandeur"},{"y":1947,"a":"Delly","t":"Le roi des Andes"},{"y":1948,"a":"Jack London","t":"Contes des mers du Sud"},{"y":1948,"a":"Jack London","t":"Lappel de la forêt"},{"y":1948,"a":"Jules Verne","t":"LIle mystérieuse"},{"y":1948,"a":"Michel Zévaco","t":"Borgia"},{"y":1948,"a":"Pierre Alexis Ponson du Terrail","t":"Ponson du Terrail. Les Drames de Paris. [1.] Rocambole"},{"y":1948,"a":"Pierre Decourcelle","t":"La chambre d'amour"}];
+const SUMMARY={"total":11345,"authors":3884,"year_min":1707,"year_max":1950,"decades":[[1700,1],[1710,1],[1720,6],[1730,9],[1740,6],[1750,20],[1760,32],[1770,39],[1780,90],[1790,51],[1800,216],[1810,229],[1820,438],[1830,652],[1840,635],[1850,861],[1860,1391],[1870,1570],[1880,2060],[1890,1194],[1900,703],[1910,427],[1920,419],[1930,229],[1940,62],[1950,4]],"top_authors":[["Alexandre Dumas",90],["Xavier de Montépin",80],["Paul Féval",77],["Paul de Kock",72],["Jules Verne",67],["George Sand",62],["Pierre Alexis Ponson du Terrail",52],["Élie Berthet",48],["Hector Malot",48],["Zénaïde Fleuriot",46],["Thomas Mayne Reid",46],["Armand Silvestre",44],["Arsène Houssaye",41],["Gustave Aimard",39],["Adolphe Belot",38],["Gyp",38],["Paul Lacroix",38],["Fortuné Du Boisgobey",37],["Alfred Assollant",36],["Honoré de Balzac",35],["Catulle Mendès",35],["Clémence Robert",35],["Émile Souvestre",35],["Henry de Kock",34],["Joseph Méry",34],["Richard O'Monroy",34],["Eugène Sue",34],["André Theuriet",34],["Ernest Daudet",33],["Alphonse Karr",33],["Jules Mary",33],["Walter Scott",32],["Alexis Bouvier",31],["Jules Claretie",31],["Louis Ulbach",31],["Émile Zola",31],["Frédéric Soulié",30],["Jules Girardin",29],["Gabriel de La Landelle",29],["Jules Lermina",29]]};
 
-// ── DECADE CHART ──
-const decades = {};
-CORPUS.forEach(d => {
-  if (d.y >= 1800) {
-    const dec = Math.floor(d.y / 10) * 10;
-    decades[dec] = (decades[dec] || 0) + 1;
-  }
-});
-const decKeys = Object.keys(decades).map(Number).sort();
-const maxCount = Math.max(...decKeys.map(k => decades[k]));
+// Decade chart
+const decades = SUMMARY.decades;
+const maxCount = Math.max(...decades.map(d => d[1]));
 const chartEl = document.getElementById('decadeChart');
-
-decKeys.forEach(dec => {
-  const count = decades[dec];
+decades.forEach(([dec, count]) => {
   const height = Math.max(2, (count / maxCount) * 200);
   const col = document.createElement('div');
   col.className = 'bar-col';
   col.innerHTML = `
     <div class="bar-val">${count}</div>
-    <div class="bar" style="height:${height}px" title="${dec}s: ${count} romans"></div>
-    <div class="bar-label">${dec}s</div>
+    <div class="bar" style="height:${height}px" title="${dec}s : ${count} romans"></div>
+    <div class="bar-label">${String(dec).slice(-2)}</div>
   `;
   chartEl.appendChild(col);
 });
 
-// ── AUTHORS CLOUD ──
-const authCounts = {};
-CORPUS.forEach(d => { authCounts[d.a] = (authCounts[d.a] || 0) + 1; });
-const topAuthors = Object.entries(authCounts)
-  .filter(([a, c]) => c >= 6 && a !== 'Anonyme')
-  .sort((a, b) => b[1] - a[1]);
-
-const cloudEl = document.getElementById('authorsCloud');
-topAuthors.forEach(([name, count]) => {
+// Authors cloud
+const cloud = document.getElementById('authorsCloud');
+SUMMARY.top_authors.forEach(([name, count]) => {
   const tag = document.createElement('span');
   tag.className = 'author-tag';
   tag.innerHTML = `${name} <span class="count">${count}</span>`;
-  cloudEl.appendChild(tag);
+  cloud.appendChild(tag);
 });
-
-// ── DECADE FILTER ──
-const filterSelect = document.getElementById('decadeFilter');
-decKeys.forEach(dec => {
-  const opt = document.createElement('option');
-  opt.value = dec;
-  opt.textContent = `${dec}–${dec + 9} (${decades[dec]})`;
-  filterSelect.appendChild(opt);
-});
-
-// ── TABLE ──
-const PAGE_SIZE = 50;
-let filtered = [...CORPUS];
-let currentPage = 0;
-let currentSort = { key: 'y', asc: true };
-
-function renderTable() {
-  const tbody = document.getElementById('corpusBody');
-  const start = currentPage * PAGE_SIZE;
-  const page = filtered.slice(start, start + PAGE_SIZE);
-
-  tbody.innerHTML = page.map(d =>
-    `<tr>
-      <td class="col-year">${d.y}</td>
-      <td class="col-author">${esc(d.a)}</td>
-      <td class="col-title">${esc(d.t)}</td>
-    </tr>`
-  ).join('');
-
-  document.getElementById('resultCount').textContent =
-    `${filtered.length} résultat${filtered.length > 1 ? 's' : ''}`;
-
-  renderPagination();
-}
-
-function esc(s) {
-  const el = document.createElement('span');
-  el.textContent = s;
-  return el.innerHTML;
-}
-
-function renderPagination() {
-  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
-  const pag = document.getElementById('pagination');
-  if (totalPages <= 1) { pag.innerHTML = ''; return; }
-
-  let html = '';
-  if (currentPage > 0)
-    html += `<button onclick="goPage(${currentPage - 1})">← Préc.</button>`;
-
-  const start = Math.max(0, currentPage - 3);
-  const end = Math.min(totalPages, currentPage + 4);
-
-  if (start > 0) html += `<button onclick="goPage(0)">1</button>`;
-  if (start > 1) html += `<button disabled>…</button>`;
-
-  for (let i = start; i < end; i++) {
-    html += `<button class="${i === currentPage ? 'active' : ''}" onclick="goPage(${i})">${i + 1}</button>`;
-  }
-
-  if (end < totalPages - 1) html += `<button disabled>…</button>`;
-  if (end < totalPages) html += `<button onclick="goPage(${totalPages - 1})">${totalPages}</button>`;
-
-  if (currentPage < totalPages - 1)
-    html += `<button onclick="goPage(${currentPage + 1})">Suiv. →</button>`;
-
-  pag.innerHTML = html;
-}
-
-function goPage(n) {
-  currentPage = n;
-  renderTable();
-  document.querySelector('.corpus-table').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function applyFilters() {
-  const query = document.getElementById('searchInput').value.toLowerCase().trim();
-  const decade = document.getElementById('decadeFilter').value;
-
-  filtered = CORPUS.filter(d => {
-    if (decade && Math.floor(d.y / 10) * 10 !== parseInt(decade)) return false;
-    if (query) {
-      const haystack = (d.a + ' ' + d.t + ' ' + d.y).toLowerCase();
-      return query.split(/\s+/).every(w => haystack.includes(w));
-    }
-    return true;
-  });
-
-  // Re-sort
-  sortFiltered();
-  currentPage = 0;
-  renderTable();
-}
-
-function sortFiltered() {
-  const { key, asc } = currentSort;
-  filtered.sort((a, b) => {
-    let va = a[key], vb = b[key];
-    if (typeof va === 'string') { va = va.toLowerCase(); vb = vb.toLowerCase(); }
-    if (va < vb) return asc ? -1 : 1;
-    if (va > vb) return asc ? 1 : -1;
-    return 0;
-  });
-}
-
-function sortTable(key) {
-  if (currentSort.key === key) {
-    currentSort.asc = !currentSort.asc;
-  } else {
-    currentSort = { key, asc: true };
-  }
-  // Update arrows
-  document.querySelectorAll('.corpus-table thead th').forEach(th => {
-    const arrow = th.querySelector('.sort-arrow');
-    const k = th.dataset.sort;
-    if (k === key) {
-      arrow.textContent = currentSort.asc ? '▲' : '▼';
-      th.classList.add('sorted');
-    } else {
-      arrow.textContent = '';
-      th.classList.remove('sorted');
-    }
-  });
-  sortFiltered();
-  currentPage = 0;
-  renderTable();
-}
-
-document.getElementById('searchInput').addEventListener('input', applyFilters);
-document.getElementById('decadeFilter').addEventListener('change', applyFilters);
-
-// Initial render
-sortFiltered();
-renderTable();
 </script>
 </body>
 </html>
