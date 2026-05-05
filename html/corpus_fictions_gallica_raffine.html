@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fictions Littéraires de Gallica — corpus de travail</title>
+<meta name="description" content="Corpus de 11 344 romans constitué à partir des Fictions Littéraires de Gallica : filtrage, correction OCR, enrichissement des métadonnées et identification des genres.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAF6F0;
+  --bg-card: #FFFFFF;
+  --bg-deep: #F2EBDF;
+  --text: #2C1810;
+  --text-muted: #6B5B4F;
+  --text-light: #9B8B7F;
+  --accent: #8B3A2F;
+  --accent-light: #C45A4A;
+  --accent-2: #2F5B6B;
+  --gold: #A67C52;
+  --gold-light: #D4A96A;
+  --border: #E8E0D6;
+  --border-light: #F0EBE4;
+  --shadow: rgba(44, 24, 16, 0.06);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Source Serif 4', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.7;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* HERO */
+.hero {
+  padding: 6rem 2rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #F5EDE3 0%, var(--bg) 100%);
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C4A882' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.7;
+}
+.hero-inner { position: relative; max-width: 820px; margin: 0 auto; }
+.hero-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+}
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  max-width: 640px;
+  margin: 0 auto 2.5rem;
+  font-style: italic;
+}
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.1;
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-top: 0.25rem;
+}
+
+/* SECTIONS */
+.container { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+section { padding: 4rem 0; }
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+h2 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+p { margin-bottom: 1rem; }
+p + p { text-indent: 1.5em; }
+
+/* PIPELINE */
+.pipeline {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  gap: 0.5rem;
+  align-items: stretch;
+  margin: 2.5rem 0;
+}
+@media (max-width: 800px) {
+  .pipeline {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .pipeline-arrow { display: none; }
+}
+.pipeline-step {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  position: relative;
+  transition: all 0.2s;
+}
+.pipeline-step:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--shadow);
+}
+.pipeline-step .num {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.pipeline-step .count {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.1;
+  margin-bottom: 0.4rem;
+}
+.pipeline-step .label {
+  font-size: 0.85rem;
+  color: var(--text);
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.pipeline-step .detail {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: 1.4;
+}
+.pipeline-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 1.2rem;
+}
+
+/* CHART */
+.chart-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2rem 1.5rem 1.5rem;
+  margin: 2rem 0;
+  overflow-x: auto;
+}
+.chart-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 220px;
+  padding: 0 0.5rem;
+  justify-content: center;
+  min-width: max-content;
+}
+.bar-col { display: flex; flex-direction: column; align-items: center; flex: 0 0 auto; }
+.bar {
+  width: 28px;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-light) 100%);
+  border-radius: 3px 3px 0 0;
+  transition: all 0.2s;
+  min-height: 2px;
+}
+.bar:hover { background: var(--gold); }
+.bar-val {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-light);
+  margin-bottom: 4px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.bar-col:hover .bar-val { opacity: 1; }
+.bar-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-light);
+  margin-top: 6px;
+}
+
+/* AUTHORS */
+.authors-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+}
+.author-tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.82rem;
+}
+.author-tag .count {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-light);
+}
+
+/* SUB-CORPUS CARDS */
+.subcorpus-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+@media (max-width: 700px) { .subcorpus-grid { grid-template-columns: 1fr; } }
+.subcorpus-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2rem 1.75rem;
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 260px;
+}
+.subcorpus-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+.subcorpus-card.policier::before { background: var(--accent-2); }
+.subcorpus-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px var(--shadow);
+}
+.subcorpus-card:hover::before { transform: scaleX(1); }
+.subcorpus-card .ic {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+.subcorpus-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+.subcorpus-card .big-num {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin: 0.5rem 0 0.3rem;
+}
+.subcorpus-card.policier .big-num { color: var(--accent-2); }
+.subcorpus-card .nlbl {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+.subcorpus-card .desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  flex: 1;
+}
+.subcorpus-card .arrow {
+  margin-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+.subcorpus-card.policier .arrow { color: var(--accent-2); }
+
+/* DOWNLOAD */
+.download-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+.dl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.dl-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.2s;
+}
+.dl-item:hover { border-color: var(--gold); background: rgba(166,124,82,0.04); }
+.dl-icon {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--gold);
+  width: 1.5rem;
+}
+.dl-info { display: flex; flex-direction: column; }
+.dl-name { font-weight: 600; font-size: 0.88rem; }
+.dl-desc { font-size: 0.72rem; color: var(--text-light); }
+
+/* CITATION */
+.citation-box {
+  background: #F5F0EA;
+  border-left: 3px solid var(--gold);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-size: 0.88rem;
+  border-radius: 0 6px 6px 0;
+}
+.citation-box code {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  display: block;
+  white-space: pre-wrap;
+  margin-top: 0.5rem;
+  color: var(--text-muted);
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 3rem 2rem;
+  font-size: 0.82rem;
+  color: var(--text-light);
+  border-top: 1px solid var(--border-light);
+}
+footer a { color: var(--gold); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+.sep {
+  width: 40px;
+  height: 2px;
+  background: var(--gold-light);
+  margin: 3rem auto;
+  border-radius: 1px;
+}
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { opacity: 0; animation: fadeUp 0.6s ease forwards; }
+.fade-in:nth-child(2) { animation-delay: 0.1s; }
+.fade-in:nth-child(3) { animation-delay: 0.2s; }
+.fade-in:nth-child(4) { animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-label fade-in">Corpus numérique · Thèse</div>
+    <h1 class="fade-in">Les <em>Fictions Littéraires<br>de Gallica</em></h1>
+    <p class="hero-sub fade-in">Un corpus de travail de 11 344 romans, dérivé de la collection BnF, filtré, corrigé et enrichi pour l'analyse computationnelle des genres littéraires populaires.</p>
+    <div class="stats-row fade-in">
+      <div class="stat-item">
+        <div class="stat-num">11 344</div>
+        <div class="stat-label">Romans</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3 885</div>
+        <div class="stat-label">Auteurs</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">1707–1950</div>
+        <div class="stat-label">Période</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="sep"></div>
+
+<!-- PIPELINE -->
+<section>
+  <div class="container">
+    <div class="section-label">Constitution du corpus</div>
+    <h2>Du dépôt Zenodo au corpus de travail</h2>
+    <p>Le point de départ est la collection <em>Fictions Littéraires de Gallica</em> publiée par Pierre-Carl Langlais (<a href="https://zenodo.org/records/4751204" style="color:var(--accent)">Zenodo, 2021</a>), qui rassemble 19 240 romans numérisés par la BnF. Ce corpus brut a été retravaillé en quatre étapes pour produire la base utilisée dans la thèse.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <div class="num">SOURCE</div>
+        <div class="count">19 240</div>
+        <div class="label">Fictions de Gallica</div>
+        <div class="detail">Langlais 2021, Zenodo</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="num">ÉTAPE 1</div>
+        <div class="count">14 800</div>
+        <div class="label">Filtrage qualité</div>
+        <div class="detail">OCR &gt; 95 %, hors œuvres complètes</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="num">ÉTAPE 2</div>
+        <div class="count">12 200</div>
+        <div class="label">Dédoublonnage</div>
+        <div class="detail">Rééditions et tomes multiples</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="num">FINAL</div>
+        <div class="count">11 344</div>
+        <div class="label">Corpus enrichi</div>
+        <div class="detail">Métadonnées BnF + Wikidata</div>
+      </div>
+    </div>
+
+    <p>Au-delà du simple filtrage, chaque entrée a été enrichie : correction des artefacts d'OCR sur les noms et titres, récupération des dates auteur via croisement BnF / Wikidata, normalisation des identités auctoriales (résolution des pseudonymes et variantes orthographiques), et identification automatique de deux sous-genres majeurs — le roman d'aventures et le roman policier.</p>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- DISTRIBUTION -->
+<section>
+  <div class="container">
+    <div class="section-label">Répartition</div>
+    <h2>Distribution temporelle</h2>
+    <div class="chart-wrap">
+      <div class="chart-title">Romans par décennie (n = 11 344)</div>
+      <div class="bar-chart" id="decadeChart"></div>
+    </div>
+    <p>La distribution culmine dans la décennie 1880 (2 060 titres), reflet de l'âge d'or du roman-feuilleton et de la massification éditoriale du dernier tiers du <span style="font-variant:small-caps">xix</span><sup>e</sup> siècle. Le déclin après 1900 tient pour partie aux limites de la numérisation Gallica.</p>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- AUTHORS -->
+<section>
+  <div class="container">
+    <div class="section-label">Auteurs</div>
+    <h2>Signatures du corpus</h2>
+    <p>Sur 3 885 auteurs identifiés, une longue traîne caractéristique : Dumas, Montépin, Féval, Paul de Kock dominent en volume, mais l'essentiel de la production se distribue parmi des centaines de signatures peu canoniques.</p>
+    <div class="authors-grid" id="authorsCloud"></div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- SUB-CORPORA -->
+<section>
+  <div class="container">
+    <div class="section-label">Sous-corpus génériques</div>
+    <h2>Deux genres identifiés</h2>
+    <p>Au sein du corpus général, deux ensembles génériques ont été extraits par classification supervisée et correction par graphe de similarité, à partir d'amorces d'entraînement issues de la critique (liste Letourneux pour l'aventure, liste Boltanski–Esquenazi pour le policier).</p>
+
+    <div class="subcorpus-grid">
+      <a href="corpus_aventures.html" class="subcorpus-card">
+        <div class="ic">Sous-corpus 1</div>
+        <h3>Roman d'aventures</h3>
+        <div class="big-num">1 428</div>
+        <div class="nlbl">Romans</div>
+        <div class="desc">Identifiés par SVM linéaire sur représentation BoW, corrigés via graphe <em>k</em>-NN d'embeddings de paragraphes. Période d'essor : 1860–1910.</div>
+        <div class="arrow">CONSULTER LA LISTE →</div>
+      </a>
+
+      <a href="corpus_policier.html" class="subcorpus-card policier">
+        <div class="ic">Sous-corpus 2</div>
+        <h3>Roman policier</h3>
+        <div class="big-num">830</div>
+        <div class="nlbl">Romans</div>
+        <div class="desc">Identifiés par la même chaîne de traitement, à partir d'une amorce historique élargie. Période d'essor : 1880–1920, avec persistance jusque dans les années 1930.</div>
+        <div class="arrow">CONSULTER LA LISTE →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- DOWNLOAD -->
+<section>
+  <div class="container">
+    <div class="section-label">Données</div>
+    <h2>Téléchargement et citation</h2>
+    <div class="download-box">
+      <p style="margin-bottom: 0.5rem;">L'ensemble des fichiers est distribué sous licence CC-BY 4.0 ; les textes intégraux restent accessibles via les identifiants Gallica (ARK).</p>
+      <div class="dl-grid">
+        <a href="data_full.json" class="dl-item">
+          <span class="dl-icon">{&nbsp;}</span>
+          <div class="dl-info">
+            <span class="dl-name">corpus_complet.json</span>
+            <span class="dl-desc">11 344 entrées · 952 KB</span>
+          </div>
+        </a>
+        <a href="metadata_gallica_all.tsv" class="dl-item">
+          <span class="dl-icon">⊞</span>
+          <div class="dl-info">
+            <span class="dl-name">metadata.tsv</span>
+            <span class="dl-desc">Métadonnées BnF + Wikidata</span>
+          </div>
+        </a>
+        <a href="corpus_final_aventures.json" class="dl-item">
+          <span class="dl-icon">⚔</span>
+          <div class="dl-info">
+            <span class="dl-name">aventures.json</span>
+            <span class="dl-desc">1 428 titres</span>
+          </div>
+        </a>
+        <a href="predicted_policier_list.txt" class="dl-item">
+          <span class="dl-icon">🔍</span>
+          <div class="dl-info">
+            <span class="dl-name">policier.txt</span>
+            <span class="dl-desc">830 titres</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="citation-box">
+      <strong>Pour citer ce corpus :</strong>
+      <code>Jean Barré (2025). Fictions Littéraires de Gallica — corpus enrichi.
+Dérivé de Langlais, P.-C. (2021). Fictions littéraires de Gallica.
+Zenodo. https://doi.org/10.5281/zenodo.4751204</code>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Jean Barré · Thèse de doctorat · 2025</p>
+  <p><a href="https://jeanbarre.eu">jeanbarre.eu</a></p>
+</footer>
+
+<script>
+const SUMMARY={"total":11345,"authors":3884,"year_min":1707,"year_max":1950,"decades":[[1700,1],[1710,1],[1720,6],[1730,9],[1740,6],[1750,20],[1760,32],[1770,39],[1780,90],[1790,51],[1800,216],[1810,229],[1820,438],[1830,652],[1840,635],[1850,861],[1860,1391],[1870,1570],[1880,2060],[1890,1194],[1900,703],[1910,427],[1920,419],[1930,229],[1940,62],[1950,4]],"top_authors":[["Alexandre Dumas",90],["Xavier de Montépin",80],["Paul Féval",77],["Paul de Kock",72],["Jules Verne",67],["George Sand",62],["Pierre Alexis Ponson du Terrail",52],["Élie Berthet",48],["Hector Malot",48],["Zénaïde Fleuriot",46],["Thomas Mayne Reid",46],["Armand Silvestre",44],["Arsène Houssaye",41],["Gustave Aimard",39],["Adolphe Belot",38],["Gyp",38],["Paul Lacroix",38],["Fortuné Du Boisgobey",37],["Alfred Assollant",36],["Honoré de Balzac",35],["Catulle Mendès",35],["Clémence Robert",35],["Émile Souvestre",35],["Henry de Kock",34],["Joseph Méry",34],["Richard O'Monroy",34],["Eugène Sue",34],["André Theuriet",34],["Ernest Daudet",33],["Alphonse Karr",33],["Jules Mary",33],["Walter Scott",32],["Alexis Bouvier",31],["Jules Claretie",31],["Louis Ulbach",31],["Émile Zola",31],["Frédéric Soulié",30],["Jules Girardin",29],["Gabriel de La Landelle",29],["Jules Lermina",29]]};
+
+// Decade chart
+const decades = SUMMARY.decades;
+const maxCount = Math.max(...decades.map(d => d[1]));
+const chartEl = document.getElementById('decadeChart');
+decades.forEach(([dec, count]) => {
+  const height = Math.max(2, (count / maxCount) * 200);
+  const col = document.createElement('div');
+  col.className = 'bar-col';
+  col.innerHTML = `
+    <div class="bar-val">${count}</div>
+    <div class="bar" style="height:${height}px" title="${dec}s : ${count} romans"></div>
+    <div class="bar-label">${String(dec).slice(-2)}</div>
+  `;
+  chartEl.appendChild(col);
+});
+
+// Authors cloud
+const cloud = document.getElementById('authorsCloud');
+SUMMARY.top_authors.forEach(([name, count]) => {
+  const tag = document.createElement('span');
+  tag.className = 'author-tag';
+  tag.innerHTML = `${name} <span class="count">${count}</span>`;
+  cloud.appendChild(tag);
+});
+</script>
+</body>
+</html>
