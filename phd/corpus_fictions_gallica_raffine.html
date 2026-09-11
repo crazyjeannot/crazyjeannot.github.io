@@ -4,28 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fictions Littéraires de Gallica — corpus de travail</title>
-<meta name="description" content="Corpus de 10 898 romans constitué à partir des Fictions Littéraires de Gallica : filtrage, correction OCR, dédoublonnage, enrichissement des métadonnées et identification des genres.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<meta name="description" content="Corpus de 10 859 romans constitué à partir des Fictions Littéraires de Gallica : filtrage, correction OCR, dédoublonnage, enrichissement des métadonnées et identification des genres.">
 <style>
 :root {
-  --bg: #FAF6F0;
+  --bg: #FFFFFF;
   --bg-card: #FFFFFF;
-  --bg-deep: #F2EBDF;
-  --text: #2C1810;
-  --text-muted: #6B5B4F;
-  --text-light: #9B8B7F;
-  --accent: #8B3A2F;
-  --accent-light: #C45A4A;
-  --accent-2: #2F5B6B;
-  --gold: #A67C52;
-  --gold-light: #D4A96A;
-  --border: #E8E0D6;
-  --border-light: #F0EBE4;
-  --shadow: rgba(44, 24, 16, 0.06);
-  --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'Source Serif 4', Georgia, serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --bg-deep: #F5F5F5;
+  --text: #000000;
+  --text-muted: #5A5A5A;
+  --text-light: #8A8A8A;
+  --accent: #000000;
+  --accent-light: #000000;
+  --accent-2: #14479E;
+  --accent-soft: rgba(0, 0, 0, 0.05);
+  --red: #B3261E;
+  --blue: #14479E;
+  --gold: #767676;
+  --gold-light: #CFCFCF;
+  --border: #DCDCDC;
+  --border-light: #EDEDED;
+  --shadow: rgba(0, 0, 0, 0.07);
+  --score-high: #2F6B3C;
+  --score-mid: #8A6A2E;
+  --score-low: #8C8C8C;
+  --font-display: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
 }
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -43,7 +47,7 @@ body {
   text-align: center;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, #F5EDE3 0%, var(--bg) 100%);
+  background: var(--bg);
 }
 .hero::before {
   content: '';
@@ -213,7 +217,7 @@ p + p { text-indent: 1.5em; }
 .bar-col { display: flex; flex-direction: column; align-items: center; flex: 0 0 auto; }
 .bar {
   width: 28px;
-  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-light) 100%);
+  background: var(--accent);
   border-radius: 3px 3px 0 0;
   transition: all 0.2s;
   min-height: 2px;
@@ -228,20 +232,6 @@ p + p { text-indent: 1.5em; }
   transition: opacity 0.15s;
 }
 .bar-col:hover .bar-val { opacity: 1; }
-.bar-est {
-  width: 28px;
-  border-radius: 3px 3px 0 0;
-  background: repeating-linear-gradient(45deg, var(--gold-light) 0 4px, transparent 4px 8px);
-  border: 1px dashed var(--gold);
-  border-bottom: none;
-}
-.chart-note {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  font-style: italic;
-  border-left: 2px solid var(--gold-light);
-  padding-left: 0.9rem;
-}
 .bar-label {
   font-family: var(--font-mono);
   font-size: 0.6rem;
@@ -381,7 +371,7 @@ p + p { text-indent: 1.5em; }
   color: var(--text);
   transition: all 0.2s;
 }
-.dl-item:hover { border-color: var(--gold); background: rgba(166,124,82,0.04); }
+.dl-item:hover { border-color: var(--gold); background: var(--accent-soft); }
 .dl-icon {
   font-family: var(--font-mono);
   font-size: 1rem;
@@ -394,7 +384,7 @@ p + p { text-indent: 1.5em; }
 
 /* CITATION */
 .citation-box {
-  background: #F5F0EA;
+  background: var(--bg-deep);
   border-left: 3px solid var(--gold);
   padding: 1.25rem 1.5rem;
   margin: 1.5rem 0;
@@ -434,6 +424,29 @@ footer a:hover { text-decoration: underline; }
 .fade-in:nth-child(2) { animation-delay: 0.1s; }
 .fade-in:nth-child(3) { animation-delay: 0.2s; }
 .fade-in:nth-child(4) { animation-delay: 0.3s; }
+
+/* --- neutral pass --- */
+.hero::before { display: none; }
+h1, h2, h3 { letter-spacing: -0.015em; }
+.hero-label, .section-label, .stat-label, .nlbl, .ic, .pipeline-step .num {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-family: var(--font-body);
+  color: var(--text-light);
+}
+.stat-num, .count, .big-num, .bar-val, .bar-label, .col-year {
+  font-variant-numeric: tabular-nums;
+}
+.stat-item { margin: 0 1.25rem; }
+.author-tag, .pipeline-step, .subcorpus-card, .download-box, .dl-item,
+.chart-wrap, .corpus-table, .methodo, .citation-box { border-radius: 4px; }
+.pipeline-step:hover, .subcorpus-card:hover, .author-tag:hover { transform: none; }
+.pipeline-step:hover { border-color: var(--text); box-shadow: none; }
+.subcorpus-card:hover { box-shadow: 0 4px 16px var(--shadow); }
+.subcorpus-card::before { background: var(--red); }
+.subcorpus-card .big-num, .subcorpus-card .arrow { color: var(--red); }
+.subcorpus-card.policier::before { background: var(--blue); }
+.subcorpus-card.policier .big-num, .subcorpus-card.policier .arrow { color: var(--blue); }
 </style>
 </head>
 <body>
@@ -442,14 +455,14 @@ footer a:hover { text-decoration: underline; }
   <div class="hero-inner">
     <div class="hero-label fade-in">Corpus numérique · Thèse</div>
     <h1 class="fade-in">Les <em>Fictions Littéraires<br>de Gallica</em></h1>
-    <p class="hero-sub fade-in">Un corpus de travail de 10 898 romans, dérivé de la collection BnF, filtré, dédoublonné et enrichi pour l'analyse computationnelle de la littérature de genre.</p>
+    <p class="hero-sub fade-in">Un corpus de travail de 10 859 romans, dérivé de la collection BnF, filtré, dédoublonné et enrichi pour l'analyse computationnelle de la littérature de genre.</p>
     <div class="stats-row fade-in">
       <div class="stat-item">
-        <div class="stat-num">10 898</div>
+        <div class="stat-num">10 859</div>
         <div class="stat-label">Romans</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num">3 629</div>
+        <div class="stat-num">3 651</div>
         <div class="stat-label">Auteurs</div>
       </div>
       <div class="stat-item">
@@ -471,38 +484,38 @@ footer a:hover { text-decoration: underline; }
 
     <div class="pipeline">
       <div class="pipeline-step">
-        <div class="num">SOURCE</div>
+        <div class="num">Source</div>
         <div class="count">19 240</div>
         <div class="label">Fictions de Gallica</div>
         <div class="detail">Langlais 2021, Zenodo</div>
       </div>
       <div class="pipeline-arrow">→</div>
       <div class="pipeline-step">
-        <div class="num">ÉTAPE 1</div>
+        <div class="num">Étape 1</div>
         <div class="count">12 176</div>
         <div class="label">Filtrage OCR</div>
         <div class="detail">Seuil de qualité, hors œuvres complètes</div>
       </div>
       <div class="pipeline-arrow">→</div>
       <div class="pipeline-step">
-        <div class="num">ÉTAPE 2</div>
+        <div class="num">Étape 2</div>
         <div class="count">11 909</div>
         <div class="label">Dédoublonnage temporel</div>
-        <div class="detail">−267 rééditions datées</div>
+        <div class="detail">Rééditions datées</div>
       </div>
       <div class="pipeline-arrow">→</div>
       <div class="pipeline-step">
-        <div class="num">ÉTAPE 3</div>
+        <div class="num">Étape 3</div>
         <div class="count">10 992</div>
         <div class="label">Dédoublonnage hybride</div>
-        <div class="detail">−917 : MinHash + métadonnées</div>
+        <div class="detail">MinHash + métadonnées</div>
       </div>
       <div class="pipeline-arrow">→</div>
       <div class="pipeline-step">
-        <div class="num">FINAL</div>
-        <div class="count">10 898</div>
+        <div class="num">Final</div>
+        <div class="count">10 859</div>
         <div class="label">Corpus enrichi</div>
-        <div class="detail">−94 seconde passe · métadonnées BnF + Wikidata</div>
+        <div class="detail">Métadonnées BnF + Wikidata</div>
       </div>
     </div>
 
@@ -518,11 +531,10 @@ footer a:hover { text-decoration: underline; }
     <div class="section-label">Répartition</div>
     <h2>Distribution temporelle</h2>
     <div class="chart-wrap">
-      <div class="chart-title">Romans par décennie (n = 10 898)</div>
+      <div class="chart-title">Romans par décennie (n = 10 859)</div>
       <div class="bar-chart" id="decadeChart"></div>
     </div>
-    <p class="chart-note">Les années 1890 et 1891 sont manquantes dans cette version du corpus (bug de jointure des métadonnées, correction en cours) : la portion hachurée de la barre 1890 est une estimation d'environ 240 titres, non incluse dans les fichiers téléchargeables.</p>
-    <p>La distribution culmine dans la décennie 1880 (2 101 titres), reflet de l'âge d'or du roman-feuilleton et de la massification éditoriale du dernier tiers du <span style="font-variant:small-caps">xix</span><sup>e</sup> siècle. Le déclin après 1900 tient pour partie aux limites de la numérisation Gallica.</p>
+    <p>La distribution culmine dans la décennie 1880 (2 030 titres), reflet de l'âge d'or du roman-feuilleton et de la massification éditoriale du dernier tiers du <span style="font-variant:small-caps">xix</span><sup>e</sup> siècle. Le déclin après 1900 tient pour partie aux limites de la numérisation Gallica.</p>
   </div>
 </section>
 
@@ -533,7 +545,7 @@ footer a:hover { text-decoration: underline; }
   <div class="container">
     <div class="section-label">Auteurs</div>
     <h2>Signatures du corpus</h2>
-    <p>Sur 3 629 auteurs identifiés — auxquels s'ajoutent 321 notices anonymes —, une longue traîne caractéristique : Dumas, Montépin, Paul de Kock et Féval dominent en volume, mais l'essentiel de la production se distribue parmi des centaines de signatures peu canoniques. 1 159 titres du corpus relèvent par ailleurs du canon, par auteur (1 024) ou par titre (262).</p>
+    <p>Sur 3 651 auteurs identifiés — auxquels s'ajoutent 307 notices anonymes —, une longue traîne caractéristique : Alexandre Dumas, Xavier de Montépin, Paul Féval, Paul de Kock dominent en volume, mais l'essentiel de la production se distribue parmi des centaines de signatures peu canoniques. 1 103 titres relèvent par ailleurs du canon, par auteur (987) ou par titre (232).</p>
     <div class="authors-grid" id="authorsCloud"></div>
   </div>
 </section>
@@ -551,16 +563,16 @@ footer a:hover { text-decoration: underline; }
       <a href="corpus_aventures.html" class="subcorpus-card">
         <div class="ic">Sous-corpus 1</div>
         <h3>Roman d'aventures</h3>
-        <div class="big-num">1 268</div>
+        <div class="big-num">1 294</div>
         <div class="nlbl">Romans</div>
-        <div class="desc">Identifiés par SVM linéaire sur représentation BoW, corrigés via graphe <em>k</em>-NN d'embeddings de paragraphes. Période d'essor : 1860–1910. 155 titres sont partagés avec le sous-corpus policier.</div>
+        <div class="desc">Identifiés par SVM linéaire sur représentation BoW, corrigés via graphe <em>k</em>-NN d'embeddings de paragraphes. Période d'essor : 1860–1910. 159 titres sont partagés avec le sous-corpus policier.</div>
         <div class="arrow">CONSULTER LA LISTE →</div>
       </a>
 
       <a href="corpus_policier.html" class="subcorpus-card policier">
         <div class="ic">Sous-corpus 2</div>
         <h3>Roman policier</h3>
-        <div class="big-num">583</div>
+        <div class="big-num">601</div>
         <div class="nlbl">Romans</div>
         <div class="desc">Identifiés par la même chaîne de traitement, à partir d'une amorce historique élargie. Période d'essor : 1880–1920, avec persistance jusque dans les années 1930.</div>
         <div class="arrow">CONSULTER LA LISTE →</div>
@@ -583,7 +595,7 @@ footer a:hover { text-decoration: underline; }
           <span class="dl-icon">⊞</span>
           <div class="dl-info">
             <span class="dl-name">metadata_gallica.tsv</span>
-            <span class="dl-desc">10 898 notices · 25 colonnes</span>
+            <span class="dl-desc">10 859 notices · 40 colonnes</span>
           </div>
         </a>
         <a href="https://doi.org/10.5281/zenodo.20233178" class="dl-item">
@@ -597,14 +609,14 @@ footer a:hover { text-decoration: underline; }
           <span class="dl-icon">⚔</span>
           <div class="dl-info">
             <span class="dl-name">aventures</span>
-            <span class="dl-desc">1 268 titres</span>
+            <span class="dl-desc">1 294 titres</span>
           </div>
         </a>
         <a href="corpus_policier.html" class="dl-item">
           <span class="dl-icon">🔍</span>
           <div class="dl-info">
             <span class="dl-name">policier</span>
-            <span class="dl-desc">583 titres</span>
+            <span class="dl-desc">601 titres</span>
           </div>
         </a>
       </div>
@@ -621,27 +633,23 @@ Jeu de données : https://doi.org/10.5281/zenodo.20233178</code>
 </section>
 
 <footer>
-  <p>Jean Barré · Thèse de doctorat · corpus v1.3, septembre 2026</p>
+  <p>Jean Barré · Thèse de doctorat · corpus septembre 2026</p>
   <p><a href="https://jeanbarre.eu">jeanbarre.eu</a></p>
 </footer>
 
 <script>
-const SUMMARY={"total":10898,"authors":3629,"anonymous":321,"year_min":1800,"year_max":1950,"est_1890_91":240,"decades":[[1800,208],[1810,223],[1820,427],[1830,642],[1840,627],[1850,877],[1860,1412],[1870,1614],[1880,2101],[1890,872],[1900,726],[1910,432],[1920,433],[1930,234],[1940,66],[1950,4]],"top_authors":[["Alexandre Dumas",97],["Xavier de Montépin",85],["Paul de Kock",82],["Paul Féval",82],["Jules Verne",71],["George Sand",59],["Thomas Mayne Reid",58],["Pierre-Alexis Ponson du Terrail",54],["Élie Berthet",49],["Hector Malot",49],["Zénaïde Fleuriot",46],["Armand Silvestre",42],["Joseph Méry",41],["Arsène Houssaye",41],["Fortuné Du Boisgobey",38],["Gyp",38],["Honoré de Balzac",37],["Eugène Sue",37],["Émile Souvestre",37],["Adolphe Belot",37],["Paul Lacroix",36],["Frédéric Soulié",36],["Gustave Aimard",36],["Clémence Robert",35],["Alphonse Karr",34],["Richard O'Monroy",34],["Walter Scott",33],["Ernest Daudet",33],["Alfred Assollant",32],["Alexis Bouvier",32],["Jules Mary",32],["Louis Ulbach",31],["Émile Zola",31],["Gabriel de La Landelle",30],["Henry de Kock",30],["Raoul de Navery",30],["André Theuriet",30],["Jules Claretie",29],["Émile Richebourg",28],["Catulle Mendès",28]]};
+const SUMMARY={"total":10859,"authors":3651,"anonymous":307,"year_min":1800,"year_max":1950,"decades":[[1800,202],[1810,213],[1820,412],[1830,627],[1840,604],[1850,821],[1860,1359],[1870,1565],[1880,2030],[1890,1169],[1900,713],[1910,426],[1920,421],[1930,228],[1940,65],[1950,4]],"top_authors":[["Alexandre Dumas",96],["Xavier de Montépin",85],["Paul Féval",84],["Paul de Kock",80],["Jules Verne",72],["George Sand",58],["Thomas Mayne Reid",58],["Pierre-Alexis Ponson du Terrail",54],["Hector Malot",50],["Élie Berthet",49],["Zénaïde Fleuriot",47],["Adolphe Belot",43],["Arsène Houssaye",41],["Joseph Méry",40],["Armand Silvestre",40],["Gustave Aimard",39],["Gyp",39],["Fortuné Du Boisgobey",38],["Eugène Sue",37],["Paul Lacroix",36],["Émile Souvestre",36],["Walter Scott",35],["Honoré de Balzac",35],["Clémence Robert",35],["Alfred Assollant",35],["Alphonse Karr",34],["Frédéric Soulié",34],["Ernest Daudet",34],["Catulle Mendès",34],["Alexis Bouvier",34],["Richard O'Monroy",34],["Jules Mary",34],["Louis Ulbach",31],["André Theuriet",31],["Henry de Kock",30],["Raoul de Navery",30],["Émile Richebourg",30],["Gabriel de La Landelle",29],["Jules Claretie",29],["Émile Zola",29]]};
 
 // Decade chart
 const decades = SUMMARY.decades;
 const maxCount = Math.max(...decades.map(d => d[1]));
 const chartEl = document.getElementById('decadeChart');
-const EST = SUMMARY.est_1890_91 || 0;
-const scale = 200 / Math.max(maxCount, (decades.find(d => d[0] === 1890)?.[1] || 0) + EST);
 decades.forEach(([dec, count]) => {
-  const est = dec === 1890 ? EST : 0;
-  const height = Math.max(2, count * scale);
+  const height = Math.max(2, (count / maxCount) * 200);
   const col = document.createElement('div');
   col.className = 'bar-col';
   col.innerHTML = `
-    <div class="bar-val">${count}${est ? ` +~${est}` : ''}</div>
-    ${est ? `<div class="bar-est" style="height:${est * scale}px" title="${dec}–1891 : ~${est} titres estimés, absents de cette version du corpus"></div>` : ''}
+    <div class="bar-val">${count}</div>
     <div class="bar" style="height:${height}px" title="${dec}s : ${count} romans"></div>
     <div class="bar-label">${String(dec).slice(-2)}</div>
   `;
